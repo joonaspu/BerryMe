@@ -101,19 +101,57 @@
           streetViewControl: false,
           fullscreenControl: false
         });
-
+        
+        // "Add berry" button
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(addBerryDiv);
+
+        // Position circle
+        var myPositionCircle = new google.maps.Circle({
+          map: map,
+          visible: false,
+          strokeColor: "blue",
+          strokeWeight: 1,
+          strokeOpacity: 0.4,
+          fillColor: "blue",
+          fillOpacity: 0.2,
+        });
+
+        var myPositionMarker = new google.maps.Marker({
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10
+          },
+          map: map,
+          visible: false,
+        });
 
         var geolocation = null;
         geolocation = window.navigator.geolocation;
-        if(geolocation != null)
-            geolocation.getCurrentPosition(position=>{
-                coords.lat = position["coords"].latitude;
-                coords.lng = position["coords"].longitude;
-                map.setCenter(coords);
-                map.setZoom(13);
-                console.log(coords);
-            });
+        if(geolocation != null) {
+          geolocation.getCurrentPosition(position=>{
+              coords.lat = position["coords"].latitude;
+              coords.lng = position["coords"].longitude;
+              map.setCenter(coords);
+              map.setZoom(13);
+              console.log(coords);
+          });
+
+          geolocation.watchPosition(function(position) {
+            var newCoords = {lat: 0, lng: 0};
+            newCoords.lat = position["coords"].latitude;
+            newCoords.lng = position["coords"].longitude;
+
+            myPositionCircle.setVisible(true);
+            myPositionCircle.setCenter(newCoords);
+            myPositionCircle.setRadius(position.coords.accuracy);
+
+            myPositionMarker.setVisible(true);
+            myPositionMarker.setPosition(newCoords);
+
+            console.log(position);
+          });
+        }
+
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2YXHpksnAc5JXUEF1M0yFxy9xqWr-XYw&callback=initMap"
