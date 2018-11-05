@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BerryMe Proto</title>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+            * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        td {
+            height: 5vh;
+            background-color: gray;
+        }
+
+        .hidden {
+            display: none;
+        }
+        .scrollable {
+            height: 20vh;
+            overflow: auto;
+            
+        }
+
+        .active {
+            background-color: red;
+        }
+
+    </style>
+    <script>
+        function toggleHide(id) {
+            document.getElementById(id).classList.toggle("hidden");
+        }
+
+
+    </script>
+
+</head>
+<body>
+    <nav>
+        <button onClick="toggleHide('berry_add')">Add Berry</button>
+    </nav>
+    
+    <div class="hidden" id="berry_add">
+        <h2>Add berry</h2>
+        <div class="scrollable">
+            <table>
+                <tbody>
+                    <tr><td><button class="bry_b active">Blueberry</button></td></tr>
+                    <tr><td><button class="bry_b">Lingonberry</button></td></tr>
+                    <tr><td><button class="bry_b">Strawberry</button></td></tr>
+                    <tr><td><button class="bry_b">Herkkutatti</button></td></tr>
+                    <tr><td><button class="bry_b">Variksenmarja</button></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <button>Add</button>
+    </div>
+    <script>
+        var btndiv = document.getElementById("berry_add");
+        var btns = btndiv.getElementsByClassName("bry_b");
+
+        for(var i = 0;i<btns.length;i++) {
+            btns[i].addEventListener("click", function() {
+                var current = document.getElementsByClassName("active");
+                for(var i = 0;i<btns.length;i++) {
+                    btns[i].classList.remove("active");
+                }              
+                this.className += " active";
+            });
+        }
+    </script>
+    
+    <div id="map"></div>
+    <script>
+        var map;
+        function initMap() {
+            var coords = {lat: -34.397, lng: 150.644};
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: coords,
+                zoom: 14,
+                scaleControl: true
+            });
+            var geolocation = null;
+            geolocation = window.navigator.geolocation;
+            if(geolocation != null)
+                geolocation.getCurrentPosition(position=>{
+                    coords.lat = position["coords"].latitude;
+                    coords.lng = position["coords"].longitude;
+                    map.setCenter(coords);
+                    console.log(coords);
+                });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2YXHpksnAc5JXUEF1M0yFxy9xqWr-XYw&callback=initMap"async defer></script>
+      
+</body>
+</html>
