@@ -1,0 +1,16 @@
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#map {
+    flex-grow: 1; /* Make the map fill the rest of the window */
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none; /* Disable pull to refresh on Chrome */
+}
