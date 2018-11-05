@@ -76,10 +76,10 @@ function initMap() {
             newCoords.lat = position["coords"].latitude;
             newCoords.lng = position["coords"].longitude;
 
-            map.setCenter(coords);
+            map.setCenter(newCoords);
             map.setZoom(13);
 
-            console.log(coords);
+            console.log(position);
         });
 
         // Update position if it changes
