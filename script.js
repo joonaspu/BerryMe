@@ -81,22 +81,32 @@ function initMap() {
 
             console.log(position);
         });
-
+        
         // Update position if it changes
-        geolocation.watchPosition(function(position) {
-            var newCoords = {lat: 0, lng: 0};
-            newCoords.lat = position["coords"].latitude;
-            newCoords.lng = position["coords"].longitude;
+        geolocation.watchPosition(
+            function(position) {
+                var newCoords = {lat: 0, lng: 0};
+                newCoords.lat = position["coords"].latitude;
+                newCoords.lng = position["coords"].longitude;
 
-            myPositionCircle.setVisible(true);
-            myPositionCircle.setCenter(newCoords);
-            myPositionCircle.setRadius(position.coords.accuracy);
+                myPositionCircle.setVisible(true);
+                myPositionCircle.setCenter(newCoords);
+                myPositionCircle.setRadius(position.coords.accuracy);
 
-            myPositionMarker.setVisible(true);
-            myPositionMarker.setPosition(newCoords);
+                myPositionMarker.setVisible(true);
+                myPositionMarker.setPosition(newCoords);
 
-            console.log(position);
-        });
+                console.log(position);
+            }, 
+            // Error handler
+            function(error) {
+                console.log(error);
+            },
+            // Geolocation options 
+            {
+                enableHighAccuracy: true
+            }
+        );
     }
 
 }
