@@ -1,5 +1,5 @@
 var map;
-
+// Types of berries
 var g_berries;
 
 function addBerryButton() {
@@ -30,10 +30,17 @@ function addBerryButton() {
     controlUI.appendChild(controlText);
 
     controlUI.addEventListener("click", function() {
-        // Icon could be question mark when user has not selected berry
-        // Also remove hardcoded sizes
+        var newMarker = addBerryToMap(map.getCenter(),"res/questionmark.png",true);
+    });
+
+    return addBerryDiv;
+}
+
+// Add berry to the map.
+// TODO: more parameters?
+function addBerryToMap(position, imageurl, openInfo=false) {
         var icon= {
-            url: "res/blueberry.png", // change this
+            url: imageurl,
             size:new google.maps.Size(40,40),
 			scaledSize:new google.maps.Size(40,40),
 			origin:new google.maps.Point(0,0),
@@ -41,7 +48,7 @@ function addBerryButton() {
         }
 
         var newMarker = new google.maps.Marker({
-            position: map.getCenter(),
+            position: position,
             animation: google.maps.Animation.DROP,
             draggable: true,
             icon: icon,
@@ -67,11 +74,13 @@ function addBerryButton() {
         var infoWindow = new google.maps.InfoWindow({
             content: infoWindowHTML
         });
-
-        infoWindow.open(map, newMarker);
-    });
-
-    return addBerryDiv;
+        // Click berry to open the infoWindow
+        newMarker.addListener("click", function(){
+            infoWindow.open(map, newMarker);
+        });
+        if(openInfo)
+            infoWindow.open(map, newMarker);
+        return newMarker;
 }
 
 function initMap() {
@@ -168,27 +177,13 @@ function initMap() {
     // Pick first map
     let mapdata = JSON.parse(window.localStorage.getItem(mapnames[0]));
     console.log(mapdata);
+
     for(let i = 0; i<mapdata.locations.length;i++) {
         let blocation = mapdata.locations[i];
         console.log(blocation);
-
-        // Make berry icon
-        var icon= {
-            url: g_berries[0][blocation.berry].url,
-            size:new google.maps.Size(40,40),
-			scaledSize:new google.maps.Size(40,40),
-			origin:new google.maps.Point(0,0),
-			anchor:new google.maps.Point(20,20)
-        }
-
-        // Add berry to the map
-        var berryMarker = new google.maps.Marker({
-            position: {"lat": blocation.latitude, "lng": blocation.longitude},
-            icon: icon,
-            animation: google.maps.Animation.DROP,
-            draggable: true,
-            map: map,
-        });
+        
+        let coords = {"lat": blocation.latitude, "lng": blocation.longitude};
+        addBerryToMap(coords,g_berries[0][blocation.berry].url);
     }
 }
 
