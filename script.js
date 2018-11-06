@@ -1,5 +1,7 @@
 var map;
 
+var g_berries;
+
 function addBerryButton() {
     // Create a div to hold the control.
     var addBerryDiv = document.createElement('div');
@@ -28,10 +30,21 @@ function addBerryButton() {
     controlUI.appendChild(controlText);
 
     controlUI.addEventListener("click", function() {
+        // Icon could be question mark when user has not selected berry
+        // Also remove hardcoded sizes
+        var icon= {
+            url: "res/blueberry.png", // change this
+            size:new google.maps.Size(40,40),
+			scaledSize:new google.maps.Size(40,40),
+			origin:new google.maps.Point(0,0),
+			anchor:new google.maps.Point(20,20)
+        }
+
         var newMarker = new google.maps.Marker({
             position: map.getCenter(),
             animation: google.maps.Animation.DROP,
             draggable: true,
+            icon: icon,
             map: map,
         });
 
@@ -138,5 +151,75 @@ function initMap() {
             }
         );
     }
+    // Add berries to the map
+    //
+    generateBerries();
+    console.log(g_berries);
 
+    // Load berry locations from localstorage
+    window.localStorage.clear(); // For testing purposes.
+    let mapnames = JSON.parse(window.localStorage.getItem("maps"));
+    if(mapnames===null) {
+        generateBerryMap();
+        mapnames = JSON.parse(window.localStorage.getItem("maps"));
+    }
+    console.log(mapnames);
+
+    // Pick first map
+    let mapdata = JSON.parse(window.localStorage.getItem(mapnames[0]));
+    console.log(mapdata);
+    for(let i = 0; i<mapdata.locations.length;i++) {
+        let blocation = mapdata.locations[i];
+        console.log(blocation);
+
+        // Make berry icon
+        var icon= {
+            url: g_berries[0][blocation.berry].url,
+            size:new google.maps.Size(40,40),
+			scaledSize:new google.maps.Size(40,40),
+			origin:new google.maps.Point(0,0),
+			anchor:new google.maps.Point(20,20)
+        }
+
+        // Add berry to the map
+        var berryMarker = new google.maps.Marker({
+            position: {"lat": blocation.latitude, "lng": blocation.longitude},
+            icon: icon,
+            animation: google.maps.Animation.DROP,
+            draggable: true,
+            map: map,
+        });
+    }
+}
+
+// Generate map for testing purposes, named "map1"
+function generateBerryMap() {
+    let tempmap = {"name":"map1", "locations":[
+        {
+            "latitude": 62.6,
+            "longitude": 29.76,
+            "berry": "blueberry",
+            "rating": "2",
+            "date": "not yet"
+        },
+        {
+            "latitude": 62.6,
+            "longitude": 29.755,
+            "berry": "lingonberry",
+            "rating": "2",
+            "date": "not yet"
+        }
+    ]};
+    // Store map
+    window.localStorage.setItem("map1",JSON.stringify(tempmap));
+    // Store map name
+    window.localStorage.setItem("maps",JSON.stringify(["map1","empty"]));
+}
+
+// Chrome doesn't like local files
+function generateBerries() {
+    g_berries = [{
+            "blueberry":{ "name": "Blueberry", "url": "res/blueberry.png"},
+            "lingonberry":{"name": "Lingonberry","url":"res/lingonberry.png"}
+            }];
 }
