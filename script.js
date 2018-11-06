@@ -23,11 +23,39 @@ function addBerryButton() {
     controlText.style.lineHeight = '38px';
     controlText.style.paddingLeft = '5px';
     controlText.style.paddingRight = '5px';
+    controlText.style.userSelect = "none"; // Disable text selection on the button
     controlText.innerHTML = 'Add Berry';
     controlUI.appendChild(controlText);
 
     controlUI.addEventListener("click", function() {
-        // TODO
+        var newMarker = new google.maps.Marker({
+            position: map.getCenter(),
+            animation: google.maps.Animation.DROP,
+            draggable: true,
+            map: map,
+        });
+
+        var infoWindowHTML = `<div class="infoWindow">
+            <h3>Type of berry</h3><br>
+            <input type="radio" name="berry" id="value1">
+            <label for="value1">Strawberry</label>
+            <br>
+            <input type="radio" name="berry" id="value2">
+            <label for="value2">Blueberry</label>
+            <br>
+            <input type="radio" name="berry" id="value3">
+            <label for="value3">Mushroom</label>
+            <br>
+            <button>Save</button>
+            <button>Remove</button>
+        </div>
+        `
+
+        var infoWindow = new google.maps.InfoWindow({
+            content: infoWindowHTML
+        });
+
+        infoWindow.open(map, newMarker);
     });
 
     return addBerryDiv;
@@ -54,6 +82,7 @@ function initMap() {
         strokeOpacity: 0.4,
         fillColor: "blue",
         fillOpacity: 0.2,
+        clickable: false
     });
 
     // Position marker
@@ -64,6 +93,7 @@ function initMap() {
         },
         map: map,
         visible: false,
+        clickable: false
     });
 
     // Geolocation

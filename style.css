@@ -8,9 +8,13 @@
     flex-grow: 1; /* Make the map fill the rest of the window */
 }
 
+.infoWindow {
+    margin: 5px;
+}
+
 html, body {
     height: 100%;
-    margin: 0;
-    padding: 0;
+    /*margin: 0;
+    padding: 0;*/
     overscroll-behavior: none; /* Disable pull to refresh on Chrome */
 }
