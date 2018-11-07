@@ -38,6 +38,48 @@ function addBerryButton() {
     return addBerryDiv;
 }
 
+// Builds the HTML for the berry infoWindow
+function buildInfoWindow() {
+    // Get templates
+    let t_window = document.querySelector("#infoWindowTemplate");
+    let t_berry = document.querySelector("#infoWindowBerryTemplate");
+
+    // Make copy of infoWindowTemplate
+    let infoWindowContent = document.importNode(t_window.content, true);
+    // Find div for list of berries
+    let berryListDiv = infoWindowContent.querySelector(".berryList");
+
+    // Add each berry to div
+    for (let berryID in g_berries[0]) {
+        let berry = g_berries[0][berryID]
+
+        // Make copy of infoWindowBerryTemplate
+        let berryElem = document.importNode(t_berry.content, true);
+        // Add label
+        berryElem.querySelector("label").innerHTML = `${berry.name} <img src="${berry.url}" height=32 width=32/>`;
+        // Add value to radio input
+        berryElem.querySelector("input").value = berryID;
+
+        berryListDiv.appendChild(berryElem);
+    }
+
+    // Event listeners for save and remove buttons
+    infoWindowContent.querySelector(".saveButton").addEventListener("click", function(event) {
+        // Get selected berry
+        let selectedBerry = event.target.parentNode.querySelector("input[name='berry']:checked").value;
+        if (selectedBerry !== null) {
+            console.log("Saved " + selectedBerry);
+        }
+    });
+
+    infoWindowContent.querySelector(".removeButton").addEventListener("click", function(event) {
+        // Remove this berry 
+        // TODO
+    });
+
+    return infoWindowContent;
+}
+
 // Add berry to the map.
 // TODO: more parameters?
 function addBerryToMap(position, imageurl, isnewberry=false) {
@@ -67,22 +109,10 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
                 "date": "not yet"});
 
         // Build info window HTML
-        var infoWindowHTML = `<div class="infoWindow">
-            <h3>Type of berry</h3><br>`;
-
-        for (var berryID in g_berries[0]) {
-            var berry = g_berries[0][berryID]
-            infoWindowHTML += `<input type="radio" name="berry" id="value1">
-            <label for="value1">${berry.name} <img src="${berry.url}" height=32 width=32/></label>
-            <br>`
-        };
-
-        infoWindowHTML += `<button>Save</button>
-            <button>Remove</button>
-        </div>`;
+        let infoWindowContent = buildInfoWindow();
 
         var infoWindow = new google.maps.InfoWindow({
-            content: infoWindowHTML
+            content: infoWindowContent
         });
         // Click berry to open the infoWindow
         newMarker.addListener("click", function(){

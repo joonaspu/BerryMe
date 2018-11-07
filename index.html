@@ -59,5 +59,22 @@
             <!-- To do: get rid of Radu's key. Not high priority. -->
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2YXHpksnAc5JXUEF1M0yFxy9xqWr-XYw&callback=initMap" async defer></script>
         </div>
+
+
+        <!-- HTML templates for the infoWindow contents -->
+        <template id="infoWindowTemplate">
+            <h3>Type of berry</h3><br>
+            <div class="berryList">
+                <!--List of berries goes here-->
+            </div>
+            <button class="saveButton">Save</button>
+            <button class="removeButton">Remove</button>
+        </template>
+        
+        <template id="infoWindowBerryTemplate">
+            <input type="radio" name="berry">
+            <label for="value1" class="berryLabel"></label>
+            <br>
+        </template>
     </body>
 </html>
