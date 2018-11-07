@@ -1,6 +1,8 @@
 var map;
 // Types of berries
 var g_berries;
+//
+var g_locations;
 
 function addBerryButton() {
     // Create a div to hold the control.
@@ -38,7 +40,8 @@ function addBerryButton() {
 
 // Add berry to the map.
 // TODO: more parameters?
-function addBerryToMap(position, imageurl, openInfo=false) {
+function addBerryToMap(position, imageurl, isnewberry=false) {
+        // Berry marker
         var icon= {
             url: imageurl,
             size:new google.maps.Size(40,40),
@@ -54,6 +57,14 @@ function addBerryToMap(position, imageurl, openInfo=false) {
             icon: icon,
             map: map,
         });
+        // Save new berry to localstorage, testing
+        if(isnewberry)
+            saveData("map1",{
+                "latitude": position.lat(),
+                "longitude": position.lng(),
+                "berry": "nab",
+                "rating": "2",
+                "date": "not yet"});
 
         // Build info window HTML
         var infoWindowHTML = `<div class="infoWindow">
@@ -77,7 +88,7 @@ function addBerryToMap(position, imageurl, openInfo=false) {
         newMarker.addListener("click", function(){
             infoWindow.open(map, newMarker);
         });
-        if(openInfo)
+        if(isnewberry)
             infoWindow.open(map, newMarker);
         return newMarker;
 }
@@ -165,7 +176,7 @@ function initMap() {
     console.log(g_berries);
 
     // Load berry locations from localstorage
-    window.localStorage.clear(); // For testing purposes.
+    
     let mapnames = JSON.parse(window.localStorage.getItem("maps"));
     if(mapnames===null) {
         generateBerryMap();
@@ -174,14 +185,14 @@ function initMap() {
     console.log(mapnames);
 
     // Pick first map
-    let mapdata = JSON.parse(window.localStorage.getItem(mapnames[0]));
+    let mapdata = loadData("map1"); // Hardcoded, change
     console.log(mapdata);
 
     for(let i = 0; i<mapdata.locations.length;i++) {
         let blocation = mapdata.locations[i];
         console.log(blocation);
         
-        let coords = {"lat": blocation.latitude, "lng": blocation.longitude};
+        let coords = {"lat": parseFloat(blocation.latitude), "lng": parseFloat(blocation.longitude)};
         addBerryToMap(coords,g_berries[0][blocation.berry].url);
     }
 }
@@ -213,7 +224,30 @@ function generateBerryMap() {
 // Chrome doesn't like local files
 function generateBerries() {
     g_berries = [{
+            "nab":{"name":"NotABerry", "url":"res/questionmark.png"},
             "blueberry":{ "name": "Blueberry", "url": "res/blueberry.png"},
             "lingonberry":{"name": "Lingonberry","url":"res/lingonberry.png"}
             }];
+}
+
+// Load data from localstorage
+function loadData(mapname) {
+    return JSON.parse(window.localStorage.getItem(mapname));
+}
+
+// Save data to localstorage
+function saveData(mapname, location) {
+    console.log("SAVING");
+    let data = loadData(mapname); // Bad idea, loading data over and over again. Fix.
+    console.log(location);
+    //console.log(data.locations);
+    data.locations.push(location);
+    //console.log(data.locations);
+    window.localStorage.setItem(mapname,JSON.stringify(data));
+    console.log("SAVING DONE");
+}
+
+// Warning! All saved data will be lost!
+function clearStorage() {
+    window.localStorage.clear();
 }
