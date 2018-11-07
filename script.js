@@ -55,21 +55,20 @@ function addBerryToMap(position, imageurl, openInfo=false) {
             map: map,
         });
 
+        // Build info window HTML
         var infoWindowHTML = `<div class="infoWindow">
-            <h3>Type of berry</h3><br>
-            <input type="radio" name="berry" id="value1">
-            <label for="value1">Strawberry</label>
-            <br>
-            <input type="radio" name="berry" id="value2">
-            <label for="value2">Blueberry</label>
-            <br>
-            <input type="radio" name="berry" id="value3">
-            <label for="value3">Mushroom</label>
-            <br>
-            <button>Save</button>
+            <h3>Type of berry</h3><br>`;
+
+        for (var berryID in g_berries[0]) {
+            var berry = g_berries[0][berryID]
+            infoWindowHTML += `<input type="radio" name="berry" id="value1">
+            <label for="value1">${berry.name} <img src="${berry.url}" height=32 width=32/></label>
+            <br>`
+        };
+
+        infoWindowHTML += `<button>Save</button>
             <button>Remove</button>
-        </div>
-        `
+        </div>`;
 
         var infoWindow = new google.maps.InfoWindow({
             content: infoWindowHTML
