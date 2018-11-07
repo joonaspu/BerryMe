@@ -1,8 +1,10 @@
 var map;
 // Types of berries
 var g_berries;
-//
+// Berry locations, NOT MARKERS
 var g_locations;
+// Markers, no use yet
+var g_markers; 
 
 function addBerryButton() {
     // Create a div to hold the control.
@@ -185,14 +187,14 @@ function initMap() {
     console.log(mapnames);
 
     // Pick first map
-    let mapdata = loadData("map1"); // Hardcoded, change
-    console.log(mapdata);
+    loadData("map1"); // Hardcoded, change
+    console.log(g_locations);
 
-    for(let i = 0; i<mapdata.locations.length;i++) {
-        let blocation = mapdata.locations[i];
+    for(let i = 0; i<g_locations.locations.length;i++) {
+        let blocation = g_locations.locations[i];
         console.log(blocation);
         
-        let coords = {"lat": parseFloat(blocation.latitude), "lng": parseFloat(blocation.longitude)};
+        let coords = {"lat": blocation.latitude, "lng": blocation.longitude};
         addBerryToMap(coords,g_berries[0][blocation.berry].url);
     }
 }
@@ -232,18 +234,14 @@ function generateBerries() {
 
 // Load data from localstorage
 function loadData(mapname) {
-    return JSON.parse(window.localStorage.getItem(mapname));
+    g_locations = JSON.parse(window.localStorage.getItem(mapname));
 }
 
 // Save data to localstorage
 function saveData(mapname, location) {
     console.log("SAVING");
-    let data = loadData(mapname); // Bad idea, loading data over and over again. Fix.
-    console.log(location);
-    //console.log(data.locations);
-    data.locations.push(location);
-    //console.log(data.locations);
-    window.localStorage.setItem(mapname,JSON.stringify(data));
+    g_locations.locations.push(location);
+    window.localStorage.setItem(mapname,JSON.stringify(g_locations));
     console.log("SAVING DONE");
 }
 
