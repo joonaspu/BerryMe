@@ -102,13 +102,17 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
             map: map,
         });
         // Save new berry to localstorage, testing
-        if(isnewberry)
-            saveData("map1",{
+        if(isnewberry) {
+            let temploc = {
                 "latitude": position.lat(),
                 "longitude": position.lng(),
                 "berry": "nab",
                 "rating": "2",
-                "date": "not yet"});
+                "date": "not yet"};
+            g_locations.locations.push(temploc);
+            saveData("map1");
+        }
+            
 
         // Build info window HTML
         let infoWindowContent = buildInfoWindow();
@@ -268,9 +272,8 @@ function loadData(mapname) {
 }
 
 // Save data to localstorage
-function saveData(mapname, location) {
+function saveData(mapname) {
     console.log("SAVING");
-    g_locations.locations.push(location);
     window.localStorage.setItem(mapname,JSON.stringify(g_locations));
     console.log("SAVING DONE");
 }
