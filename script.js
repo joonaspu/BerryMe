@@ -1,7 +1,9 @@
 var map;
+//
+var g_currentMapName;
 // Types of berries
 var g_berries;
-// Berry locations, NOT MARKERS
+// Berry locations, NOT MARKERS // Maybe somehow combine locations and markers
 var g_locations;
 // Markers, no use yet
 var g_markers; 
@@ -99,7 +101,7 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
             animation: google.maps.Animation.DROP,
             draggable: true,
             icon: icon,
-            map: map,
+            map: map
         });
         // Save new berry to localstorage, testing
         if(isnewberry) {
@@ -110,18 +112,18 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
                 "rating": "2",
                 "date": "not yet"};
             g_locations.locations.push(temploc);
-            saveData("map1");
+            saveData(g_currentMapName);
         }
             
 
-        // Build info window HTML
-        let infoWindowContent = buildInfoWindow();
 
-        var infoWindow = new google.maps.InfoWindow({
-            content: infoWindowContent
-        });
         // Click berry to open the infoWindow
         newMarker.addListener("click", function(){
+            // Build info window HTML
+            let infoWindowContent = buildInfoWindow();
+            var infoWindow = new google.maps.InfoWindow({
+                content: infoWindowContent
+            });
             infoWindow.open(map, newMarker);
         });
         if(isnewberry)
@@ -219,9 +221,9 @@ function initMap() {
         mapnames = JSON.parse(window.localStorage.getItem("maps"));
     }
     console.log(mapnames);
-
     // Pick first map
-    loadData("map1"); // Hardcoded, change
+    g_currentMapName = mapnames[0];
+    loadData(g_currentMapName);
     console.log(g_locations);
 
     for(let i = 0; i<g_locations.locations.length;i++) {
