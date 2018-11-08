@@ -3,10 +3,12 @@ var map;
 var g_currentMapName;
 // Types of berries
 var g_berries;
-// Berry locations, NOT MARKERS // Maybe somehow combine locations and markers
+// Berry locations from current map, NOT MARKERS // Maybe somehow combine locations and markers
 var g_locations;
 // Markers, no use yet
 var g_markers; 
+
+var g_currentMarker;
 
 function addBerryButton() {
     // Create a div to hold the control.
@@ -36,7 +38,12 @@ function addBerryButton() {
     controlUI.appendChild(controlText);
 
     controlUI.addEventListener("click", function() {
-        var newMarker = addBerryToMap(map.getCenter(),"res/questionmark.png",true);
+        var newMarker = addBerryToMap({"latitude": map.getCenter().lat(),
+                                        "longitude": map.getCenter().lng(),
+                                        "berry": "nab",
+                                        "rating": "2",
+                                        "date": "not yet"},
+                                        "res/questionmark.png",true);
     });
 
     return addBerryDiv;
@@ -73,7 +80,16 @@ function buildInfoWindow() {
         let selectedBerry = event.target.parentNode.querySelector("input[name='berry']:checked").value;
         if (selectedBerry !== null) {
             console.log("Saved " + selectedBerry);
-
+            g_currentMarker.setIcon({
+                url: g_berries[0][selectedBerry].url,
+                size:new google.maps.Size(40,40),
+                scaledSize:new google.maps.Size(40,40),
+                origin:new google.maps.Point(0,0),
+                anchor:new google.maps.Point(20,20)
+            })
+            
+            g_currentMarker.berryLocation.berry = selectedBerry;
+            saveData(g_currentMapName);
         }
     });
 
@@ -87,7 +103,7 @@ function buildInfoWindow() {
 
 // Add berry to the map.
 // TODO: more parameters?
-function addBerryToMap(position, imageurl, isnewberry=false) {
+function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         // Berry marker
         var icon= {
             url: imageurl,
@@ -98,22 +114,16 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
         }
 
         var newMarker = new google.maps.Marker({
-            position: position,
+            position: { "lat":berryLocation.latitude,"lng":berryLocation.longitude },
             animation: google.maps.Animation.DROP,
             draggable: true,
             icon: icon,
             map: map,
-            id: 123
+            berryLocation: berryLocation
         });
         // Save new berry to localstorage, testing
-        if(isnewberry) {
-            let temploc = {
-                "latitude": position.lat(),
-                "longitude": position.lng(),
-                "berry": "nab",
-                "rating": "2",
-                "date": "not yet"};
-            g_locations.locations.push(temploc);
+        if(isnewberry) {             
+            g_locations.locations.push(berryLocation);
             saveData(g_currentMapName);
         }
         // Build info window HTML
@@ -123,7 +133,7 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
         });
         if(isnewberry)
             infoWindow.open(map, newMarker);
-
+        g_currentMarker = newMarker;
         // Click berry to open the infoWindow
         newMarker.addListener("click", function(){
             // Build info window HTML
@@ -132,6 +142,7 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
                 content: infoWindowContent
             });
             infoWindow.open(map, newMarker);
+            g_currentMarker = newMarker;
         });
 
         return newMarker;
@@ -235,9 +246,8 @@ function initMap() {
     for(let i = 0; i<g_locations.locations.length;i++) {
         let blocation = g_locations.locations[i];
         console.log(blocation);
-        
-        let coords = {"lat": blocation.latitude, "lng": blocation.longitude};
-        addBerryToMap(coords,g_berries[0][blocation.berry].url);
+
+        addBerryToMap(blocation, g_berries[0][blocation.berry].url);
     }
 }
 
