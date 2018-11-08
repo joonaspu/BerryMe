@@ -73,6 +73,7 @@ function buildInfoWindow() {
         let selectedBerry = event.target.parentNode.querySelector("input[name='berry']:checked").value;
         if (selectedBerry !== null) {
             console.log("Saved " + selectedBerry);
+
         }
     });
 
@@ -101,7 +102,8 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
             animation: google.maps.Animation.DROP,
             draggable: true,
             icon: icon,
-            map: map
+            map: map,
+            id: 123
         });
         // Save new berry to localstorage, testing
         if(isnewberry) {
@@ -114,8 +116,13 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
             g_locations.locations.push(temploc);
             saveData(g_currentMapName);
         }
-            
-
+        // Build info window HTML
+        let infoWindowContent = buildInfoWindow();
+        var infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent
+        });
+        if(isnewberry)
+            infoWindow.open(map, newMarker);
 
         // Click berry to open the infoWindow
         newMarker.addListener("click", function(){
@@ -126,8 +133,7 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
             });
             infoWindow.open(map, newMarker);
         });
-        if(isnewberry)
-            infoWindow.open(map, newMarker);
+
         return newMarker;
 }
 
