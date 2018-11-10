@@ -65,10 +65,19 @@
         <!-- HTML templates for the infoWindow contents -->
         <template id="infoWindowTemplate">
             <div class="infoWindow">
-                <h3>Type of berry</h3><br>
+                <p class="infoWindowTitle">Edit location</p>
+
+                <p class="infoWindowSubtitle">Type of berry</p>
                 <div class="berryList">
                     <!--List of berries goes here-->
                 </div>
+
+                <p class="infoWindowSubtitle">Rating</p>
+                <p><input type="number" min=1 max=5 value=3></p>
+
+                <p class="infoWindowSubtitle">Modified</p>
+                <p class="date"></p>
+
                 <button class="saveButton">Save</button>
                 <button class="removeButton">Remove</button>
                 <input type="hidden" id="markerId" name="markerId" value="-1">

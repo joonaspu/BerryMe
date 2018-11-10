@@ -20,8 +20,8 @@ function addBerryButton() {
                             "latitude": map.getCenter().lat(),
                             "longitude": map.getCenter().lng(),
                             "berry": "nab",
-                            "rating": "2",
-                            "date": "not yet"
+                            "rating": "3",
+                            "date": Date.now()
                         },
                         "res/questionmark.png", true);
     });
@@ -44,6 +44,7 @@ function findMarkerByID(id) {
 function saveBerryListener(event) {
     // Get selected berry
     let selectedBerry = event.target.parentNode.querySelector("input[type='radio']:checked").value;
+    let newRating = event.target.parentNode.querySelector("input[type='number']").value;
     let id = event.target.parentNode.querySelector("#markerId").value;
     let marker = findMarkerByID(id);
 
@@ -60,6 +61,9 @@ function saveBerryListener(event) {
         })
 
         marker.berryLocation.berry = selectedBerry;
+        marker.berryLocation.rating = newRating;
+
+        marker.berryLocation.date = Date.now();
 
         // Update position based on marker
         let newPosition = marker.getPosition()
@@ -124,6 +128,14 @@ function buildInfoWindow(markerid) {
         berryListDiv.appendChild(berryElem);
     }
 
+    // Add rating
+    infoWindowContent.querySelector("input[type='number'").value = marker.berryLocation.rating;
+
+    // Add date
+    let date = new Date(marker.berryLocation.date);
+    let dateString = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+    infoWindowContent.querySelector(".date").innerHTML = dateString;
+
     // Set unique input group for the radio buttons
     infoWindowContent.querySelectorAll("input[type='radio']").forEach(elem => elem.name = "berryInput"+markerid);
 
@@ -160,10 +172,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
     });
 
     console.log(g_markers.push(newMarker));
-    // Save new berry to localstorage, testing
-    if(isnewberry) {
-        saveData(g_currentMapName);
-    }
+
     // Build info window HTML
     let infoWindowContent = buildInfoWindow(newMarker.id);
     let infoWindow = new google.maps.InfoWindow({

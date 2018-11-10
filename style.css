@@ -28,7 +28,21 @@
 }
 
 .infoWindow {
-    margin: 5px;
+    margin: 10px;
+}
+
+.infoWindowTitle {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.infoWindowSubtitle {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.berryList {
+    margin-top: -10px;
 }
 
 html, body {
