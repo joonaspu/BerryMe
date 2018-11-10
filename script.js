@@ -92,7 +92,16 @@ function saveBerryListener(event) {
 
 // Called when "Remove" button is clicked in the infoWindow
 function removeBerryListener(event) {
-    // TODO
+    let id = event.target.parentNode.querySelector("#markerId").value;
+
+    // Remove marker from the map
+    findMarkerByID(id).setMap(null);
+
+    // Remove the element from g_markers
+    g_markers = g_markers.filter(marker => marker.id != id);
+
+    // Save map
+    saveData(g_currentMapName);
 }
 
 // Builds the HTML for the berry infoWindow
