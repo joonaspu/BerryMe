@@ -47,6 +47,54 @@ function addBerryButton() {
     return addBerryDiv;
 }
 
+// Returns a marker with the given ID (or null if it doesn't exist)
+function findMarkerByID(id) {
+    for(let i = 0;i<g_markers.length;i++) {
+        tmarker = g_markers[i];
+        if(tmarker.id == id) {  
+            return tmarker;
+        }
+    }
+    return null;
+}
+
+// Called when "Save" button is clicked in the infoWindow
+function saveBerryListener(event) {
+    // Get selected berry
+    let selectedBerry = event.target.parentNode.querySelector("input[name='berry']:checked").value;
+    let id = event.target.parentNode.querySelector("#markerId").value;
+    let marker = findMarkerByID(id);
+
+    if (selectedBerry !== null) {
+        console.log("Saved " + selectedBerry);  
+
+        // Update icon of the marker
+        marker.setIcon({
+            url: g_berries[0][selectedBerry].url,
+            size:new google.maps.Size(40,40),
+            scaledSize:new google.maps.Size(40,40),
+            origin:new google.maps.Point(0,0),
+            anchor:new google.maps.Point(20,20)
+        })
+
+        marker.berryLocation.berry = selectedBerry;
+
+        // Update position based on marker
+        let newPosition = marker.getPosition()
+        marker.berryLocation.latitude = newPosition.lat();
+        marker.berryLocation.longitude = newPosition.lng();
+
+        // Save map
+        saveData(g_currentMapName);
+    }
+
+}
+
+// Called when "Remove" button is clicked in the infoWindow
+function removeBerryListener(event) {
+    // TODO
+}
+
 // Builds the HTML for the berry infoWindow
 function buildInfoWindow(markerid) {
     // Get templates
@@ -76,38 +124,8 @@ function buildInfoWindow(markerid) {
     }
 
     // Event listeners for save and remove buttons
-    infoWindowContent.querySelector(".saveButton").addEventListener("click", function(event) {
-        // Get selected berry
-        let selectedBerry = event.target.parentNode.querySelector("input[name='berry']:checked").value;
-        let id = event.target.parentNode.querySelector("#markerId").value;
-        let marker;
-        console.log(g_markers.length);
-        for(let i = 0;i<g_markers.length;i++) {
-            tmarker = g_markers[i];
-            console.log(tmarker.id +"??"+ id);
-            if(tmarker.id == id) {  
-                marker = tmarker;
-                if (selectedBerry !== null) {
-                    console.log("Saved " + selectedBerry);  
-                    marker.setIcon({
-                        url: g_berries[0][selectedBerry].url,
-                        size:new google.maps.Size(40,40),
-                        scaledSize:new google.maps.Size(40,40),
-                        origin:new google.maps.Point(0,0),
-                        anchor:new google.maps.Point(20,20)
-                    })
-                    marker.berryLocation.berry = selectedBerry;
-                    saveData(g_currentMapName);
-                }
-                break;
-            }
-        }
-    });
-
-    infoWindowContent.querySelector(".removeButton").addEventListener("click", function(event) {
-        // Remove this berry 
-        // TODO
-    });
+    infoWindowContent.querySelector(".saveButton").addEventListener("click", saveBerryListener);
+    infoWindowContent.querySelector(".removeButton").addEventListener("click", removeBerryListener);
 
     return infoWindowContent;
 }
@@ -115,50 +133,50 @@ function buildInfoWindow(markerid) {
 // Add berry to the map.
 // TODO: more parameters?
 function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
-        // Berry marker
-        var icon= {
-            url: imageurl,
-            size:new google.maps.Size(40,40),
-			scaledSize:new google.maps.Size(40,40),
-			origin:new google.maps.Point(0,0),
-			anchor:new google.maps.Point(20,20)
-        }
+    // Berry marker
+    var icon= {
+        url: imageurl,
+        size:new google.maps.Size(40,40),
+        scaledSize:new google.maps.Size(40,40),
+        origin:new google.maps.Point(0,0),
+        anchor:new google.maps.Point(20,20)
+    }
 
-        var newMarker = new google.maps.Marker({
-            position: {"lat":berryLocation.latitude, "lng":berryLocation.longitude},
-            animation: google.maps.Animation.DROP,
-            draggable: true,
-            icon: icon,
-            map: map,
-            berryLocation: berryLocation,
-            id: g_nextid++
-        });
+    var newMarker = new google.maps.Marker({
+        position: {"lat":berryLocation.latitude, "lng":berryLocation.longitude},
+        animation: google.maps.Animation.DROP,
+        draggable: true,
+        icon: icon,
+        map: map,
+        berryLocation: berryLocation,
+        id: g_nextid++
+    });
 
-        console.log(g_markers.push(newMarker));
-        // Save new berry to localstorage, testing
-        if(isnewberry) {
-            saveData(g_currentMapName);
-        }
+    console.log(g_markers.push(newMarker));
+    // Save new berry to localstorage, testing
+    if(isnewberry) {
+        saveData(g_currentMapName);
+    }
+    // Build info window HTML
+    let infoWindowContent = buildInfoWindow(newMarker.id);
+    var infoWindow = new google.maps.InfoWindow({
+        content: infoWindowContent
+    });
+    if(isnewberry) {
+        infoWindow.open(map, newMarker);
+    }
+
+    // Click berry to open the infoWindow
+    newMarker.addListener("click", function(){
         // Build info window HTML
         let infoWindowContent = buildInfoWindow(newMarker.id);
         var infoWindow = new google.maps.InfoWindow({
             content: infoWindowContent
         });
-        if(isnewberry) {
-            infoWindow.open(map, newMarker);
-        }
+        infoWindow.open(map, newMarker);
+    });
 
-        // Click berry to open the infoWindow
-        newMarker.addListener("click", function(){
-            // Build info window HTML
-            let infoWindowContent = buildInfoWindow(newMarker.id);
-            var infoWindow = new google.maps.InfoWindow({
-                content: infoWindowContent
-            });
-            infoWindow.open(map, newMarker);
-        });
-
-        return newMarker;
+    return newMarker;
 }
 
 function initMap() {
