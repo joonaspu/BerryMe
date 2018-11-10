@@ -141,10 +141,13 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         anchor:new google.maps.Point(20,20)
     }
 
+    let draggable = false;
+    if (isnewberry) draggable = true;
+
     let newMarker = new google.maps.Marker({
         position: {"lat":berryLocation.latitude, "lng":berryLocation.longitude},
         animation: google.maps.Animation.DROP,
-        draggable: false,
+        draggable: draggable,
         icon: icon,
         map: map,
         berryLocation: berryLocation,
