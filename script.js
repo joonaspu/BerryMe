@@ -1,12 +1,12 @@
-var map;
+let map;
 //
-var g_currentMapName;
+let g_currentMapName;
 // Types of berries
-var g_berries;
+let g_berries;
 // Markers
-var g_markers = []; 
+let g_markers = []; 
 
-var g_nextid = 0;
+let g_nextid = 0;
 
 function addBerryButton() {
     // Create a new div and add the template content to it
@@ -133,7 +133,7 @@ function buildInfoWindow(markerid) {
 // TODO: more parameters?
 function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
     // Berry marker
-    var icon= {
+    let icon= {
         url: imageurl,
         size:new google.maps.Size(40,40),
         scaledSize:new google.maps.Size(40,40),
@@ -141,7 +141,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         anchor:new google.maps.Point(20,20)
     }
 
-    var newMarker = new google.maps.Marker({
+    let newMarker = new google.maps.Marker({
         position: {"lat":berryLocation.latitude, "lng":berryLocation.longitude},
         animation: google.maps.Animation.DROP,
         draggable: true,
@@ -158,7 +158,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
     }
     // Build info window HTML
     let infoWindowContent = buildInfoWindow(newMarker.id);
-    var infoWindow = new google.maps.InfoWindow({
+    let infoWindow = new google.maps.InfoWindow({
         content: infoWindowContent
     });
     if(isnewberry) {
@@ -169,7 +169,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
     newMarker.addListener("click", function(){
         // Build info window HTML
         let infoWindowContent = buildInfoWindow(newMarker.id);
-        var infoWindow = new google.maps.InfoWindow({
+        let infoWindow = new google.maps.InfoWindow({
             content: infoWindowContent
         });
         infoWindow.open(map, newMarker);
@@ -191,7 +191,7 @@ function initMap() {
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(addBerryButton());
 
     // Position circle
-    var myPositionCircle = new google.maps.Circle({
+    let myPositionCircle = new google.maps.Circle({
         map: map,
         visible: false,
         strokeColor: "blue",
@@ -203,7 +203,7 @@ function initMap() {
     });
 
     // Position marker
-    var myPositionMarker = new google.maps.Marker({
+    let myPositionMarker = new google.maps.Marker({
         icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 10
@@ -214,12 +214,12 @@ function initMap() {
     });
 
     // Geolocation
-    var geolocation = null;
+    let geolocation = null;
     geolocation = window.navigator.geolocation;
     if (geolocation != null) {
         // Get initial position
         geolocation.getCurrentPosition(position=>{
-            var newCoords = {lat: 0, lng: 0};
+            let newCoords = {lat: 0, lng: 0};
             newCoords.lat = position["coords"].latitude;
             newCoords.lng = position["coords"].longitude;
 
@@ -232,7 +232,7 @@ function initMap() {
         // Update position if it changes
         geolocation.watchPosition(
             function(position) {
-                var newCoords = {lat: 0, lng: 0};
+                let newCoords = {lat: 0, lng: 0};
                 newCoords.lat = position["coords"].latitude;
                 newCoords.lng = position["coords"].longitude;
 
