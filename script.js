@@ -318,14 +318,14 @@ function generateBerryMap() {
             "longitude": 29.76,
             "berry": "blueberry",
             "rating": "2",
-            "date": "not yet"
+            "date": 0
         },
         {
             "latitude": 62.6,
             "longitude": 29.755,
             "berry": "lingonberry",
             "rating": "2",
-            "date": "not yet"
+            "date": 0
         }
     ]};
     // Store map
