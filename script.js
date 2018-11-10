@@ -3,10 +3,10 @@ var map;
 var g_currentMapName;
 // Types of berries
 var g_berries;
-// Berry locations, NOT MARKERS // Maybe somehow combine locations and markers
-var g_locations;
-// Markers, no use yet
-var g_markers; 
+// Markers
+var g_markers = []; 
+
+var g_nextid = 0;
 
 function addBerryButton() {
     // Create a div to hold the control.
@@ -36,20 +36,28 @@ function addBerryButton() {
     controlUI.appendChild(controlText);
 
     controlUI.addEventListener("click", function() {
-        var newMarker = addBerryToMap(map.getCenter(),"res/questionmark.png",true);
+        var newMarker = addBerryToMap({"latitude": map.getCenter().lat(),
+                                        "longitude": map.getCenter().lng(),
+                                        "berry": "nab",
+                                        "rating": "2",
+                                        "date": "not yet"},
+                                        "res/questionmark.png",true);
     });
 
     return addBerryDiv;
 }
 
 // Builds the HTML for the berry infoWindow
-function buildInfoWindow() {
+function buildInfoWindow(markerid) {
     // Get templates
     let t_window = document.querySelector("#infoWindowTemplate");
     let t_berry = document.querySelector("#infoWindowBerryTemplate");
 
     // Make copy of infoWindowTemplate
     let infoWindowContent = document.importNode(t_window.content, true);
+    // Add markerid to hidden input field
+    infoWindowContent.querySelector("#markerId").value = markerid;
+
     // Find div for list of berries
     let berryListDiv = infoWindowContent.querySelector(".berryList");
 
@@ -71,9 +79,28 @@ function buildInfoWindow() {
     infoWindowContent.querySelector(".saveButton").addEventListener("click", function(event) {
         // Get selected berry
         let selectedBerry = event.target.parentNode.querySelector("input[name='berry']:checked").value;
-        if (selectedBerry !== null) {
-            console.log("Saved " + selectedBerry);
-
+        let id = event.target.parentNode.querySelector("#markerId").value;
+        let marker;
+        console.log(g_markers.length);
+        for(let i = 0;i<g_markers.length;i++) {
+            tmarker = g_markers[i];
+            console.log(tmarker.id +"??"+ id);
+            if(tmarker.id == id) {  
+                marker = tmarker;
+                if (selectedBerry !== null) {
+                    console.log("Saved " + selectedBerry);  
+                    marker.setIcon({
+                        url: g_berries[0][selectedBerry].url,
+                        size:new google.maps.Size(40,40),
+                        scaledSize:new google.maps.Size(40,40),
+                        origin:new google.maps.Point(0,0),
+                        anchor:new google.maps.Point(20,20)
+                    })
+                    marker.berryLocation.berry = selectedBerry;
+                    saveData(g_currentMapName);
+                }
+                break;
+            }
         }
     });
 
@@ -87,7 +114,7 @@ function buildInfoWindow() {
 
 // Add berry to the map.
 // TODO: more parameters?
-function addBerryToMap(position, imageurl, isnewberry=false) {
+function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         // Berry marker
         var icon= {
             url: imageurl,
@@ -98,36 +125,33 @@ function addBerryToMap(position, imageurl, isnewberry=false) {
         }
 
         var newMarker = new google.maps.Marker({
-            position: position,
+            position: {"lat":berryLocation.latitude, "lng":berryLocation.longitude},
             animation: google.maps.Animation.DROP,
             draggable: true,
             icon: icon,
             map: map,
-            id: 123
+            berryLocation: berryLocation,
+            id: g_nextid++
         });
+
+        console.log(g_markers.push(newMarker));
         // Save new berry to localstorage, testing
         if(isnewberry) {
-            let temploc = {
-                "latitude": position.lat(),
-                "longitude": position.lng(),
-                "berry": "nab",
-                "rating": "2",
-                "date": "not yet"};
-            g_locations.locations.push(temploc);
             saveData(g_currentMapName);
         }
         // Build info window HTML
-        let infoWindowContent = buildInfoWindow();
+        let infoWindowContent = buildInfoWindow(newMarker.id);
         var infoWindow = new google.maps.InfoWindow({
             content: infoWindowContent
         });
-        if(isnewberry)
+        if(isnewberry) {
             infoWindow.open(map, newMarker);
+        }
 
         // Click berry to open the infoWindow
         newMarker.addListener("click", function(){
             // Build info window HTML
-            let infoWindowContent = buildInfoWindow();
+            let infoWindowContent = buildInfoWindow(newMarker.id);
             var infoWindow = new google.maps.InfoWindow({
                 content: infoWindowContent
             });
@@ -229,15 +253,13 @@ function initMap() {
     console.log(mapnames);
     // Pick first map
     g_currentMapName = mapnames[0];
-    loadData(g_currentMapName);
-    console.log(g_locations);
+    locations = loadData(g_currentMapName);
+    console.log(locations);
 
-    for(let i = 0; i<g_locations.locations.length;i++) {
-        let blocation = g_locations.locations[i];
-        console.log(blocation);
-        
-        let coords = {"lat": blocation.latitude, "lng": blocation.longitude};
-        addBerryToMap(coords,g_berries[0][blocation.berry].url);
+    for(let i = 0; i<locations.locations.length;i++) {
+        let blocation = locations.locations[i];
+        console.log(blocation);   
+        addBerryToMap(blocation,g_berries[0][blocation.berry].url);
     }
 }
 
@@ -276,13 +298,17 @@ function generateBerries() {
 
 // Load data from localstorage
 function loadData(mapname) {
-    g_locations = JSON.parse(window.localStorage.getItem(mapname));
+    return JSON.parse(window.localStorage.getItem(mapname));
 }
 
 // Save data to localstorage
 function saveData(mapname) {
     console.log("SAVING");
-    window.localStorage.setItem(mapname,JSON.stringify(g_locations));
+    let locations = {"locations":[]};
+    for(let i = 0;i<g_markers.length;i++) {
+        locations.locations.push(g_markers[i].berryLocation);
+    }
+    window.localStorage.setItem(mapname,JSON.stringify(locations));
     console.log("SAVING DONE");
 }
 
