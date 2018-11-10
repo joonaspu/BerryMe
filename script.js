@@ -61,7 +61,7 @@ function findMarkerByID(id) {
 // Called when "Save" button is clicked in the infoWindow
 function saveBerryListener(event) {
     // Get selected berry
-    let selectedBerry = event.target.parentNode.querySelector("input[name='berry']:checked").value;
+    let selectedBerry = event.target.parentNode.querySelector("input[type='radio']:checked").value;
     let id = event.target.parentNode.querySelector("#markerId").value;
     let marker = findMarkerByID(id);
 
@@ -118,6 +118,8 @@ function buildInfoWindow(markerid) {
     // Find div for list of berries
     let berryListDiv = infoWindowContent.querySelector(".berryList");
 
+    let marker = findMarkerByID(markerid);
+
     // Add each berry to div
     for (let berryID in g_berries[0]) {
         let berry = g_berries[0][berryID]
@@ -129,8 +131,14 @@ function buildInfoWindow(markerid) {
         // Add value to radio input
         berryElem.querySelector("input").value = berryID;
 
+        if (berryID == marker.berryLocation.berry)
+            berryElem.querySelector("input").checked = true;
+
         berryListDiv.appendChild(berryElem);
     }
+
+    // Set unique input group for the radio buttons
+    infoWindowContent.querySelectorAll("input[type='radio']").forEach(elem => elem.name = "berryInput"+markerid);
 
     // Event listeners for save and remove buttons
     infoWindowContent.querySelector(".saveButton").addEventListener("click", saveBerryListener);
