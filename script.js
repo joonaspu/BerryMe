@@ -144,7 +144,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
     let newMarker = new google.maps.Marker({
         position: {"lat":berryLocation.latitude, "lng":berryLocation.longitude},
         animation: google.maps.Animation.DROP,
-        draggable: true,
+        draggable: false,
         icon: icon,
         map: map,
         berryLocation: berryLocation,
@@ -173,6 +173,19 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
             content: infoWindowContent
         });
         infoWindow.open(map, newMarker);
+
+        // Disable dragging when infoWindow is closed
+        // and restore marker position
+        infoWindow.addListener("closeclick", () => {
+            newMarker.setDraggable(false);
+            newMarker.setPosition({
+                lat: newMarker.berryLocation.latitude,
+                lng: newMarker.berryLocation.longitude
+            });
+        });
+
+        // Make marker draggable when infoWindow is opened
+        newMarker.setDraggable(true);
     });
 
     return newMarker;
