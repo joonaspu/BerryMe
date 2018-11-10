@@ -175,7 +175,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
 
     // Disable dragging when infoWindow is closed
     // and restore marker position
-    windowCloseListener = () => {
+    let windowCloseListener = () => {
         newMarker.setDraggable(false);
         newMarker.setPosition({
             lat: newMarker.berryLocation.latitude,
