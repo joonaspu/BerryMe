@@ -9,39 +9,21 @@ var g_markers = [];
 var g_nextid = 0;
 
 function addBerryButton() {
-    // Create a div to hold the control.
-    var addBerryDiv = document.createElement('div');
+    // Create a new div and add the template content to it
+    let t_addBerryDiv = document.querySelector("#addBerryTemplate");
+    let addBerryDiv = document.createElement('div');
+    addBerryDiv.appendChild(document.importNode(t_addBerryDiv.content, true));
 
-    // Set CSS for the control border
-    var controlUI = document.createElement('div');
-    controlUI.style.backgroundColor = '#fff';
-    controlUI.style.border = '2px solid #fff';
-    controlUI.style.cursor = 'pointer';
-    controlUI.style.marginTop = '11px';
-    controlUI.style.marginRight = '11px';
-    controlUI.style.textAlign = 'center';
-    controlUI.title = 'Click to add a berry';
-    addBerryDiv.appendChild(controlUI);
-
-    // Set CSS for the control interior
-    var controlText = document.createElement('div');
-    controlText.style.color = 'rgb(25,25,25)';
-    controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlText.style.fontSize = '16px';
-    controlText.style.lineHeight = '38px';
-    controlText.style.paddingLeft = '5px';
-    controlText.style.paddingRight = '5px';
-    controlText.style.userSelect = "none"; // Disable text selection on the button
-    controlText.innerHTML = 'Add Berry';
-    controlUI.appendChild(controlText);
-
-    controlUI.addEventListener("click", function() {
-        var newMarker = addBerryToMap({"latitude": map.getCenter().lat(),
-                                        "longitude": map.getCenter().lng(),
-                                        "berry": "nab",
-                                        "rating": "2",
-                                        "date": "not yet"},
-                                        "res/questionmark.png",true);
+    // Add event listener for click
+    addBerryDiv.querySelector(".addBerryButton").addEventListener("click", () => {
+        addBerryToMap(  {
+                            "latitude": map.getCenter().lat(),
+                            "longitude": map.getCenter().lng(),
+                            "berry": "nab",
+                            "rating": "2",
+                            "date": "not yet"
+                        },
+                        "res/questionmark.png", true);
     });
 
     return addBerryDiv;
