@@ -113,8 +113,13 @@ function buildInfoWindow(markerid) {
         // Add value to radio input
         berryElem.querySelector("input").value = berryID;
 
+        // Mark the correct berry as checked
         if (berryID == marker.berryLocation.berry)
             berryElem.querySelector("input").checked = true;
+
+        // Don't show "not a berry" type
+        if (berryID == "nab")
+            berryElem.querySelector("label").hidden = true;
 
         berryListDiv.appendChild(berryElem);
     }
