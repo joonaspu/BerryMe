@@ -173,6 +173,17 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
 
     console.log(g_markers.push(newMarker));
 
+    // Disable dragging when infoWindow is closed
+    // and restore marker position
+    windowCloseListener = () => {
+        newMarker.setDraggable(false);
+        newMarker.setPosition({
+            lat: newMarker.berryLocation.latitude,
+            lng: newMarker.berryLocation.longitude
+        });
+        console.log("WINDOW CLOSED");
+    };
+
     // Build info window HTML
     let infoWindowContent = buildInfoWindow(newMarker.id);
     let infoWindow = new google.maps.InfoWindow({
@@ -180,6 +191,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
     });
     if(isnewberry) {
         infoWindow.open(map, newMarker);
+        infoWindow.addListener("closeclick", windowCloseListener);
     }
 
     // Click berry to open the infoWindow
@@ -191,15 +203,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         });
         infoWindow.open(map, newMarker);
 
-        // Disable dragging when infoWindow is closed
-        // and restore marker position
-        infoWindow.addListener("closeclick", () => {
-            newMarker.setDraggable(false);
-            newMarker.setPosition({
-                lat: newMarker.berryLocation.latitude,
-                lng: newMarker.berryLocation.longitude
-            });
-        });
+        infoWindow.addListener("closeclick", windowCloseListener);
 
         // Make marker draggable when infoWindow is opened
         newMarker.setDraggable(true);
