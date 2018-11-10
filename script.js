@@ -129,7 +129,7 @@ function buildInfoWindow(markerid) {
     }
 
     // Add rating
-    infoWindowContent.querySelector("input[type='number'").value = marker.berryLocation.rating;
+    infoWindowContent.querySelector("input[type='number']").value = marker.berryLocation.rating;
 
     // Add date
     let date = new Date(marker.berryLocation.date);
