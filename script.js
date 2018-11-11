@@ -181,6 +181,14 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
             lat: newMarker.berryLocation.latitude,
             lng: newMarker.berryLocation.longitude
         });
+
+        // Remove marker if the Save button wasn't clicked
+        // (TODO: Better way to do this than checking for "nab"?)
+        if (newMarker.berryLocation.berry == "nab") {
+            newMarker.setMap(null);
+            g_markers = g_markers.filter(marker => marker != newMarker);
+        }
+
         console.log("WINDOW CLOSED");
     };
 
