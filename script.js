@@ -428,14 +428,17 @@ function importMap(event) {
 
     reader.onload = function(file) {
         let tempmap = JSON.parse(file.target.result);
-        console.log(tempmap);
-        console.log(tempmap.name);
-        console.log(tempmap.locations);
-        window.localStorage.setItem(tempmap.name,JSON.stringify(tempmap.locations));
-        let temp = JSON.parse(window.localStorage.getItem("maps"))
-        temp.push(tempmap.name);
-        console.log(temp);
-        window.localStorage.setItem("maps",JSON.stringify(temp));
+        let mapnames = JSON.parse(window.localStorage.getItem("maps"));
+        if(!mapnames.includes(tempmap.name)) {
+            window.localStorage.setItem(tempmap.name,JSON.stringify(tempmap.locations));
+            let temp = JSON.parse(window.localStorage.getItem("maps"))
+            temp.push(tempmap.name);
+            console.log(temp);
+            window.localStorage.setItem("maps",JSON.stringify(temp));
+            $("#myMaps").modal("hide");
+        } else {
+            console.log("Map name in use!");
+        }
     }
 
     reader.readAsText(files[0]);
