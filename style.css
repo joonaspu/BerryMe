@@ -42,7 +42,9 @@
 }
 
 .berryList {
-    margin-top: -10px;
+    height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #mapList{
