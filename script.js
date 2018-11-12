@@ -430,7 +430,7 @@ function importMap(event) {
         let tempmap = JSON.parse(file.target.result);
         let mapnames = JSON.parse(window.localStorage.getItem("maps"));
         if(!mapnames.includes(tempmap.name)) {
-            window.localStorage.setItem(tempmap.name,JSON.stringify(tempmap.locations));
+            window.localStorage.setItem(tempmap.name,JSON.stringify(tempmap));
             let temp = JSON.parse(window.localStorage.getItem("maps"))
             temp.push(tempmap.name);
             console.log(temp);

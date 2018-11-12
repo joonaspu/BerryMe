@@ -45,6 +45,12 @@
     margin-top: -10px;
 }
 
+#mapList{
+    max-height: 50vh;
+    overflow: auto;
+}
+
+
 html, body {
     height: 100%;
     /*margin: 0;
