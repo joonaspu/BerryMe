@@ -422,7 +422,11 @@ function downloadMap(mapname) {
 //TODO: check again for any bugs
 function importMap(event) {
     let files = document.getElementById("file-input").files;
+    if(files[0]==null) {
+        return;
+    }
     console.log(files[0]);
+
 
     reader = new FileReader();
 
@@ -442,7 +446,5 @@ function importMap(event) {
     }
 
     reader.readAsText(files[0]);
-
-
     document.getElementById("file-input").value = "";
 }

@@ -75,10 +75,15 @@
                             </div>
                         </div>
                         <div class="modal-footer d-block">                         
-                            <button type="button" class="btn" onClick="">New map</button>  
-                            <br>              
-                            <input id="file-input" type="file">                           
-                            <button type="button" class="btn" onClick="importMap()">Import</button>
+                            <form class="form-inline my-2 my-lg-0">
+                                <button class="btn mr-sm-2" type="submit">New Map</button>
+                                <input class="form-control my-2 my-sm-0" placeholder="New map name">                           
+                            </form>
+                            <br>
+                            <form class="form-inline my-2 my-lg-0">
+                                <button type="button" class="btn mr-sm-2" onClick="importMap()">Import</button>            
+                                <input id="file-input" class="my-2 my-sm-0" type="file">   
+                            </form>                                                                          
                         </div>
                     </div>
                 </div>
