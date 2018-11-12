@@ -8,10 +8,10 @@ $(document).on("shown.bs.modal","#myMaps",function(event) {
     for(let i = 0;i<mapnames.length;i++) {
         let mapname = mapnames[i];
         let el = `<li class="list-group-item">
-                        <button type="button" class="btn" onClick="changeMap('${mapname}')">${mapname}</button>                      
-                        <button type="button" class="btn" onClick="downloadMap('${mapname}')">Download</button>
+                        <button type="button" class="btn" onClick="changeMap('${mapname}')">${mapname}</button>                                            
                         <button type="button" class="btn" onClick="">Rename</button>
-                        <button type="button" class="btn" onClick="">Remove</button>
+                        <button type="button" class="btn" onClick="downloadMap('${mapname}')">DL</button>
+                        <button type="button" class="close" aria-label="Close" onClick=""><span aria-hidden="true">&times;</span></button>  
                     </li>`;
         html += el;
     } 
