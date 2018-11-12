@@ -65,11 +65,19 @@
                     <div class="modal-content bg-dark">
                         <div class="modal-header">
                             <h4 class="modal-title text-light">My maps</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>                           
                         </div>
                         <div class="modal-body">
                             <div id="mapsDiv">
                                 <ul class="list-group" id="mapList"></ul>
                             </div>
+                        </div>
+                        <div class="modal-footer">
+                                <button type="button" class="btn" onClick="">New map</button>
+                            <input id="file-input" type="file">
+                            <button type="button" class="btn" onClick="importMap()">Import</button>
                         </div>
                     </div>
                 </div>

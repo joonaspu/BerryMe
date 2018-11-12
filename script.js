@@ -387,7 +387,7 @@ function loadData(mapname) {
 // Save data to localstorage
 function saveData(mapname) {
     console.log("SAVING");
-    let locations = {"locations":[]};
+    let locations = {"name":mapname,"locations":[]};
     for(let i = 0;i<g_markers.length;i++) {
         locations.locations.push(g_markers[i].berryLocation);
     }
@@ -400,6 +400,7 @@ function clearStorage() {
     window.localStorage.clear();
 }
 
+// Load another map's locations 
 function changeMap(mapname) {
     for(let i=0;i<g_markers.length;i++) {
         let mark = g_markers[i];
@@ -407,4 +408,38 @@ function changeMap(mapname) {
     }
     g_markers = [];
     loadBerryLocations(mapname);
+}
+
+//TODO: What we need to save
+function downloadMap(mapname) {
+    let data = new Blob([JSON.stringify(loadData(mapname))],{type: "text/plain"});
+    console.log("Trying to download");
+    let anchor = document.createElement("a");
+    anchor.download = mapname+".txt";
+    anchor.href = window.URL.createObjectURL(data)
+    anchor.click();
+}
+//TODO: check again for any bugs
+function importMap(event) {
+    let files = document.getElementById("file-input").files;
+    console.log(files[0]);
+
+    reader = new FileReader();
+
+    reader.onload = function(file) {
+        let tempmap = JSON.parse(file.target.result);
+        console.log(tempmap);
+        console.log(tempmap.name);
+        console.log(tempmap.locations);
+        window.localStorage.setItem(tempmap.name,JSON.stringify(tempmap.locations));
+        let temp = JSON.parse(window.localStorage.getItem("maps"))
+        temp.push(tempmap.name);
+        console.log(temp);
+        window.localStorage.setItem("maps",JSON.stringify(temp));
+    }
+
+    reader.readAsText(files[0]);
+
+
+    document.getElementById("file-input").value = "";
 }
