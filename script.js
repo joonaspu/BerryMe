@@ -8,6 +8,8 @@ let g_markers = [];
 
 let g_nextid = 0;
 
+//TODO: organize code better
+
 function addBerryButton() {
     // Create a new div and add the template content to it
     let t_addBerryDiv = document.querySelector("#addBerryTemplate");
@@ -297,28 +299,32 @@ function initMap() {
             }
         );
     }
-    // Add berries to the map
-    //
+    // Load berry types
     generateBerries();
     console.log(g_berries);
 
-    // Load berry locations from localstorage
-    
+    // Load berry locations from localstorage and add them to the map
+    loadBerryLocations("map1");
+
+}
+
+function loadBerryLocations(mapname) {
     let mapnames = JSON.parse(window.localStorage.getItem("maps"));
     if(mapnames===null) {
         generateBerryMap();
         mapnames = JSON.parse(window.localStorage.getItem("maps"));
     }
     console.log(mapnames);
-    // Pick first map
-    g_currentMapName = mapnames[0];
-    locations = loadData(g_currentMapName);
-    console.log(locations);
-
-    for(let i = 0; i<locations.locations.length;i++) {
-        let blocation = locations.locations[i];
-        console.log(blocation);   
-        addBerryToMap(blocation,g_berries[0][blocation.berry].url);
+    if(mapnames.includes(mapname)) {
+        g_currentMapName = mapname;
+        locations = loadData(g_currentMapName);
+        console.log(locations);
+    
+        for(let i = 0; i<locations.locations.length;i++) {
+            let blocation = locations.locations[i];
+            console.log(blocation);   
+            addBerryToMap(blocation,g_berries[0][blocation.berry].url);
+        }
     }
 }
 
@@ -340,13 +346,31 @@ function generateBerryMap() {
             "date": 0
         }
     ]};
-    // Store map
+    let tempmap2 = {"name":"map2", "locations":[
+        {
+            "latitude": 62.65,
+            "longitude": 29.8,
+            "berry": "lingonberry",
+            "rating": "2",
+            "date": 0
+        },
+        {
+            "latitude": 62.6,
+            "longitude": 29.755,
+            "berry": "lingonberry",
+            "rating": "2",
+            "date": 0
+        }
+    ]};
+    // Store maps
     window.localStorage.setItem("map1",JSON.stringify(tempmap));
-    // Store map name
-    window.localStorage.setItem("maps",JSON.stringify(["map1","empty"]));
+    window.localStorage.setItem("map2",JSON.stringify(tempmap2));
+    // Store map names
+    window.localStorage.setItem("maps",JSON.stringify(["map1","map2"]));
 }
 
-// Chrome doesn't like local files
+// Create berry types
+//TODO: more modular solution
 function generateBerries() {
     g_berries = [{
             "nab":{"name":"NotABerry", "url":"res/questionmark.png"},
@@ -374,4 +398,13 @@ function saveData(mapname) {
 // Warning! All saved data will be lost!
 function clearStorage() {
     window.localStorage.clear();
+}
+
+function changeMap(mapname) {
+    for(let i=0;i<g_markers.length;i++) {
+        let mark = g_markers[i];
+        mark.setMap(null);
+    }
+    g_markers = [];
+    loadBerryLocations(mapname);
 }
