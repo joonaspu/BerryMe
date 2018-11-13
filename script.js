@@ -18,14 +18,9 @@ function addBerryButton() {
 
     // Add event listener for click
     addBerryDiv.querySelector(".addBerryButton").addEventListener("click", () => {
-        addBerryToMap(  {
-                            "latitude": map.getCenter().lat(),
-                            "longitude": map.getCenter().lng(),
-                            "berry": "nab",
-                            "rating": "3",
-                            "date": Date.now()
-                        },
-                        "res/questionmark.png", true);
+        addBerryToMap( new Location(map.getCenter().lat(),map.getCenter().lng(),
+                                    "nab",3,Date.now()),
+                                    "res/questionmark.png", true);
     });
 
     return addBerryDiv;
@@ -330,38 +325,14 @@ function loadBerryLocations(mapname) {
 
 // Generate map for testing purposes, named "map1"
 function generateBerryMap() {
-    let tempmap = {"name":"map1", "locations":[
-        {
-            "latitude": 62.6,
-            "longitude": 29.76,
-            "berry": "blueberry",
-            "rating": "2",
-            "date": 0
-        },
-        {
-            "latitude": 62.6,
-            "longitude": 29.755,
-            "berry": "lingonberry",
-            "rating": "2",
-            "date": 0
-        }
-    ]};
-    let tempmap2 = {"name":"map2", "locations":[
-        {
-            "latitude": 62.65,
-            "longitude": 29.8,
-            "berry": "lingonberry",
-            "rating": "2",
-            "date": 0
-        },
-        {
-            "latitude": 62.6,
-            "longitude": 29.755,
-            "berry": "lingonberry",
-            "rating": "2",
-            "date": 0
-        }
-    ]};
+    let tempmap = {"name":"map1",
+                    "locations":[   new Location(62.6,29.76,"blueberry",2,Date.now()),
+                                    new Location(62.6,29.755,"lingonberry",2,Date.now())
+                                ]};
+    let tempmap2 = {"name":"map2",
+                    "locations":[   new Location(62.65,29.8,"lingonberry",2,Date.now()),
+                                    new Location(62.6,29.755,"lingonberry",2,Date.now())
+                                ]};
     // Store maps
     window.localStorage.setItem("map1",JSON.stringify(tempmap));
     window.localStorage.setItem("map2",JSON.stringify(tempmap2));
