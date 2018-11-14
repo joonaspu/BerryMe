@@ -424,6 +424,14 @@ function saveMapNames(mapnames) {
 function saveMap(map) {
     window.localStorage.setItem(map.name,JSON.stringify(map));
 }
+// Remove map from localStorage
+function removeMap(mapname) {
+    localStorage.removeItem(mapname);
+    let mapnames = loadMapNames();
+    let index = mapnames.indexOf(mapname);
+    mapnames.splice(index,1);
+    saveMapNames(mapnames);
+}
 
 //
 function createNewMap(newMapName) {
@@ -433,6 +441,5 @@ function createNewMap(newMapName) {
     saveMapNames(maps);
     saveMap(tempmap);
     changeMap(newMapName);
-    $("#myMaps").modal("hide");
     console.log("Created and loaded new map: "+newMapName);
 }

@@ -9,9 +9,9 @@ $(document).on("shown.bs.modal","#myMaps",function(event) {
         let mapname = mapnames[i];
         let el = `<li class="list-group-item">
                         <button type="button" class="btn" onClick="changeMap('${mapname}')">${mapname}</button>                                            
-                        <button type="button" class="btn" onClick="">Rename</button>
+                        <button type="button" class="btn" onClick="" >Rename</button>
                         <button type="button" class="btn" onClick="downloadMap('${mapname}')">DL</button>
-                        <button type="button" class="close" aria-label="Close" onClick=""><span aria-hidden="true">&times;</span></button>  
+                        <button type="button" class="close" aria-label="Close" onClick="openRemoveWindow('${mapname}')"><span aria-hidden="true">&times;</span></button>  
                     </li>`;
         html += el;
     } 
@@ -25,6 +25,17 @@ function newMapButtonClick() {
         return;
     }
     createNewMap(name);
+    document.getElementById('new-map-input').value = "";
+    $("#myMaps").modal("hide");
+}
+
+// Confirm remove action
+// TODO: implement window/popup/popover
+function openRemoveWindow(mapname) {
+    removeMap(mapname);
+    changeMap(loadMapNames()[0]);
+    console.log("Removed map: "+mapname);
+    $("#myMaps").modal("hide");
 }
 
 
