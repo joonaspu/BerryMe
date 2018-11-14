@@ -303,7 +303,7 @@ function initMap() {
     console.log(g_berries);
 
     // Load berry locations from localstorage and add them to the map
-    loadBerryLocations("map1");
+    loadBerryLocations(loadMapNames()[0]); // First map
 
 }
 
@@ -442,4 +442,18 @@ function createNewMap(newMapName) {
     saveMap(tempmap);
     changeMap(newMapName);
     console.log("Created and loaded new map: "+newMapName);
+}
+
+function renameMap(mapname, newMapName) {
+    let map = loadData(mapname);
+    map.name = newMapName;
+    let maps = loadMapNames();
+    let index = maps.indexOf(mapname);
+    maps.splice(index,0,newMapName);
+    saveMapNames(maps);
+    saveMap(map);
+    removeMap(mapname);
+    if(g_currentMapName === mapname) {
+        g_currentMapName = newMapName;
+    }
 }
