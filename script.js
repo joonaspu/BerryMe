@@ -410,3 +410,29 @@ function importMap(event) {
     reader.readAsText(files[0]);
     document.getElementById("file-input").value = "";
 }
+
+// Load map names as an array from localStorage
+function loadMapNames() {
+    let mapnames = JSON.parse(window.localStorage.getItem("maps"));
+    return mapnames;
+}
+// Save mapname array to localStorage
+function saveMapNames(mapnames) {
+    window.localStorage.setItem("maps", JSON.stringify(mapnames));
+}
+// Save given map to localStorage
+function saveMap(map) {
+    window.localStorage.setItem(map.name,JSON.stringify(map));
+}
+
+//
+function createNewMap(newMapName) {
+    let tempmap = {"name":newMapName, "locations":[]};
+    let maps = loadMapNames();
+    maps.push(newMapName);
+    saveMapNames(maps);
+    saveMap(tempmap);
+    changeMap(newMapName);
+    $("#myMaps").modal("hide");
+    console.log("Created and loaded new map: "+newMapName);
+}

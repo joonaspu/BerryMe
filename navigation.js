@@ -18,4 +18,13 @@ $(document).on("shown.bs.modal","#myMaps",function(event) {
     document.getElementById("mapList").innerHTML = html;
 });
 
+// Used when clicked New Map button
+function newMapButtonClick() {
+    let name = document.getElementById('new-map-input').value;
+    if(!name.length>0) {
+        return;
+    }
+    createNewMap(name);
+}
+
 
