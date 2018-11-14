@@ -302,8 +302,14 @@ function initMap() {
     generateBerries();
     console.log(g_berries);
 
+    // Get last used mapname
+    let lm = window.localStorage.getItem("lastmap");
+    if(lm==null) {
+        lm = "Map1";
+        window.localStorage.setItem("lastmap",lm);
+    }
     // Load berry locations from localstorage and add them to the map
-    loadBerryLocations(loadMapNames()[0]); // First map
+    loadBerryLocations(lm);
 
 }
 
@@ -324,6 +330,7 @@ function loadBerryLocations(mapname) {
             console.log(blocation);   
             addBerryToMap(blocation,g_berries[0][blocation.berry].url);
         }
+        window.localStorage.setItem("lastmap",mapname);
     }
 }
 

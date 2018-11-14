@@ -1,18 +1,18 @@
 // Generate map for testing purposes, named "map1"
 function generateBerryMap() {
-    let tempmap = {"name":"map1",
+    let tempmap = {"name":"Map1",
                     "locations":[   new Location(62.6,29.76,"blueberry",2,Date.now()),
                                     new Location(62.6,29.755,"lingonberry",2,Date.now())
                                 ]};
-    let tempmap2 = {"name":"map2",
+    let tempmap2 = {"name":"Map2",
                     "locations":[   new Location(62.65,29.8,"lingonberry",2,Date.now()),
                                     new Location(62.6,29.755,"lingonberry",2,Date.now())
                                 ]};
     // Store maps
-    window.localStorage.setItem("map1",JSON.stringify(tempmap));
-    window.localStorage.setItem("map2",JSON.stringify(tempmap2));
+    window.localStorage.setItem("Map1",JSON.stringify(tempmap));
+    window.localStorage.setItem("Map2",JSON.stringify(tempmap2));
     // Store map names
-    window.localStorage.setItem("maps",JSON.stringify(["map1","map2"]));
+    window.localStorage.setItem("maps",JSON.stringify(["Map1","Map2"]));
 }
 
 // Generate n amount of random berry locations
