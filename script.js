@@ -1,4 +1,4 @@
-let map;
+let g_map;
 //
 let g_currentMapName;
 // Types of berries
@@ -18,7 +18,7 @@ function addBerryButton() {
 
     // Add event listener for click
     addBerryDiv.querySelector(".addBerryButton").addEventListener("click", () => {
-        addBerryToMap( new Location(map.getCenter().lat(),map.getCenter().lng(),
+        addBerryToMap( new Location(g_map.getCenter().lat(),g_map.getCenter().lng(),
                                     "nab",3,Date.now()),
                                     "res/questionmark.png", true);
     });
@@ -167,7 +167,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         animation: animation,
         draggable: draggable,
         icon: icon,
-        map: map,
+        map: g_map,
         berryLocation: berryLocation,
         id: g_nextid++
     });
@@ -199,7 +199,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         let infoWindow = new google.maps.InfoWindow({
             content: infoWindowContent
         });
-        infoWindow.open(map, newMarker);
+        infoWindow.open(g_map, newMarker);
         infoWindow.addListener("closeclick", windowCloseListener);
     }
 
@@ -210,7 +210,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         let infoWindow = new google.maps.InfoWindow({
             content: infoWindowContent
         });
-        infoWindow.open(map, newMarker);
+        infoWindow.open(g_map, newMarker);
 
         infoWindow.addListener("closeclick", windowCloseListener);
 
@@ -223,7 +223,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
 
 function initMap() {
     // Create Map
-    map = new google.maps.Map(document.getElementById('map'), {
+    g_map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 62, lng: 26},
         zoom: 6,
         streetViewControl: false,
@@ -231,11 +231,11 @@ function initMap() {
     });
 
     // "Add berry" button to map
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(addBerryButton());
+    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(addBerryButton());
 
     // Position circle
     let myPositionCircle = new google.maps.Circle({
-        map: map,
+        map: g_map,
         visible: false,
         strokeColor: "blue",
         strokeWeight: 1,
@@ -251,7 +251,7 @@ function initMap() {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 10
         },
-        map: map,
+        map: g_map,
         visible: false,
         clickable: false
     });
@@ -266,8 +266,8 @@ function initMap() {
             newCoords.lat = position["coords"].latitude;
             newCoords.lng = position["coords"].longitude;
 
-            map.setCenter(newCoords);
-            map.setZoom(13);
+            g_map.setCenter(newCoords);
+            g_map.setZoom(13);
 
             console.log(position);
         });
