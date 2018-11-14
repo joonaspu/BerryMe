@@ -189,12 +189,12 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         console.log("WINDOW CLOSED");
     };
 
-    // Build info window HTML
-    let infoWindowContent = buildInfoWindow(newMarker.id);
-    let infoWindow = new google.maps.InfoWindow({
-        content: infoWindowContent
-    });
+    // Build info window HTML for new berries
     if(isnewberry) {
+        let infoWindowContent = buildInfoWindow(newMarker.id);
+        let infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent
+        });
         infoWindow.open(map, newMarker);
         infoWindow.addListener("closeclick", windowCloseListener);
     }
