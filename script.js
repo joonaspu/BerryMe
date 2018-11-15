@@ -68,7 +68,7 @@ function saveBerryListener(event) {
         marker.berryLocation.longitude = newPosition.lng();
 
         // Save map
-        saveData(g_currentMapName);
+        saveCurrentMap(g_currentMapName);
     }
 
 }
@@ -84,7 +84,7 @@ function removeBerryListener(event) {
     g_markers = g_markers.filter(marker => marker.id != id);
 
     // Save map
-    saveData(g_currentMapName);
+    saveCurrentMap(g_currentMapName);
 }
 
 // Builds the HTML for the berry infoWindow
@@ -303,10 +303,10 @@ function initMap() {
     console.log(g_berries);
 
     // Get last used mapname
-    let lm = window.localStorage.getItem("lastmap");
+    let lm = loadLastMapName();
     if(lm==null) {
         lm = "Map1";
-        window.localStorage.setItem("lastmap",lm);
+        saveLastMapName(lm);
     }
     // Load berry locations from localstorage and add them to the map
     loadBerryLocations(lm);
@@ -314,59 +314,20 @@ function initMap() {
 }
 
 function loadBerryLocations(mapname) {
-    let mapnames = JSON.parse(window.localStorage.getItem("maps"));
+    let mapnames = loadMapNames();
     if(mapnames===null) {
         generateBerryMap();
-        mapnames = JSON.parse(window.localStorage.getItem("maps"));
+        mapnames = loadMapNames();
     }
-    console.log(mapnames);
     if(mapnames.includes(mapname)) {
         g_currentMapName = mapname;
-        locations = loadData(g_currentMapName);
-        console.log(locations);
-    
-        for(let i = 0; i<locations.locations.length;i++) {
-            let blocation = locations.locations[i];
-            console.log(blocation);   
+        map = loadMap(mapname);
+        for(let i = 0; i<map.locations.length;i++) {
+            let blocation = map.locations[i];
             addBerryToMap(blocation,g_berries[0][blocation.berry].url);
         }
-        window.localStorage.setItem("lastmap",mapname);
+        saveLastMapName(mapname);
     }
-}
-
-// Create berry types
-//TODO: more modular solution
-function generateBerries() {
-    g_berries = [{
-            "nab":{"name":"NotABerry", "url":"res/questionmark.png"},
-            "blueberry":{ "name": "Blueberry", "url": "res/blueberry.png"},
-            "lingonberry":{"name": "Lingonberry","url":"res/lingonberry.png"},
-            "testberry1":{"name": "testberry1","url":"res/lingonberry.png"},
-            "testberry2":{"name": "testberry2","url":"res/lingonberry.png"},
-            "testberry3":{"name": "testberry3","url":"res/lingonberry.png"},
-            "testberry4":{"name": "testberry4","url":"res/lingonberry.png"},
-            }];
-}
-
-// Load data from localstorage
-function loadData(mapname) {
-    return JSON.parse(window.localStorage.getItem(mapname));
-}
-
-// Save data to localstorage
-function saveData(mapname) {
-    console.log("SAVING");
-    let locations = {"name":mapname,"locations":[]};
-    for(let i = 0;i<g_markers.length;i++) {
-        locations.locations.push(g_markers[i].berryLocation);
-    }
-    window.localStorage.setItem(mapname,JSON.stringify(locations));
-    console.log("SAVING DONE");
-}
-
-// Warning! All saved data will be lost!
-function clearStorage() {
-    window.localStorage.clear();
 }
 
 // Load another map's locations 
@@ -378,36 +339,31 @@ function changeMap(mapname) {
     g_markers = [];
     loadBerryLocations(mapname);
 }
-
-//TODO: What we need to save
+// Download map as txt-file
 function downloadMap(mapname) {
-    let data = new Blob([JSON.stringify(loadData(mapname))],{type: "text/plain"});
+    let data = new Blob([JSON.stringify(loadMap(mapname))],{type: "text/plain"});
     console.log("Trying to download");
     let anchor = document.createElement("a");
     anchor.download = mapname+".txt";
     anchor.href = window.URL.createObjectURL(data)
     anchor.click();
 }
-//TODO: check again for any bugs
+// Import txt file and add it to the maps
 function importMap(event) {
     let files = document.getElementById("file-input").files;
     if(files[0]==null) {
         return;
     }
     console.log(files[0]);
-
-
     reader = new FileReader();
 
     reader.onload = function(file) {
         let tempmap = JSON.parse(file.target.result);
-        let mapnames = JSON.parse(window.localStorage.getItem("maps"));
+        let mapnames = loadMapNames();
         if(!mapnames.includes(tempmap.name)) {
-            window.localStorage.setItem(tempmap.name,JSON.stringify(tempmap));
-            let temp = JSON.parse(window.localStorage.getItem("maps"))
-            temp.push(tempmap.name);
-            console.log(temp);
-            window.localStorage.setItem("maps",JSON.stringify(temp));
+            saveMap(tempmap)
+            mapnames.push(tempmap.name);
+            saveMapNames(mapnames);
             $("#myMaps").modal("hide");
         } else {
             console.log("Map name in use!");
@@ -418,19 +374,6 @@ function importMap(event) {
     document.getElementById("file-input").value = "";
 }
 
-// Load map names as an array from localStorage
-function loadMapNames() {
-    let mapnames = JSON.parse(window.localStorage.getItem("maps"));
-    return mapnames;
-}
-// Save mapname array to localStorage
-function saveMapNames(mapnames) {
-    window.localStorage.setItem("maps", JSON.stringify(mapnames));
-}
-// Save given map to localStorage
-function saveMap(map) {
-    window.localStorage.setItem(map.name,JSON.stringify(map));
-}
 // Remove map from localStorage
 function removeMap(mapname) {
     localStorage.removeItem(mapname);
@@ -440,7 +383,7 @@ function removeMap(mapname) {
     saveMapNames(mapnames);
 }
 
-//
+// Creates new map and loads it
 function createNewMap(newMapName) {
     let tempmap = {"name":newMapName, "locations":[]};
     let maps = loadMapNames();
@@ -451,8 +394,9 @@ function createNewMap(newMapName) {
     console.log("Created and loaded new map: "+newMapName);
 }
 
+// Rename map
 function renameMap(mapname, newMapName) {
-    let map = loadData(mapname);
+    let map = loadMap(mapname);
     map.name = newMapName;
     let maps = loadMapNames();
     let index = maps.indexOf(mapname);
@@ -463,4 +407,14 @@ function renameMap(mapname, newMapName) {
     if(g_currentMapName === mapname) {
         g_currentMapName = newMapName;
     }
+}
+
+// Save data to localstorage
+function saveCurrentMap(mapname) {
+    let map = {"name":mapname,"locations":[]};
+    for(let i = 0;i<g_markers.length;i++) {
+        map.locations.push(g_markers[i].berryLocation);
+    }
+    saveMap(map)
+    console.log(mapname + " saved");
 }
