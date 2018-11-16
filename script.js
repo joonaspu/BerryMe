@@ -75,6 +75,7 @@ function saveBerryListener(event) {
 
 // Called when "Remove" button is clicked in the infoWindow
 function removeBerryListener(event) {
+    // TODO: Doesn't work if location hasn't been saved yet
     let id = event.target.parentNode.querySelector("#markerId").value;
 
     // Remove marker from the map
@@ -128,8 +129,10 @@ function buildInfoWindow(markerid) {
             berryElem.querySelector("input").checked = true;
 
         // Don't show "not a berry" type
-        if (berryID == "nab")
+        if (berryID == "nab") {
             berryElem.querySelector("label").hidden = true;
+            berryElem.querySelector("br").hidden = true;
+        }
 
         berryListDiv.appendChild(berryElem);
     }
@@ -160,7 +163,7 @@ function buildInfoWindow(markerid) {
     // Add date
     let date = new Date(marker.berryLocation.date);
     let dateString = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
-    infoWindowContent.querySelector(".date").innerHTML = dateString;
+    infoWindowContent.querySelector(".date").innerHTML += dateString;
 
     // Set unique input group for the radio buttons
     infoWindowContent.querySelectorAll("input[type='radio']").forEach(elem => elem.name = "berryInput"+markerid);

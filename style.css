@@ -42,9 +42,23 @@
 }
 
 .berryList {
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    border-radius: 4px;
     height: 100px;
     overflow-y: auto;
     overflow-x: hidden;
+    margin-bottom: 8px;
+}
+
+.date {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.removeButton {
+    float: right;
 }
 
 #mapList{
