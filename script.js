@@ -110,7 +110,7 @@ function buildInfoWindow(markerid) {
         // Make copy of infoWindowBerryTemplate
         let berryElem = document.importNode(t_berry.content, true);
         // Add label
-        berryElem.querySelector("label").innerHTML += `${berry.name} <img src="${berry.url}" height=32 width=32/>`;
+        berryElem.querySelector("label").innerHTML += `<img src="${berry.url}" height=32 width=32/> ${berry.name}`;
         // Add value to radio input
         berryElem.querySelector("input").value = berryID;
 
