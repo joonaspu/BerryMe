@@ -87,6 +87,15 @@ function removeBerryListener(event) {
     saveCurrentMap(g_currentMapName);
 }
 
+function colorStars(starsElem, starsNum) {
+    for (let i = 0; i < 5; i++) {
+        if (i < starsNum)
+            starsElem.querySelector(".star" + i).src = "res/star.svg";
+        else
+            starsElem.querySelector(".star" + i).src = "res/star_empty.svg";
+    }
+}
+
 // Builds the HTML for the berry infoWindow
 function buildInfoWindow(markerid) {
     // Get templates
@@ -125,8 +134,28 @@ function buildInfoWindow(markerid) {
         berryListDiv.appendChild(berryElem);
     }
 
+    // Add rating stars
+    let starsDiv = infoWindowContent.querySelector(".stars");
+    for (let starNum = 0; starNum < 5; starNum++) {
+        let star = document.createElement("img");
+        star.src = "res/star_empty.svg";
+        star.width = 28;
+        star.height = 28;
+        star.className = "star" + starNum;
+
+        // Change rating input on click
+        star.addEventListener("click", e => {
+            let parent = e.target.parentNode.parentNode;
+            parent.querySelector("input[type='number']").value = starNum + 1;
+            colorStars(parent.querySelector(".stars"), starNum + 1);
+        }); 
+        starsDiv.appendChild(star);
+    }
     // Add rating
     infoWindowContent.querySelector("input[type='number']").value = marker.berryLocation.rating;
+
+    // Color stars
+    colorStars(infoWindowContent.querySelector(".stars"), marker.berryLocation.rating);
 
     // Add date
     let date = new Date(marker.berryLocation.date);
