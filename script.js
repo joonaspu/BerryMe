@@ -40,9 +40,9 @@ function findMarkerByID(id) {
 // Called when "Save" button is clicked in the infoWindow
 function saveBerryListener(event) {
     // Get selected berry
-    let selectedBerry = event.target.parentNode.querySelector("button.berryButton.active").value;
-    let newRating = event.target.parentNode.querySelector("input[type='number']").value;
-    let id = event.target.parentNode.querySelector("#markerId").value;
+    let selectedBerry = event.currentTarget.parentNode.querySelector("button.berryButton.active").value;
+    let newRating = event.currentTarget.parentNode.querySelector("input[type='number']").value;
+    let id = event.currentTarget.parentNode.querySelector("#markerId").value;
     let marker = findMarkerByID(id);
 
     if (selectedBerry !== null) {
@@ -75,8 +75,7 @@ function saveBerryListener(event) {
 
 // Called when "Remove" button is clicked in the infoWindow
 function removeBerryListener(event) {
-    // TODO: Sometimes fails with "Cannot read property 'value' of null"
-    let id = event.target.parentNode.querySelector("#markerId").value;
+    let id = event.currentTarget.parentNode.querySelector("#markerId").value;
 
     // Remove marker from the map
     findMarkerByID(id).setMap(null);
