@@ -40,7 +40,7 @@ function findMarkerByID(id) {
 // Called when "Save" button is clicked in the infoWindow
 function saveBerryListener(event) {
     // Get selected berry
-    let selectedBerry = event.target.parentNode.querySelector("input[type='radio']:checked").value;
+    let selectedBerry = event.target.parentNode.querySelector("button.berryButton.active").value;
     let newRating = event.target.parentNode.querySelector("input[type='number']").value;
     let id = event.target.parentNode.querySelector("#markerId").value;
     let marker = findMarkerByID(id);
@@ -75,7 +75,7 @@ function saveBerryListener(event) {
 
 // Called when "Remove" button is clicked in the infoWindow
 function removeBerryListener(event) {
-    // TODO: Doesn't work if location hasn't been saved yet
+    // TODO: Sometimes fails with "Cannot read property 'value' of null"
     let id = event.target.parentNode.querySelector("#markerId").value;
 
     // Remove marker from the map
@@ -88,6 +88,7 @@ function removeBerryListener(event) {
     saveCurrentMap(g_currentMapName);
 }
 
+// Colors 0-5 stars in the given "stars" div
 function colorStars(starsElem, starsNum) {
     for (let i = 0; i < 5; i++) {
         if (i < starsNum)
@@ -95,6 +96,12 @@ function colorStars(starsElem, starsNum) {
         else
             starsElem.querySelector(".star" + i).src = "res/star_empty.svg";
     }
+}
+
+// Selects a berryID in the given berryList div
+function selectBerryButton(berryList, berryID) {
+    berryList.querySelectorAll("button").forEach(e => e.classList.remove("active"));
+    berryList.querySelector("button[value='"+berryID+"']").classList.add("active");
 }
 
 // Builds the HTML for the berry infoWindow
@@ -120,18 +127,24 @@ function buildInfoWindow(markerid) {
         // Make copy of infoWindowBerryTemplate
         let berryElem = document.importNode(t_berry.content, true);
         // Add label
-        berryElem.querySelector("label").innerHTML += `<img src="${berry.url}" height=32 width=32/> ${berry.name}`;
-        // Add value to radio input
-        berryElem.querySelector("input").value = berryID;
+        berryElem.querySelector("button").innerHTML += `<img src="${berry.url}" height=32 width=32/> ${berry.name}`;
+        // Add value to the button
+        berryElem.querySelector("button").value = berryID;
 
-        // Mark the correct berry as checked
+        // Mark the correct berry as selected
         if (berryID == marker.berryLocation.berry)
-            berryElem.querySelector("input").checked = true;
+            berryElem.querySelector("button").classList.add("active");
+        else
+            berryElem.querySelector("button").classList.remove("active");
+
+        // Add click handler to the button
+        berryElem.querySelector("button").addEventListener("click", e => {
+            selectBerryButton(berryListDiv, berryID);
+        })
 
         // Don't show "not a berry" type
         if (berryID == "nab") {
-            berryElem.querySelector("label").hidden = true;
-            berryElem.querySelector("br").hidden = true;
+            berryElem.querySelector("button").hidden = true;
         }
 
         berryListDiv.appendChild(berryElem);
@@ -164,9 +177,6 @@ function buildInfoWindow(markerid) {
     let date = new Date(marker.berryLocation.date);
     let dateString = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
     infoWindowContent.querySelector(".date").innerHTML += dateString;
-
-    // Set unique input group for the radio buttons
-    infoWindowContent.querySelectorAll("input[type='radio']").forEach(elem => elem.name = "berryInput"+markerid);
 
     // Event listeners for save and remove buttons
     infoWindowContent.querySelector(".saveButton").addEventListener("click", saveBerryListener);
