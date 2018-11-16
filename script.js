@@ -375,12 +375,17 @@ function importMap(event) {
 }
 
 // Remove map from localStorage
+// TODO: What if no maps left
 function removeMap(mapname) {
     localStorage.removeItem(mapname);
     let mapnames = loadMapNames();
     let index = mapnames.indexOf(mapname);
     mapnames.splice(index,1);
     saveMapNames(mapnames);
+    if(mapname === g_currentMapName) {
+        g_currentMapName = null;      
+        changeMap(loadMapNames()[0]);
+    }
 }
 
 // Creates new map and loads it
