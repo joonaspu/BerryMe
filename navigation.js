@@ -1,5 +1,5 @@
 // When document is ready, create content for the maps modal
-$(document).on("shown.bs.modal","#myMaps",function(event) {
+$(document).on("show.bs.modal","#myMaps",function(event) {
     let mapnames = JSON.parse(window.localStorage.getItem("maps"));
     console.log(mapnames[0]);
 
@@ -9,9 +9,9 @@ $(document).on("shown.bs.modal","#myMaps",function(event) {
         let mapname = mapnames[i];
         let el = `<li class="list-group-item">
                         <button type="button" class="btn" onClick="changeMap('${mapname}')">${mapname}</button>                                            
-                        <button type="button" class="btn" onClick="openRenameWindow('${mapname}')" >Rename</button>
-                        <button type="button" class="btn" onClick="downloadMap('${mapname}')">DL</button>
-                        <button type="button" class="close" aria-label="Close" onClick="openRemoveWindow('${mapname}')"><span aria-hidden="true">&times;</span></button>  
+                        <button type="button" class="btn" onClick="openRenameWindow('${mapname}')" ><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn" onClick="downloadMap('${mapname}')"><i class="fas fa-download"></i></button>
+                        <button type="button" class="btn close" onClick="openRemoveWindow('${mapname}')"><i class="fas fa-trash-alt"></i></button>  
                     </li>`;
         html += el;
     } 
@@ -30,12 +30,27 @@ function newMapButtonClick() {
 }
 
 // Confirm remove action
-// TODO: make window/popup/popover
+// TODO: Success confirmation
 function openRemoveWindow(mapname) {
-    removeMap(mapname);
-    changeMap(loadMapNames()[0]);
-    console.log("Removed map: "+mapname);
-    $("#myMaps").modal("hide");
+
+    let el = `  <h2>Remove map ${mapname} permanently?</h2>
+                <button type="button" class="btn yesButton">Yes</button>
+                <button type="button" class="btn noButton">No</button>`;
+
+    document.getElementById("genericWindowContent").innerHTML = el;
+    document.getElementById("genericWindowContent").querySelector(".yesButton").addEventListener("click", function() {
+        removeMap(mapname);
+        console.log("Removed map: "+mapname);
+        $("#genericWindow").modal("hide");
+        $("#myMaps").modal("hide");
+    });
+    document.getElementById("genericWindowContent").querySelector(".noButton").addEventListener("click", function() {
+        $("#genericWindow").modal("hide");
+    });
+    $("#genericWindow").modal("show");
+
+    
+    
 }
 
 //TODO: make window
