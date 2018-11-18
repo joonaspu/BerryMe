@@ -27,6 +27,7 @@
     </head>
     <body>
         <div id="app">
+
             <!-- Bootstrap navbar -->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <a class="navbar-brand" href="#">BerryMe</a>
@@ -65,7 +66,7 @@
 
             <!-- Maps window -->
             <div class="modal fade" tabindex="-1" role="dialog" id="myMaps">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content bg-dark">
                         <div class="modal-header">
                             <h4 class="modal-title text-light">My maps</h4>
@@ -84,11 +85,11 @@
                         <div class="modal-footer d-block">                         
                             <form class="form-inline my-2 my-lg-0">
                                 <button class="btn mr-sm-2" type="button" onClick="newMapButtonClick()">New Map</button>
-                                <input class="form-control my-2 my-sm-0" placeholder="New map name" id="new-map-input">                           
+                                <input class="form-control my-2 my-sm-0" placeholder="New map name..." id="new-map-input">                           
                             </form>
                             <br>
                             <form class="form-inline my-2 my-lg-0">
-                                <button type="button" class="btn mr-sm-2" onClick="importMap()">Import</button>            
+                                <button type="button" class="btn mr-sm-2" onClick="importMap()">Import Map</button>          
                                 <input id="file-input" class="my-2 my-sm-0" type="file">   
                             </form>                                                                          
                         </div>
@@ -139,22 +140,34 @@
 
         <!--Generic modal window-->
         <div class="modal fade" tabindex="-2" role="alertdialog" id="genericWindow">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content bg-dark">
-                        <div class="modal-header">
-                            <h4 class="modal-title text-light">ALERT!</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span style="color:white;">
-                                    <i class="fas fa-window-close"></i>   
-                                </span>                              
-                            </button>                           
-                        </div>
-                        <div class="modal-body">
-                            <div id="genericWindowContent"></div>
-                        </div>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-secondary">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-light">ALERT!</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span style="color:white;">
+                                <i class="fas fa-window-close"></i>   
+                            </span>                              
+                        </button>                           
+                    </div>
+                    <div class="modal-body">
+                        <div id="genericWindowContent"></div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Alert template-->
+        <template id="alert-template">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+                <div id="success-alert-content">OPERATION SUCCESSFUL!</div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+        </template>
+
+        
 
     </body>
 </html>

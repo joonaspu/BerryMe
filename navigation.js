@@ -34,9 +34,9 @@ function newMapButtonClick() {
 function openRemoveWindow(mapname) {
 
     let el = `  <h2 class="text-light">Remove: "${mapname}" permanently?</h2>
-                <button type="button" class="btn btn-lg btn-block btn-success yesButton">Yes <i class="fas fa-trash-alt"></i></button>
+                <button type="button" class="btn btn-lg btn-block btn-danger yesButton">Yes <i class="fas fa-trash-alt"></i></button>
                 <br>
-                <button type="button" class="btn btn-lg btn-block btn-danger noButton">No</button>`;
+                <button type="button" class="btn btn-lg btn-block btn-dark noButton">No</button>`;
                 
     document.getElementById("genericWindowContent").innerHTML = el;
 
@@ -44,6 +44,15 @@ function openRemoveWindow(mapname) {
         removeMap(mapname);
         console.log("Removed map: "+mapname);
         $("#genericWindow").modal("hide");
+        $("#myMaps").modal("hide");
+
+        let t_alert = document.querySelector("#alert-template");
+        let alert = document.importNode(t_alert.content,true);
+        document.getElementById("app").append(alert);
+        $("#success-alert").delay(2000).fadeOut(2000, function() {
+            $(this).remove();
+        });
+
     });
     document.getElementById("genericWindowContent").querySelector(".noButton").addEventListener("click", function() {
         $("#genericWindow").modal("hide");
@@ -57,9 +66,9 @@ function openRemoveWindow(mapname) {
 function openRenameWindow(mapname) {
     let el = `  <h2 class="text-light">Rename the map: ${mapname}</h2>
                 <form class="form-inline my-2 my-lg-0">
-                    <button class="btn mr-sm-2 renameButton" type="button">Rename</button>
+                    <input class="form-control my-2 my-sm-0" placeholder="New Name..." id="rename-map-input"> 
                     <br>
-                    <input class="form-control my-2 my-sm-0" placeholder="New Name" id="rename-map-input">                           
+                    <button class="btn mr-sm-2 btn-success btn-block renameButton" type="button">Rename</button>                                             
                 </form>`;
     document.getElementById("genericWindowContent").innerHTML = el;
 
