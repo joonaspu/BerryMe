@@ -8,7 +8,8 @@ let g_markers = [];
 
 let g_nextid = 0;
 
-let g_serverurl = "http://localhost:8000/api/locations";
+let g_serverurl = "https://berryme.herokuapp.com";
+//let g_serverurl = "http://localhost:8000/api/locations";
 let g_enableNearbyUsers = true;
 let g_otherUsers = [];
 //TODO: organize code better
@@ -476,18 +477,22 @@ function saveCurrentMap(mapname) {
 }
 
 function updateNearbyUsers(lat, lng) {
-    //Send coordinates to server
+    //let url = "http://localhost:8000/api/gettest";
+    let url = "http://berryme.herokuapp.com";
     let uniqueid = window.localStorage.getItem("uniqueid");
-    console.log("ID before ajax: "+uniqueid);
     $.ajax({
-        url: g_serverurl, 
-        type: 'POST', 
-        contentType: 'application/json', 
-        data: JSON.stringify({id:uniqueid,nick:"testi",lat:lat,lng:lng}),
+        type: 'POST',
+        url: url, 
+        contentType: "application/json",
+        dataType: "json",
+        crossDomain: true,       
+        data: JSON.stringify({id:uniqueid,nick:"testi",lat:lat,lng:lng}),  
         success: updateOthers
     });
-    function updateOthers(data) {
-        console.log("POST REQUEST REC"); console.log(data);
+
+
+    function updateOthers(data) {    
+        console.log("POST REQUEST REC");console.log(data);
         if(!uniqueid) {
             window.localStorage.setItem("uniqueid",data.id);
             let uniqueidnew = window.localStorage.getItem("uniqueid");              
