@@ -81,8 +81,25 @@ function openRenameWindow(mapname) {
         $("#genericWindow").modal("hide");
         $("#myMaps").modal("hide");
     });
-    $("#genericWindow").modal("show");
-    
+    $("#genericWindow").modal("show");  
+}
+// Make better
+function toggleNearbyUsers() {
+    if($("#navbar-nearbyusers").hasClass("text-success")) {
+        $("#navbar-nearbyusers").removeClass("text-success");
+        $("#navbar-nearbyusers").addClass("text-danger");
+        g_enableNearbyUsers = false;
+        // Stupid! Fix this!
+        // Remove other user locations
+        for(let i = 0;i<g_otherUsers.length;i++) {
+            let mark = g_otherUsers[i];
+            mark.setMap(null);
+        }
+    } else {
+        $("#navbar-nearbyusers").addClass("text-success");
+        $("#navbar-nearbyusers").removeClass("text-danger");
+        g_enableNearbyUsers = true;
+    }
 }
 
 

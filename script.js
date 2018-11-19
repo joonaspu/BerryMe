@@ -8,6 +8,9 @@ let g_markers = [];
 
 let g_nextid = 0;
 
+let g_serverurl = "http://localhost:8000/api/locations";
+let g_enableNearbyUsers = true;
+let g_otherUsers = [];
 //TODO: organize code better
 
 function addBerryButton() {
@@ -328,6 +331,11 @@ function initMap() {
                 myPositionMarker.setPosition(newCoords);
 
                 console.log(position);
+                if(g_enableNearbyUsers) {
+                    updateNearbyUsers(newCoords.lat,newCoords.lng);
+                }
+                
+
             }, 
             // Error handler
             function(error) {
@@ -368,6 +376,8 @@ function loadBerryLocations(mapname) {
             addBerryToMap(blocation,g_berries[0][blocation.berry].url);
         }
         saveLastMapName(mapname);
+
+        document.getElementById("navbar-mapname").innerHTML = "Current map: "+mapname;
     }
 }
 
@@ -463,4 +473,54 @@ function saveCurrentMap(mapname) {
     }
     saveMap(map)
     console.log(mapname + " saved");
+}
+
+function updateNearbyUsers(lat, lng) {
+    //Send coordinates to server
+    let uniqueid = window.localStorage.getItem("uniqueid");
+    console.log("ID before ajax: "+uniqueid);
+    $.ajax({
+        url: g_serverurl, 
+        type: 'POST', 
+        contentType: 'application/json', 
+        data: JSON.stringify({id:uniqueid,nick:"testi",lat:lat,lng:lng}),
+        success: updateOthers
+    });
+    function updateOthers(data) {
+        console.log("POST REQUEST REC"); console.log(data);
+        if(!uniqueid) {
+            window.localStorage.setItem("uniqueid",data.id);
+            let uniqueidnew = window.localStorage.getItem("uniqueid");              
+            console.log("ID after ajax: "+uniqueidnew);
+            return;
+        }
+        // Stupid! Fix this!
+        // Remove other user locations
+        for(let i = 0;i<g_otherUsers.length;i++) {
+            let mark = g_otherUsers[i];
+            mark.setMap(null);
+        }
+        // Create new other user locations
+        for(let i = 0;i<data.length;i++) {
+            let user = data[i];
+            if(user.id == uniqueid) {
+                continue;
+            }
+            let otherPositionMarker = new google.maps.Marker({
+                icon: {
+                    //path: "google.maps.SymbolPath.CIRCLE",
+                    url: "res/radu_marker.png", // Change this
+                    scale: 1,
+                    size:new google.maps.Size(40,40),
+                    scaledSize:new google.maps.Size(40,40),
+                },
+                map: g_map,
+                visible: false,
+                clickable: false
+            });
+            otherPositionMarker.setVisible(true);
+            otherPositionMarker.setPosition({lat:user.lat,lng:user.lng});
+            g_otherUsers.push(otherPositionMarker);
+        }
+    }
 }
