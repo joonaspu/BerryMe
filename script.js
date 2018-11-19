@@ -477,12 +477,10 @@ function saveCurrentMap(mapname) {
 }
 
 function updateNearbyUsers(lat, lng) {
-    //let url = "http://localhost:8000/api/gettest";
-    let url = "http://berryme.herokuapp.com";
     let uniqueid = window.localStorage.getItem("uniqueid");
     $.ajax({
         type: 'POST',
-        url: url, 
+        url: g_serverurl, 
         contentType: "application/json",
         dataType: "json",
         crossDomain: true,       
