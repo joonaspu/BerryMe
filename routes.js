@@ -3,6 +3,22 @@ let osrm_server = "https://router.project-osrm.org/route/v1/driving/";
 
 let g_tsp_path = null;
 
+// Removes TSP path from map
+function resetTSP() {
+    if (g_tsp_path !== null)
+        g_tsp_path.setMap(null);
+
+    g_tsp_path = null;
+}
+
+// Returns true if TSP route is currently shown on map, otherwise false
+function isTSPShown() {
+    if (g_tsp_path === null)
+        return false
+    else
+        return true
+}
+
 // Get TSP and draw it on the map
 // NOTE: Only works if the page is hosted on cs.uef.fi!!!
 function getTSP(markers, map) {
@@ -24,8 +40,7 @@ function getTSP(markers, map) {
     oReq.addEventListener("load", e => {
         let tsp_points = JSON.parse(oReq.responseText);
 
-        if (g_tsp_path !== null)
-            g_tsp_path.setMap(null);
+        resetTSP();
 
         g_tsp_path = new google.maps.Polyline({
             path: tsp_points,

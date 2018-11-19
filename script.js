@@ -390,6 +390,9 @@ function changeMap(mapname) {
     }
     g_markers = [];
     loadBerryLocations(mapname);
+
+    // Remove TSP path from map
+    resetTSP();
 }
 // Download map as txt-file
 function downloadMap(mapname) {
@@ -527,4 +530,11 @@ function updateNearbyUsers(lat, lng) {
             g_otherUsers.push(otherPositionMarker);
         }
     }
+}
+
+function toggleOptimalPath() {
+    if (isTSPShown())
+        resetTSP();
+    else
+        getTSP(g_markers, g_map);
 }
