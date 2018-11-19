@@ -16,6 +16,12 @@ $(document).on("show.bs.modal","#myMaps",function(event) {
         html += el;
     } 
     document.getElementById("mapList").innerHTML = html;
+
+    // Import
+    $("input[type=file]").on("change", function() {
+        console.log(this.files[0].name);
+        document.getElementById("file-input-label").innerHTML = this.files[0].name;      
+    });
 });
 
 // Used when clicked New Map button
@@ -28,6 +34,8 @@ function newMapButtonClick() {
     document.getElementById('new-map-input').value = "";
     $("#myMaps").modal("hide");
 }
+
+
 
 // Confirm remove action
 // TODO: Success confirmation

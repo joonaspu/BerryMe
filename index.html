@@ -93,11 +93,20 @@
                                     <button class="btn btn-success" type="button" onClick="newMapButtonClick()"><i class="fas fa-plus"></i> Create map</button>
                                 </div>
                             </div>
-                            <br>
-                            <form class="form-inline my-2 my-lg-0">
-                                <button type="button" class="btn mr-sm-2" onClick="importMap()">Import Map</button>          
-                                <input id="file-input" class="my-2 my-sm-0" type="file">   
-                            </form>                                                                          
+                            
+                            <div class="input-group">
+                                <div class="custom-file">                           
+                                    <input class="custom-file-input" type="file" id="file-input">
+                                    <label class="custom-file-label" for="customFile" id="file-input-label">Choose file</label>                                   
+                                </div>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-success" onClick="importMap()"><i class="fas fa-plus"></i> Import map</button> 
+                                </div>
+                            </div>
+
+                                     
+                                   
+                                                                                                     
                         </div>
                     </div>
                 </div>

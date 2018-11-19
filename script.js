@@ -416,6 +416,7 @@ function importMap(event) {
             saveMap(tempmap)
             mapnames.push(tempmap.name);
             saveMapNames(mapnames);
+            document.getElementById("file-input-label").innerHTML = "Choose File";
             $("#myMaps").modal("hide");
         } else {
             console.log("Map name in use!");
