@@ -85,11 +85,13 @@
                                 <ul class="list-group" id="mapList"></ul>
                             </div>
                         </div>
-                        <div class="modal-footer d-block border-secondary">                         
-                            <form class="form-inline my-2 my-lg-0">
-                                <button class="btn mr-sm-2" type="button" onClick="newMapButtonClick()">New Map</button>
-                                <input class="form-control my-2 my-sm-0" placeholder="New map name..." id="new-map-input">                           
-                            </form>
+                        <div class="modal-footer d-block border-secondary">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Map name" id="new-map-input">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="button" onClick="newMapButtonClick()"><i class="fas fa-plus"></i> Create map</button>
+                                </div>
+                            </div>
                             <br>
                             <form class="form-inline my-2 my-lg-0">
                                 <button type="button" class="btn mr-sm-2" onClick="importMap()">Import Map</button>          

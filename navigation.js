@@ -9,9 +9,9 @@ $(document).on("show.bs.modal","#myMaps",function(event) {
         let mapname = mapnames[i];
         let el = `<li class="list-group-item">
                         <button type="button" class="btn" onClick="changeMap('${mapname}')">${mapname}</button>                                            
-                        <button type="button" class="mapButton btn btn-danger float-right" onClick="openRemoveWindow('${mapname}')"><i class="fas fa-trash-alt"></i></button>  
-                        <button type="button" class="mapButton btn btn-primary float-right" onClick="downloadMap('${mapname}')"><i class="fas fa-download"></i></button>
-                        <button type="button" class="mapButton btn btn-primary float-right" onClick="openRenameWindow('${mapname}')" ><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger float-right ml-1" onClick="openRemoveWindow('${mapname}')"><i class="fas fa-trash-alt"></i></button>  
+                        <button type="button" class="btn btn-primary float-right ml-1" onClick="downloadMap('${mapname}')"><i class="fas fa-download"></i></button>
+                        <button type="button" class="btn btn-primary float-right ml-1" onClick="openRenameWindow('${mapname}')" ><i class="fas fa-edit"></i></button>
                     </li>`;
         html += el;
     } 
