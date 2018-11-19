@@ -8,6 +8,11 @@
     flex-grow: 1; /* Make the map fill the rest of the window */
 }
 
+.mapButton {
+    float: right;
+    margin-left: 5px;
+}
+
 .addBerryButton {
     background-color: #fff;
     border: 2px solid #fff;
