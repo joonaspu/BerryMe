@@ -9,12 +9,8 @@
 }
 
 .addBerryButton {
-    background-color: #fff;
-    border: 2px solid #fff;
-    cursor: pointer;
     margin-top: 11px;
     margin-right: 11px;
-    text-align: center;
 }
 
 .addBerryText {
