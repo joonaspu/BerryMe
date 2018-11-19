@@ -65,11 +65,12 @@ function openRemoveWindow(mapname) {
 //TODO: make window
 function openRenameWindow(mapname) {
     let el = `  <h2 class="text-light">Rename the map: ${mapname}</h2>
-                <form class="form-inline my-2 my-lg-0">
+                <div class="input-group">
                     <input class="form-control my-2 my-sm-0" placeholder="New Name..." id="rename-map-input"> 
-                    <br>
-                    <button class="btn mr-sm-2 btn-success btn-block renameButton" type="button">Rename</button>                                             
-                </form>`;
+                    <div class="input-group-append">
+                        <button class="btn btn-success mr-sm-2 renameButton" type="button">Rename</button>
+                    </div>
+                </div>`;
     document.getElementById("genericWindowContent").innerHTML = el;
 
     document.getElementById("genericWindowContent").querySelector(".renameButton").addEventListener("click", function() {
