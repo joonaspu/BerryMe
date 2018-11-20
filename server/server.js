@@ -78,9 +78,9 @@ function getNearbyUsers(coords, maxDistance) {
   let z_og = Math.cos(coords.lng) * r_og;
   let nearbyUsers = users.filter(function(user) {
     let r_u = Math.cos(user.lat) * 6371;
-    let x_u = Math.sin(user.lng) * r_og;
+    let x_u = Math.sin(user.lng) * r_u;
     let y_u = Math.sin(user.lat) * 6371;
-    let z_u = Math.cos(user.lng) * r_og;
+    let z_u = Math.cos(user.lng) * r_u;
     let distance = Math.pow(x_u-x_og,2)+Math.pow(y_u-y_og,2)+Math.pow(z_u-z_og,2)
     distance = Math.sqrt(distance);
     console.log(distance);
