@@ -5,9 +5,12 @@ function generateBerries() {
             "nab":{"name":"NotABerry", "url":"res/questionmark.png"},
             "blueberry":{ "name": "Blueberry", "url": "res/blueberry.png"},
             "lingonberry":{"name": "Lingonberry","url":"res/lingonberry.png"},
-            "testberry1":{"name": "testberry1","url":"res/lingonberry.png"},
-            "testberry2":{"name": "testberry2","url":"res/lingonberry.png"},
-            "testberry3":{"name": "testberry3","url":"res/lingonberry.png"},
-            "testberry4":{"name": "testberry4","url":"res/lingonberry.png"},
+            "cloudberry":{"name": "Cloudberry","url":"res/cloudberry.png"},
+            "seaberry":{"name": "Seaberry","url":"res/seaberry.png"},
+            "blackcurrant":{"name": "Blackcurrant","url":"res/blackcurrant.png"},
+            "raspberry":{"name": "Raspberry","url":"res/raspberry.png"},
+            "strawberry":{"name": "Strawberry","url":"res/strawberry.png"},
+            "pennybun":{"name": "Penny bun","url":"res/pennybun.png"},
+            "yellowfoot":{"name": "Yellowfoot","url":"res/yellowfoot.png"}
             }];
 }
