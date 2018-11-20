@@ -299,8 +299,9 @@ function initMap() {
     // Position marker
     let myPositionMarker = new google.maps.Marker({
         icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 10
+            url: "res/bluedot.svg",
+            scaledSize: new google.maps.Size(16, 16),
+            anchor: new google.maps.Point(8, 8),
         },
         map: g_map,
         visible: false,
