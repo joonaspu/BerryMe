@@ -13,6 +13,8 @@ let g_serverurl = "https://berryme.herokuapp.com";
 let g_enableNearbyUsers = true;
 let g_otherUsers = [];
 
+let g_myPosition = {lat: 0, lng: 0};
+
 let g_mapMoved = false;
 //TODO: organize code better
 
@@ -23,13 +25,51 @@ function addBerryButton() {
     addBerryDiv.appendChild(document.importNode(t_addBerryDiv.content, true));
 
     // Add event listener for click
-    addBerryDiv.querySelector(".addBerryButton").addEventListener("click", () => {
+    addBerryDiv.querySelector(".mapButton").addEventListener("click", () => {
         addBerryToMap( new Location(g_map.getCenter().lat(),g_map.getCenter().lng(),
                                     "nab",3,Date.now()),
                                     "res/questionmark.png", true);
     });
 
     return addBerryDiv;
+}
+
+function myLocationButton() {
+    // Create a new div and add the template content to it
+    let t_myLocationDiv = document.querySelector("#myLocationTemplate");
+    let myLocationDiv = document.createElement('div');
+    myLocationDiv.appendChild(document.importNode(t_myLocationDiv.content, true));
+
+    let userLocation = false;
+    // Add event listener for click
+    myLocationDiv.querySelector(".mapButton").addEventListener("click", () => {
+        if (userLocation) {
+            // Show all berries
+            let bounds = new google.maps.LatLngBounds();
+
+            g_markers.forEach(e => {
+                bounds.extend({lat: e.berryLocation.latitude, lng: e.berryLocation.longitude});
+            });
+            g_map.fitBounds(bounds);
+
+            myLocationDiv.querySelector("button").innerHTML = `<i class="far fa-dot-circle"></i>`;
+
+            userLocation = false;
+        } else {
+            // Show user location
+
+            if (!(g_myPosition.lat == 0 && g_myPosition.lng == 0)){
+                g_map.setCenter(g_myPosition);
+                g_map.setZoom(13);
+            }
+            
+            myLocationDiv.querySelector("button").innerHTML = `<i class="far fa-map"></i>`;
+
+            userLocation = true;
+        }
+    });
+
+    return myLocationDiv;
 }
 
 // Returns a marker with the given ID (or null if it doesn't exist)
@@ -281,8 +321,9 @@ function initMap() {
     g_map.addListener("drag", () => g_mapMoved = true);
     g_map.addListener("zoom_changed", () => g_mapMoved = true);
 
-    // "Add berry" button to map
+    // Add buttons to map
     g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(addBerryButton());
+    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(myLocationButton());
 
     // Position circle
     let myPositionCircle = new google.maps.Circle({
@@ -318,6 +359,8 @@ function initMap() {
             newCoords.lat = position["coords"].latitude;
             newCoords.lng = position["coords"].longitude;
 
+            g_myPosition = newCoords;
+
             // Don't change map center if user has moved the map already
             if (g_mapMoved === false) {
                 g_map.setCenter(newCoords);
@@ -333,6 +376,8 @@ function initMap() {
                 let newCoords = {lat: 0, lng: 0};
                 newCoords.lat = position["coords"].latitude;
                 newCoords.lng = position["coords"].longitude;
+
+                g_myPosition = newCoords;
 
                 myPositionCircle.setVisible(true);
                 myPositionCircle.setCenter(newCoords);

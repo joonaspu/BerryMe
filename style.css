@@ -8,19 +8,9 @@
     flex-grow: 1; /* Make the map fill the rest of the window */
 }
 
-.addBerryButton {
+.mapButton {
     margin-top: 11px;
     margin-right: 11px;
-}
-
-.addBerryText {
-    color: rgb(25,25,25);
-    font-family: "Roboto", Arial, sans-serif;
-    font-size: 16px;
-    line-height: 38px;
-    padding-left: 5px;
-    padding-right: 5px;
-    user-select: none; /* Disable text selection on the button */
 }
 
 .infoWindow {
