@@ -12,6 +12,8 @@ let g_serverurl = "https://berryme.herokuapp.com";
 //let g_serverurl = "http://localhost:8000/api/locations";
 let g_enableNearbyUsers = true;
 let g_otherUsers = [];
+
+let g_mapMoved = false;
 //TODO: organize code better
 
 function addBerryButton() {
@@ -275,6 +277,10 @@ function initMap() {
         fullscreenControl: false
     });
 
+    // Set g_mapMoved to true if the user interacts with the map
+    g_map.addListener("drag", () => g_mapMoved = true);
+    g_map.addListener("zoom_changed", () => g_mapMoved = true);
+
     // "Add berry" button to map
     g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(addBerryButton());
 
@@ -311,9 +317,12 @@ function initMap() {
             newCoords.lat = position["coords"].latitude;
             newCoords.lng = position["coords"].longitude;
 
-            g_map.setCenter(newCoords);
-            g_map.setZoom(13);
-
+            // Don't change map center if user has moved the map already
+            if (g_mapMoved === false) {
+                g_map.setCenter(newCoords);
+                g_map.setZoom(13);
+            }
+            
             console.log(position);
         });
         
@@ -532,6 +541,7 @@ function updateNearbyUsers(lat, lng) {
     }
 }
 
+// Toggle visibility of the TSP path
 function toggleOptimalPath() {
     if (isTSPShown())
         resetTSP();
