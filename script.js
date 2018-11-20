@@ -45,14 +45,17 @@ function myLocationButton() {
     myLocationDiv.querySelector(".mapButton").addEventListener("click", () => {
         if (userLocation) {
             // Show all berries
-            let bounds = new google.maps.LatLngBounds();
+            if (g_markers.length != 0) {
+                let bounds = new google.maps.LatLngBounds();
 
-            g_markers.forEach(e => {
-                bounds.extend({lat: e.berryLocation.latitude, lng: e.berryLocation.longitude});
-            });
-            g_map.fitBounds(bounds);
+                g_markers.forEach(e => {
+                    bounds.extend({lat: e.berryLocation.latitude, lng: e.berryLocation.longitude});
+                });
+                g_map.fitBounds(bounds);
+            }
 
             myLocationDiv.querySelector("button").innerHTML = `<i class="far fa-dot-circle"></i>`;
+            myLocationDiv.querySelector(".mapButton").setAttribute("title", "Show my location");
 
             userLocation = false;
         } else {
@@ -64,6 +67,7 @@ function myLocationButton() {
             }
             
             myLocationDiv.querySelector("button").innerHTML = `<i class="far fa-map"></i>`;
+            myLocationDiv.querySelector(".mapButton").setAttribute("title", "Show all berries");
 
             userLocation = true;
         }
