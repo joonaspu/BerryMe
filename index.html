@@ -39,7 +39,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <div class="btn-group">
+                            <div class="btn-group mr-2">
                                 <button type="button" class="btn btn-success text-light" disabled>
                                     <i class="fas fa-map"></i>
                                 </button>
@@ -49,7 +49,12 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-success" href="#" onClick="toggleNearbyUsers()" id="navbar-nearbyusers">Show Nearby Users</a>
+                            <div class="btn-group mr-2">
+                                <button type="button" class="btn btn-success text-light" disabled>
+                                    <i class="fas fa-users"></i> 
+                                </button>
+                                <button class="btn btn-success" onClick="toggleNearbyUsers()" id="navbar-nearbyusers">Show Nearby Users</button>
+                            </div>                           
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" onClick="toggleOptimalPath()">Optimal path</a>

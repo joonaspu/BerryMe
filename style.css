@@ -65,7 +65,3 @@ html, body {
     padding: 0;*/
     overscroll-behavior: none; /* Disable pull to refresh on Chrome */
 }
-
-.custom-file-input ~ .custom-file-label::after {
-    
-}

@@ -94,9 +94,9 @@ function openRenameWindow(mapname) {
 }
 // Make better
 function toggleNearbyUsers() {
-    if($("#navbar-nearbyusers").hasClass("text-success")) {
-        $("#navbar-nearbyusers").removeClass("text-success");
-        $("#navbar-nearbyusers").addClass("text-danger");
+    if($("#navbar-nearbyusers").hasClass("btn-success")) {
+        $("#navbar-nearbyusers").removeClass("btn-success");
+        $("#navbar-nearbyusers").addClass("btn-danger");
         g_enableNearbyUsers = false;
         // Stupid! Fix this!
         // Remove other user locations
@@ -105,8 +105,8 @@ function toggleNearbyUsers() {
             mark.setMap(null);
         }
     } else {
-        $("#navbar-nearbyusers").addClass("text-success");
-        $("#navbar-nearbyusers").removeClass("text-danger");
+        $("#navbar-nearbyusers").addClass("btn-success");
+        $("#navbar-nearbyusers").removeClass("btn-danger");
         g_enableNearbyUsers = true;
     }
 }
