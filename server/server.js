@@ -1,6 +1,8 @@
 // Only Antti can use
 //git subtree push --prefix server heroku master
 
+const nearbyDistance = 30;
+
 const express = require('express');
 
 const app = express();
@@ -55,47 +57,10 @@ app.post("/",jsonparser,(req,res) => {
     return;
   }
   //Send all users to client
-  res.json(users);
+  let us = getNearbyUsers({"lat":p.lat, "lng":p.lng},nearbyDistance);
+  res.json(us);
 });
-/*
-app.post('/api/locations', jsonparser,(req, res) => {
 
-    const p = req.body;
-    console.log("POST /api/locations");
-    console.log(p);
-    console.log(p.id);
-    console.log(p.nick);
-    console.log(p.lat);
-    console.log(p.lng);
-    // If user does not have unique id, give him one
-    if(p.id === 'undefined' || p.id == null) {
-      p.id = uniqid();
-    }
-    p.time = Date.now();
-    let found = false;
-    //Update user's location
-    console.log("Loop start");
-    for(let i=0;i<users.length;i++) {
-      let user = users[i];
-      if(user.id === p.id) {
-        user.nick=p.nick; user.lat = p.lat; user.lng = p.lng; user.time = p.time;
-        found = true;
-        break;
-      }
-    }
-    console.log("Loop end");
-    // If user does not exist, add him
-    if(!found) {
-      users.push({"id":p.id,"user":p.nick,"lat":p.lat,"lng":p.lng,"time":p.time});
-      //Send id to user
-      res.json({"id":p.id,"user":p.nick,"lat":p.lat,"lng":p.lng,"time":p.time});
-      return;
-    }
-    //Send all users to client
-    
-    res.json(users);
-});
-*/
 // Remove dead users
 setInterval(removeUsers,20000);
 
@@ -103,6 +68,23 @@ function removeUsers() {
   users = users.filter(function(user) {
                            return Math.round((Date.now()-user.time)) < 20000;});
   console.log("Removed dead users");
+}
+
+function getNearbyUsers(coords, maxDistance) {
+  let r_og = Math.cos(coords.lat) * 6371;
+  let x_og = Math.sin(coords.lng) * r_og;
+  let y_og = Math.sin(coords.lat) * 6371;
+  let z_og = Math.cos(coords.lng) * r_og;
+  let nearbyUsers = users.filter(function(user) {
+    let r_u = Math.cos(user.lat) * 6371;
+    let x_u = Math.sin(user.lng) * r_og;
+    let y_u = Math.sin(user.lat) * 6371;
+    let z_u = Math.cos(user.lng) * r_og;
+    let distance = Math.pow(x_u-x_og,2)+Math.pow(y_u-y_og,2)+Math.pow(z_u-z_og,2)
+    distance = Math.sqrt(distance);
+    return distance <= maxDistance;
+  });
+  return nearbyUsers;
 }
 // Start server
 app.listen(process.env.PORT || port, () => console.log(`BerryMe server listening on port ${process.env.PORT || port}!`));
