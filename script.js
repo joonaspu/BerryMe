@@ -350,7 +350,8 @@ function initMap() {
         },
         map: g_map,
         visible: false,
-        clickable: false
+        clickable: false,
+        zIndex: -10000
     });
 
     // Geolocation
