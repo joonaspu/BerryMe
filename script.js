@@ -438,7 +438,7 @@ function loadBerryLocations(mapname) {
         }
         saveLastMapName(mapname);
 
-        document.getElementById("navbar-mapname").innerHTML = "Current map: "+mapname;
+        document.getElementById("navbar-mapname").innerHTML = mapname;
     }
 }
 
