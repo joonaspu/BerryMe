@@ -72,15 +72,19 @@ function removeUsers() {
 }
 
 function getNearbyUsers(coords, maxDistance) {
-  let r_og = Math.cos(coords.lat) * 6371;
-  let x_og = Math.sin(coords.lng) * r_og;
-  let y_og = Math.sin(coords.lat) * 6371;
-  let z_og = Math.cos(coords.lng) * r_og;
+  let deg2rad = Math.PI/180;
+
+  let r_og = Math.cos(coords.lat*deg2rad) * 6371;
+
+  let x_og = Math.sin(coords.lng*deg2rad) * r_og;
+  let y_og = Math.sin(coords.lat*deg2rad) * 6371;
+  let z_og = Math.cos(coords.lng*deg2rad) * r_og;
   let nearbyUsers = users.filter(function(user) {
-    let r_u = Math.cos(user.lat) * 6371;
-    let x_u = Math.sin(user.lng) * r_u;
-    let y_u = Math.sin(user.lat) * 6371;
-    let z_u = Math.cos(user.lng) * r_u;
+    let r_u = Math.cos(user.lat*deg2rad) * 6371;
+
+    let x_u = Math.sin(user.lng*deg2rad) * r_u;
+    let y_u = Math.sin(user.lat*deg2rad) * 6371;
+    let z_u = Math.cos(user.lng*deg2rad) * r_u;
     let distance = Math.pow(x_u-x_og,2)+Math.pow(y_u-y_og,2)+Math.pow(z_u-z_og,2)
     distance = Math.sqrt(distance);
     console.log(distance);
