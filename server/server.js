@@ -1,7 +1,8 @@
 // Only Antti can use
 //git subtree push --prefix server heroku master
+//git push heroku `git subtree split --prefix server master`:master --force
 
-const nearbyDistance = 30;
+const nearbyDistance = 30000;
 
 const express = require('express');
 
