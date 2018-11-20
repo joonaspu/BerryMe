@@ -16,7 +16,7 @@ $(document).on("show.bs.modal","#myMaps",function(event) {
         html += el;
     } 
     document.getElementById("mapList").innerHTML = html;
-
+    document.getElementById("file-input-label").innerHTML = "Choose file";
     // Import
     $("input[type=file]").on("change", function() {
         console.log(this.files[0].name);
