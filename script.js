@@ -123,6 +123,16 @@ function saveBerryListener(event) {
 
 }
 
+function directionsListener(event) {
+    let start = g_myPosition;
+
+    let id = event.currentTarget.parentNode.querySelector("#markerId").value;
+    let marker = findMarkerByID(id);
+    let end = {lat: marker.berryLocation.latitude, lng: marker.berryLocation.longitude};
+
+    getDirections(start, end, g_map);
+}
+
 // Called when "Remove" button is clicked in the infoWindow
 function removeBerryListener(event) {
     let id = event.currentTarget.parentNode.querySelector("#markerId").value;
@@ -229,6 +239,7 @@ function buildInfoWindow(markerid) {
 
     // Event listeners for save and remove buttons
     infoWindowContent.querySelector(".saveButton").addEventListener("click", saveBerryListener);
+    infoWindowContent.querySelector(".directionsButton").addEventListener("click", directionsListener);
     infoWindowContent.querySelector(".removeButton").addEventListener("click", removeBerryListener);
 
     return infoWindowContent;

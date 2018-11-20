@@ -1,7 +1,10 @@
-let tsp_server = "https://cs.uef.fi/o-mopsi/api/server.php";
-let osrm_server = "https://router.project-osrm.org/route/v1/driving/";
+const tsp_server = "https://cs.uef.fi/o-mopsi/api/server.php";
+const osrm_server = "https://router.project-osrm.org/route/v1/driving/";
+const gh_server = "https://graphhopper.com/api/1/route?";
+const gh_key = "LijBPDQGfu7Iiq80w3HzwB4RUDJbMbhs6BU0dEnn";
 
 let g_tsp_path = null;
+let g_directions_path = null;
 
 // Removes TSP path from map
 function resetTSP() {
@@ -54,4 +57,33 @@ function getTSP(markers, map) {
     oReq.open("POST", tsp_server, true);
     oReq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     oReq.send("param="+JSON.stringify(param));
+}
+
+// Get directions to location from OSRM/GraphHopper
+function getDirections(start, end, map) {
+    //let url = `${osrm_server}${start.lng},${start.lat};${end.lng},${end.lat}?geometries=geojson`;
+    let url = `${gh_server}point=${start.lat},${start.lng}&point=${end.lat},${end.lng}&points_encoded=false&vehicle=car&key=${gh_key}`;
+    
+    let oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", e => {
+        //let coords = JSON.parse(oReq.responseText)["routes"][0]["geometry"]["coordinates"];
+        let coords = JSON.parse(oReq.responseText)["paths"][0]["points"]["coordinates"];
+
+        let maps_points = []
+        coords.forEach(e => maps_points.push({lat: e[1], lng: e[0]}));
+
+        if (g_directions_path !== null)
+            g_directions_path.setMap(null);
+
+        g_directions_path = new google.maps.Polyline({
+            path: maps_points,
+            strokeColor: "#0000FF",
+            strokeOpacity: 1.0,
+            strokeWeight: 4
+        });
+
+        g_directions_path.setMap(map);
+    });
+    oReq.open("GET", url, true);
+    oReq.send();
 }
