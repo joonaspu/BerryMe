@@ -2,7 +2,7 @@
 //git subtree push --prefix server heroku master
 //git push heroku `git subtree split --prefix server master`:master --force
 
-const nearbyDistance = 30000;
+const nearbyDistance = 30;
 
 const express = require('express');
 
@@ -83,6 +83,7 @@ function getNearbyUsers(coords, maxDistance) {
     let z_u = Math.cos(user.lng) * r_og;
     let distance = Math.pow(x_u-x_og,2)+Math.pow(y_u-y_og,2)+Math.pow(z_u-z_og,2)
     distance = Math.sqrt(distance);
+    console.log(distance);
     return distance <= maxDistance;
   });
   return nearbyUsers;
