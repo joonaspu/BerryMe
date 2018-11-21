@@ -57,15 +57,16 @@ app.post("/",jsonparser,(req,res) => {
     res.json({"id":p.id,"user":p.nick,"lat":p.lat,"lng":p.lng,"time":p.time});
     return;
   }
-  //Send all users to client
+  //Send all (alive) users to client
+  removeDeadUsers();
   let us = getNearbyUsers({"lat":p.lat, "lng":p.lng},nearbyDistance);
   res.json(us);
 });
 
 // Remove dead users
-setInterval(removeUsers,20000);
+//setInterval(removeUsers,20000);
 
-function removeUsers() {
+function removeDeadUsers() {
   users = users.filter(function(user) {
                            return Math.round((Date.now()-user.time)) < 20000;});
   console.log("Removed dead users");
