@@ -329,7 +329,8 @@ function initMap() {
         center: {lat: 62, lng: 26},
         zoom: 6,
         streetViewControl: false,
-        fullscreenControl: false
+        fullscreenControl: false,
+        zoomControl: false
     });
 
     // Set g_mapMoved to true if the user interacts with the map
@@ -337,8 +338,13 @@ function initMap() {
     g_map.addListener("zoom_changed", () => g_mapMoved = true);
 
     // Add buttons to map
-    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(addBerryButton());
-    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(myLocationButton());
+    let buttonsDiv = document.createElement("div");
+    buttonsDiv.appendChild(myLocationButton());
+    buttonsDiv.appendChild(addBerryButton());
+    buttonsDiv.classList.add("row");
+    buttonsDiv.classList.add("mapButtonContainer")
+
+    g_map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(buttonsDiv);
 
     // Position circle
     let myPositionCircle = new google.maps.Circle({
