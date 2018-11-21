@@ -1,5 +1,6 @@
 // Google maps
 let g_map;
+var g_geocoder;
 // Current map name
 let g_currentMapName;
 // Types of berries
@@ -20,6 +21,8 @@ let g_myPosition = {lat: 0, lng: 0};
 
 let g_mapMoved = false;
 
+let g_achievementsEnabled = true;
+
 function initMap() {
     // Create Map
     g_map = new google.maps.Map(document.getElementById('map'), {
@@ -29,6 +32,8 @@ function initMap() {
         fullscreenControl: false,
         zoomControl: false
     });
+
+    g_geocoder = new google.maps.Geocoder();
 
     // Set g_mapMoved to true if the user interacts with the map
     g_map.addListener("drag", () => g_mapMoved = true);
@@ -147,6 +152,8 @@ function updatePosition(position,myPositionCircle, myPositionMarker) {
     if(g_enableNearbyUsers) {
         updateNearbyUsers(newCoords.lat,newCoords.lng);
     }
+
+    checkLocationAchievements(newCoords);
 }
 
 function addBerryButton() {
@@ -157,9 +164,12 @@ function addBerryButton() {
 
     // Add event listener for click
     addBerryDiv.querySelector(".mapButton").addEventListener("click", () => {
-        addBerryToMap( new Location(g_map.getCenter().lat(),g_map.getCenter().lng(),
+        addBerryToMap( new Location(g_map.getCenter().lat(),
+                                    g_map.getCenter().lng(),
                                     "nab",3,Date.now()),
                                     "res/questionmark.png", true);
+        // Achievements
+        incrementTotalBerryCount();
     });
 
     return addBerryDiv;
@@ -421,8 +431,10 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         if (newMarker.berryLocation.berry == "nab") {
             newMarker.setMap(null);
             g_markers = g_markers.filter(marker => marker != newMarker);
+            decrementTotalBerryCount(); // Achievements
         }
-
+        
+        checkBerryCountAchievements(); // Achievements
         console.log("WINDOW CLOSED");
     };
 

@@ -114,14 +114,23 @@ function toggleNearbyUsers() {
 // When document is ready, create content for the achievements
 $(document).on("show.bs.modal","#myAchievements",function(event) {
     console.log(achievements);
+    let unlocked = getAchievements();
     //Create list of maps
     let html = "";
     //<img src="${ach.url}" height=32 width=32/>${ach.name} - ${ach.description}
     for(let i = 0;i<achievements.length;i++) {
         let ach = achievements[i];
-        let el = `<li class="list-group-item list-group-item-dark">                       
-                        <i class="fas fa-lock"></i> ${ach.name} - ${ach.description}
-                    </li>`;
+        let el;
+        if(unlocked.includes(ach.id)) {
+            el = `<li class="list-group-item list-group-item-dark">                       
+                    <img src="${ach.url}" height=32 width=32/> ${ach.name} - ${ach.description}
+                </li>`;
+        } else {
+            el = `<li class="list-group-item list-group-item-dark">                       
+                    <i class="fas fa-lock"></i> ${ach.name} - ${ach.description}
+                </li>`;
+        }
+
         html += el;
     } 
     document.getElementById("achievementsList").innerHTML = html;
