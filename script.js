@@ -1,16 +1,19 @@
+// Google maps
 let g_map;
-//
+// Current map name
 let g_currentMapName;
 // Types of berries
 let g_berries;
-// Markers
+// Berry location markers
 let g_markers = []; 
-
+// Temporary id counter for berry location markers
 let g_nextid = 0;
-
+// Server api for location sharing
 let g_LOCATION_SHARE_URL = "https://berryme.herokuapp.com";
 //let g_LOCATION_SHARE_URL = "http://localhost:8000/api/locations";
+// See nearby users. 30km range.
 let g_enableNearbyUsers = true;
+// Other nearby users
 let g_otherUsers = [];
 
 let g_myPosition = {lat: 0, lng: 0};
