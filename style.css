@@ -8,9 +8,13 @@
     flex-grow: 1; /* Make the map fill the rest of the window */
 }
 
-.mapButton {
-    margin-top: 11px;
+.mapButtonContainer {
     margin-right: 11px;
+}
+
+.mapButton {
+    margin-bottom: 11px;
+    margin-left: 11px;
 }
 
 .infoWindow {

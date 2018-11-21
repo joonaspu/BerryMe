@@ -72,14 +72,39 @@ function getDirections(start, end, map) {
         let maps_points = []
         coords.forEach(e => maps_points.push({lat: e[1], lng: e[0]}));
 
+        // Remove existing routes
         if (g_directions_path !== null)
             g_directions_path.setMap(null);
 
+        // Create a new polyline for the new route
         g_directions_path = new google.maps.Polyline({
             path: maps_points,
             strokeColor: "#0000FF",
             strokeOpacity: 1.0,
             strokeWeight: 4
+        });
+
+        // Click handler for the route
+        g_directions_path.addListener("click", e => {
+            let pathWindow
+
+            // Create a new div and add the template content to it
+            let t_directionsDiv = document.querySelector("#infoWindowDirectionsTemplate");
+            let directionsDiv = document.createElement('div');
+            directionsDiv.appendChild(document.importNode(t_directionsDiv.content, true));
+
+            // Click handler for the remove button
+            directionsDiv.querySelector(".removeDirButton").addEventListener("click", e => {
+                g_directions_path.setMap(null);
+                pathWindow.close();
+            });
+
+            // Create the infoWindow and add it to the map
+            pathWindow = new google.maps.InfoWindow({
+                content: directionsDiv,
+                position: e.latLng
+            });
+            pathWindow.setMap(map);
         });
 
         g_directions_path.setMap(map);
