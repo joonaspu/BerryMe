@@ -36,16 +36,22 @@
     border-width: 1px;
     border-color: lightgray;
     border-radius: 4px;
-    height: 200px;
+    height: 100px; /* min-height: 515px */
     width: 180px;
     overflow-y: auto;
     overflow-x: hidden;
     margin-bottom: 8px;
 }
 
-@media screen and (max-height: 650px) {
+@media screen and (min-height: 565px) {
     .berryList {
-        height: 90px;
+        height: 150px;
+    }
+}
+
+@media screen and (min-height: 615px) {
+    .berryList {
+        height: 200px;
     }
 }
 
