@@ -63,11 +63,14 @@ function getTSP(markers, map) {
 function getDirections(start, end, map) {
     //let url = `${osrm_server}${start.lng},${start.lat};${end.lng},${end.lat}?geometries=geojson`;
     let url = `${gh_server}point=${start.lat},${start.lng}&point=${end.lat},${end.lng}&points_encoded=false&vehicle=car&key=${gh_key}`;
-    
+
     let oReq = new XMLHttpRequest();
     oReq.addEventListener("load", e => {
         //let coords = JSON.parse(oReq.responseText)["routes"][0]["geometry"]["coordinates"];
-        let coords = JSON.parse(oReq.responseText)["paths"][0]["points"]["coordinates"];
+        let parsed = JSON.parse(oReq.responseText)
+        let coords = parsed["paths"][0]["points"]["coordinates"];
+        let distance = parsed["paths"][0]["distance"]
+        distance = Math.round(distance / 100) / 10
 
         let maps_points = []
         coords.forEach(e => maps_points.push({lat: e[1], lng: e[0]}));
@@ -84,6 +87,19 @@ function getDirections(start, end, map) {
             strokeWeight: 4
         });
 
+        // Get start and end location address
+        let geocoder = new google.maps.Geocoder;
+        let startAddr = "Unknown";
+        let endAddr = "Unknown";
+        geocoder.geocode({location: start}, (res, status) => {
+            if (status === "OK")
+                startAddr = res[0].formatted_address;
+        })
+        geocoder.geocode({location: end}, (res, status) => {
+            if (status === "OK")
+                endAddr = res[0].formatted_address;
+        })
+
         // Click handler for the route
         g_directions_path.addListener("click", e => {
             let pathWindow
@@ -92,6 +108,11 @@ function getDirections(start, end, map) {
             let t_directionsDiv = document.querySelector("#infoWindowDirectionsTemplate");
             let directionsDiv = document.createElement('div');
             directionsDiv.appendChild(document.importNode(t_directionsDiv.content, true));
+
+            // Set addresses
+            directionsDiv.querySelector(".routeFrom").innerHTML += startAddr;
+            directionsDiv.querySelector(".routeTo").innerHTML += endAddr;
+            directionsDiv.querySelector(".routeDist").innerHTML += distance + " km";
 
             // Click handler for the remove button
             directionsDiv.querySelector(".removeDirButton").addEventListener("click", e => {
