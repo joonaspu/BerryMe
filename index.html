@@ -16,6 +16,7 @@
 
         <!-- Script and style -->
         <script src="berries.js"></script>
+        <script src="achievements.js"></script>
         <script src="Location.js"></script>
         <script src="datahandler.js"></script>
         <script src="test.js"></script>
@@ -64,7 +65,14 @@
                                 <button class="btn btn-success" onClick="toggleOptimalPath()">Optimal route</button>
                             </div>
                         </li>
-
+                        <li class="nav-item">
+                            <div class="btn-group mr-2 mb-1">
+                                <button type="button" class="btn btn-success text-light" disabled>
+                                    <i class="fas fa-trophy"></i>
+                                </button>
+                                <button class="btn btn-success" data-toggle="modal" data-target="#myAchievements">Achievements</button>
+                            </div>
+                        </li>
                     </ul>
                     <!--form class="form-inline my-2 my-lg-0">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -112,7 +120,31 @@
                     </div>
                 </div>
             </div>
-        
+
+            <!-- Achievements window -->
+            <div class="modal fade" tabindex="-1" role="dialog" id="myAchievements">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header border-secondary">
+                            <h4 class="modal-title text-light">My achievements</h4>
+                            <button type="button" class="modal-title close" data-dismiss="modal" aria-label="Close">
+                                <span style="color:white;">
+                                    <i class="fas fa-times-circle"></i>
+                                </span>
+                                
+                            </button>                           
+                        </div>
+                        <div class="modal-body border-secondary">
+                            <div id="achievementsDiv">
+                                <ul class="list-group" id="achievementsList"></ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-block border-secondary">                                                                   
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>        
             <!-- Google Maps -->
             <div id="map"></div>
             <!-- To do: get rid of Radu's key. Not high priority. -->
