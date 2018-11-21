@@ -8,15 +8,143 @@ let g_markers = [];
 
 let g_nextid = 0;
 
-let g_serverurl = "https://berryme.herokuapp.com";
-//let g_serverurl = "http://localhost:8000/api/locations";
+let g_LOCATION_SHARE_URL = "https://berryme.herokuapp.com";
+//let g_LOCATION_SHARE_URL = "http://localhost:8000/api/locations";
 let g_enableNearbyUsers = true;
 let g_otherUsers = [];
 
 let g_myPosition = {lat: 0, lng: 0};
 
 let g_mapMoved = false;
-//TODO: organize code better
+
+function initMap() {
+    // Create Map
+    g_map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 62, lng: 26},
+        zoom: 6,
+        streetViewControl: false,
+        fullscreenControl: false,
+        zoomControl: false
+    });
+
+    // Set g_mapMoved to true if the user interacts with the map
+    g_map.addListener("drag", () => g_mapMoved = true);
+    g_map.addListener("zoom_changed", () => g_mapMoved = true);
+
+    // Add buttons to map
+    let buttonsDiv = document.createElement("div");
+    buttonsDiv.appendChild(myLocationButton());
+    buttonsDiv.appendChild(addBerryButton());
+    buttonsDiv.classList.add("row");
+    buttonsDiv.classList.add("mapButtonContainer")
+
+    g_map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(buttonsDiv);
+
+    // Position circle
+    let myPositionCircle = new google.maps.Circle({
+        map: g_map,
+        visible: false,
+        strokeColor: "blue",
+        strokeWeight: 1,
+        strokeOpacity: 0.4,
+        fillColor: "blue",
+        fillOpacity: 0.2,
+        clickable: false
+    });
+
+    // Position marker
+    let myPositionMarker = new google.maps.Marker({
+        icon: {
+            url: "res/bluedot.svg",
+            scaledSize: new google.maps.Size(16, 16),
+            anchor: new google.maps.Point(8, 8),
+        },
+        map: g_map,
+        visible: false,
+        clickable: false,
+        zIndex: -10000
+    });
+
+    // Geolocation
+    handleGeolocation(myPositionCircle, myPositionMarker);
+    
+    // Load berry types
+    generateBerries();
+    console.log(g_berries);
+
+    // Get last used mapname
+    let lm = loadLastMapName();
+    if(lm==null) {
+        lm = "Map1";
+        saveLastMapName(lm);
+    }
+    // Load berry locations from localstorage and add them to the map
+    loadBerryLocations(lm);
+}
+
+function handleGeolocation(myPositionCircle, myPositionMarker) {
+    let geolocation = null;
+    geolocation = window.navigator.geolocation;
+    if(geolocation == null) {
+        return;
+    }
+    // Get initial position
+    geolocation.getCurrentPosition(position=>{
+        initPosition(position)
+    });
+    // Update position if it changes
+    geolocation.watchPosition(position => {
+            updatePosition(position,myPositionCircle, myPositionMarker);
+        }, 
+        // Error handler
+        function(error) {
+            console.log(error);
+        },
+        // Geolocation options 
+        {
+            enableHighAccuracy: true
+        }
+    );
+}
+
+function initPosition(position) {
+    let newCoords = {lat: 0, lng: 0};
+    newCoords.lat = position["coords"].latitude;
+    newCoords.lng = position["coords"].longitude;
+
+    g_myPosition = newCoords;
+
+    // Don't change map center if user has moved the map already
+    if (g_mapMoved === false) {
+        g_map.setCenter(newCoords);
+        g_map.setZoom(13);
+    }
+    if(g_enableNearbyUsers) {
+        updateNearbyUsers(newCoords.lat,newCoords.lng);
+    }
+    console.log(position);
+}
+// TODO: Make my position markers global?
+function updatePosition(position,myPositionCircle, myPositionMarker) {
+    let newCoords = {lat: 0, lng: 0};
+    newCoords.lat = position["coords"].latitude;
+    newCoords.lng = position["coords"].longitude;
+
+    g_myPosition = newCoords;
+
+    myPositionCircle.setVisible(true);
+    myPositionCircle.setCenter(newCoords);
+    myPositionCircle.setRadius(position.coords.accuracy);
+
+    myPositionMarker.setVisible(true);
+    myPositionMarker.setPosition(newCoords);
+
+    console.log(position);
+    
+    if(g_enableNearbyUsers) {
+        updateNearbyUsers(newCoords.lat,newCoords.lng);
+    }
+}
 
 function addBerryButton() {
     // Create a new div and add the template content to it
@@ -323,123 +451,6 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
     return newMarker;
 }
 
-function initMap() {
-    // Create Map
-    g_map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 62, lng: 26},
-        zoom: 6,
-        streetViewControl: false,
-        fullscreenControl: false,
-        zoomControl: false
-    });
-
-    // Set g_mapMoved to true if the user interacts with the map
-    g_map.addListener("drag", () => g_mapMoved = true);
-    g_map.addListener("zoom_changed", () => g_mapMoved = true);
-
-    // Add buttons to map
-    let buttonsDiv = document.createElement("div");
-    buttonsDiv.appendChild(myLocationButton());
-    buttonsDiv.appendChild(addBerryButton());
-    buttonsDiv.classList.add("row");
-    buttonsDiv.classList.add("mapButtonContainer")
-
-    g_map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(buttonsDiv);
-
-    // Position circle
-    let myPositionCircle = new google.maps.Circle({
-        map: g_map,
-        visible: false,
-        strokeColor: "blue",
-        strokeWeight: 1,
-        strokeOpacity: 0.4,
-        fillColor: "blue",
-        fillOpacity: 0.2,
-        clickable: false
-    });
-
-    // Position marker
-    let myPositionMarker = new google.maps.Marker({
-        icon: {
-            url: "res/bluedot.svg",
-            scaledSize: new google.maps.Size(16, 16),
-            anchor: new google.maps.Point(8, 8),
-        },
-        map: g_map,
-        visible: false,
-        clickable: false,
-        zIndex: -10000
-    });
-
-    // Geolocation
-    let geolocation = null;
-    geolocation = window.navigator.geolocation;
-    if (geolocation != null) {
-        // Get initial position
-        geolocation.getCurrentPosition(position=>{
-            let newCoords = {lat: 0, lng: 0};
-            newCoords.lat = position["coords"].latitude;
-            newCoords.lng = position["coords"].longitude;
-
-            g_myPosition = newCoords;
-
-            // Don't change map center if user has moved the map already
-            if (g_mapMoved === false) {
-                g_map.setCenter(newCoords);
-                g_map.setZoom(13);
-            }
-            
-            console.log(position);
-        });
-        
-        // Update position if it changes
-        geolocation.watchPosition(
-            function(position) {
-                let newCoords = {lat: 0, lng: 0};
-                newCoords.lat = position["coords"].latitude;
-                newCoords.lng = position["coords"].longitude;
-
-                g_myPosition = newCoords;
-
-                myPositionCircle.setVisible(true);
-                myPositionCircle.setCenter(newCoords);
-                myPositionCircle.setRadius(position.coords.accuracy);
-
-                myPositionMarker.setVisible(true);
-                myPositionMarker.setPosition(newCoords);
-
-                console.log(position);
-                if(g_enableNearbyUsers) {
-                    updateNearbyUsers(newCoords.lat,newCoords.lng);
-                }
-                
-
-            }, 
-            // Error handler
-            function(error) {
-                console.log(error);
-            },
-            // Geolocation options 
-            {
-                enableHighAccuracy: true
-            }
-        );
-    }
-    // Load berry types
-    generateBerries();
-    console.log(g_berries);
-
-    // Get last used mapname
-    let lm = loadLastMapName();
-    if(lm==null) {
-        lm = "Map1";
-        saveLastMapName(lm);
-    }
-    // Load berry locations from localstorage and add them to the map
-    loadBerryLocations(lm);
-
-}
-
 function loadBerryLocations(mapname) {
     let mapnames = loadMapNames();
     if(mapnames===null) {
@@ -561,14 +572,13 @@ function updateNearbyUsers(lat, lng) {
     let uniqueid = window.localStorage.getItem("uniqueid");
     $.ajax({
         type: 'POST',
-        url: g_serverurl, 
+        url: g_LOCATION_SHARE_URL, 
         contentType: "application/json",
         dataType: "json",
         crossDomain: true,       
         data: JSON.stringify({id:uniqueid,nick:"testi",lat:lat,lng:lng}),  
         success: updateOthers
     });
-
 
     function updateOthers(data) {    
         console.log("POST REQUEST REC");console.log(data);
