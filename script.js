@@ -23,6 +23,9 @@ let g_mapMoved = false;
 
 let g_achievementsEnabled = true;
 
+let g_myPositionCircle;
+let g_myPositionMarker;
+
 function initMap() {
     // Create Map
     g_map = new google.maps.Map(document.getElementById('map'), {
@@ -49,7 +52,7 @@ function initMap() {
     g_map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(buttonsDiv);
 
     // Position circle
-    let myPositionCircle = new google.maps.Circle({
+    g_myPositionCircle = new google.maps.Circle({
         map: g_map,
         visible: false,
         strokeColor: "blue",
@@ -61,7 +64,7 @@ function initMap() {
     });
 
     // Position marker
-    let myPositionMarker = new google.maps.Marker({
+    g_myPositionMarker = new google.maps.Marker({
         icon: {
             url: "res/bluedot.svg",
             scaledSize: new google.maps.Size(16, 16),
@@ -74,7 +77,7 @@ function initMap() {
     });
 
     // Geolocation
-    handleGeolocation(myPositionCircle, myPositionMarker);
+    handleGeolocation();
     
     // Load berry types
     generateBerries();
@@ -90,7 +93,7 @@ function initMap() {
     loadBerryLocations(lm);
 }
 
-function handleGeolocation(myPositionCircle, myPositionMarker) {
+function handleGeolocation() {
     let geolocation = null;
     geolocation = window.navigator.geolocation;
     if(geolocation == null) {
@@ -102,7 +105,7 @@ function handleGeolocation(myPositionCircle, myPositionMarker) {
     });
     // Update position if it changes
     geolocation.watchPosition(position => {
-            updatePosition(position,myPositionCircle, myPositionMarker);
+            updatePosition(position);
         }, 
         // Error handler
         function(error) {
@@ -133,19 +136,19 @@ function initPosition(position) {
     console.log(position);
 }
 // TODO: Make my position markers global?
-function updatePosition(position,myPositionCircle, myPositionMarker) {
+function updatePosition(position) {
     let newCoords = {lat: 0, lng: 0};
     newCoords.lat = position["coords"].latitude;
     newCoords.lng = position["coords"].longitude;
 
     g_myPosition = newCoords;
 
-    myPositionCircle.setVisible(true);
-    myPositionCircle.setCenter(newCoords);
-    myPositionCircle.setRadius(position.coords.accuracy);
+    g_myPositionCircle.setVisible(true);
+    g_myPositionCircle.setCenter(newCoords);
+    g_myPositionCircle.setRadius(position.coords.accuracy);
 
-    myPositionMarker.setVisible(true);
-    myPositionMarker.setPosition(newCoords);
+    g_myPositionMarker.setVisible(true);
+    g_myPositionMarker.setPosition(newCoords);
 
     console.log(position);
     
