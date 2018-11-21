@@ -36,11 +36,17 @@
     border-width: 1px;
     border-color: lightgray;
     border-radius: 4px;
-    height: 150px;
+    height: 200px;
     width: 180px;
     overflow-y: auto;
     overflow-x: hidden;
     margin-bottom: 8px;
+}
+
+@media screen and (max-height: 800px) {
+    .berryList {
+        height: 90px;
+    }
 }
 
 .date {
