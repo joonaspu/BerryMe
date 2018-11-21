@@ -43,7 +43,7 @@
     margin-bottom: 8px;
 }
 
-@media screen and (max-height: 800px) {
+@media screen and (max-height: 650px) {
     .berryList {
         height: 90px;
     }
