@@ -135,3 +135,22 @@ $(document).on("show.bs.modal","#myAchievements",function(event) {
     } 
     document.getElementById("achievementsList").innerHTML = html;
 });
+//TODO: style?
+// When document is ready, create content for the weather
+$(document).on("show.bs.modal","#weather",function(event) {
+    let html = "";
+    
+    let el = `<li class="list-group-item">
+                Now: <span id="current-weather"></span>
+            </li>
+            <li class="list-group-item">
+                <span id="forecast-weather-1"></span>
+            </li>
+            <li class="list-group-item">
+                <span id="forecast-weather-2"></span>
+            </li>`;
+    html += el;
+    document.getElementById("weatherList").innerHTML = html; 
+    getCurrentWeather(g_myPosition.lat,g_myPosition.lng);
+    getForecastWeather(g_myPosition.lat,g_myPosition.lng);   
+});
