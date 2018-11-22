@@ -53,6 +53,14 @@
                         <li class="nav-item">
                             <div class="btn-group mr-2 mb-1">
                                 <button type="button" class="btn btn-success text-light" disabled>
+                                    <i class="fas fa-cloud-sun-rain"></i>
+                                </button>
+                                <button class="btn btn-success" data-toggle="modal" data-target="#weather">Check weather</button>
+                            </div>
+                        </li> 
+                        <li class="nav-item">
+                            <div class="btn-group mr-2 mb-1">
+                                <button type="button" class="btn btn-success text-light" disabled>
                                     <i class="fas fa-trophy"></i>
                                 </button>
                                 <button class="btn btn-success" data-toggle="modal" data-target="#myAchievements">Achievements</button>
@@ -122,6 +130,29 @@
                 </div>
             </div>
 
+            <!-- Weather window -->
+            <div class="modal fade" tabindex="-1" role="dialog" id="weather">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header border-secondary">
+                            <h4 class="modal-title text-light">Weather</h4>
+                            <button type="button" class="modal-title close" data-dismiss="modal" aria-label="Close">
+                                <span style="color:white;">
+                                    <i class="fas fa-times-circle"></i>
+                                </span>                               
+                            </button>                           
+                        </div>
+                        <div class="modal-body border-secondary">
+                            <div id="weatherDiv">
+                                <ul class="list-group" id="weatherList"></ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-block border-secondary">                                                                   
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Achievements window -->
             <div class="modal fade" tabindex="-1" role="dialog" id="myAchievements">
                 <div class="modal-dialog modal-dialog-centered">
@@ -145,7 +176,8 @@
                         </div>
                     </div>
                 </div>
-            </div>        
+            </div>
+
             <!-- Google Maps -->
             <div id="map"></div>
             <!-- To do: get rid of Radu's key. Not high priority. -->
