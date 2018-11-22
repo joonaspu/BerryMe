@@ -122,7 +122,7 @@ $(document).on("show.bs.modal","#myAchievements",function(event) {
         let ach = achievements[i];
         let el;
         if(unlocked.includes(ach.id)) {
-            el = `<li class="list-group-item list-group-item-dark">                       
+            el = `<li class="list-group-item list-group-item-success text-dark">                       
                     <img src="${ach.url}" height=32 width=32/> ${ach.name} - ${ach.description}
                 </li>`;
         } else {
