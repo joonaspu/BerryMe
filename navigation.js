@@ -141,7 +141,7 @@ $(document).on("show.bs.modal","#weather",function(event) {
     let html = "";
     
     let el = `<li class="list-group-item">
-                Now: <span id="current-weather"></span>
+                <span id="current-weather"></span>
             </li>`
     html += el;
     for(let i = 1;i<=g_FORECAST_COUNT;i++) {
