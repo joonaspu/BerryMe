@@ -74,6 +74,10 @@
     overflow: auto;
 }
 
+.map-item-button-name {
+    font-size: 14px;
+}
+
 #success-alert {
     position: absolute;
     width: 100%;

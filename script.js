@@ -539,6 +539,7 @@ function importMap(event) {
             saveMapNames(mapnames);
             document.getElementById("file-input-label").innerHTML = "Choose File";
             $("#myMaps").modal("hide");
+            createSuccessAlert(`Map ${tempmap.name} successfully imported!`);
         } else {
             console.log("Map name in use!");
         }
