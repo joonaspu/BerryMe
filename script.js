@@ -643,7 +643,8 @@ function updateNearbyUsers(lat, lng) {
                 },
                 map: g_map,
                 visible: false,
-                clickable: false
+                clickable: false,
+                zIndex: -100000
             });
             otherPositionMarker.setVisible(true);
             otherPositionMarker.setPosition({lat:user.lat,lng:user.lng});
