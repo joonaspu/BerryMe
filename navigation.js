@@ -22,12 +22,30 @@ $(document).on("show.bs.modal","#myMaps",function(event) {
         console.log(this.files[0].name);
         document.getElementById("file-input-label").innerHTML = this.files[0].name;      
     });
+
+    // Check if new map name is valid every time user writes something
+    // Colors?
+    $("#new-map-input").on("keyup",event=>{
+        console.log("EVENTT");
+        let name = document.getElementById('new-map-input').value;
+
+        let mapnames = loadMapNames();
+        if(mapnames.includes(name)) {
+            $("#new-map-input").addClass("bg-danger");
+            return;
+        }
+        $("#new-map-input").removeClass("bg-danger");
+    });
 });
 
 // Used when clicked New Map button
 function newMapButtonClick() {
     let name = document.getElementById('new-map-input').value;
     if(!name.length>0) {
+        return;
+    }
+    let mapnames = loadMapNames();
+    if(mapnames.includes(name)) {
         return;
     }
     createNewMap(name);
@@ -39,7 +57,6 @@ function newMapButtonClick() {
 
 
 // Confirm remove action
-// TODO: Success confirmation
 function openRemoveWindow(mapname) {
 
     let el = `  <h2 class="text-light">Remove: "${mapname}" permanently?</h2>
@@ -157,6 +174,16 @@ function createSuccessAlert(message) {
     document.getElementById("app").append(alert);
     $("#success-alert-content").html(message);
     $("#success-alert").delay(2000).fadeOut(2000, function() {
+        $(this).remove();
+    });
+}
+
+function createDangerAlert(message) {
+    let t_alert = document.querySelector("#alert-danger-template");
+    let alert = document.importNode(t_alert.content,true);
+    document.getElementById("app").append(alert);
+    $("#danger-alert-content").html(message);
+    $("#danger-alert").delay(2000).fadeOut(2000, function() {
         $(this).remove();
     });
 }

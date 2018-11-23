@@ -524,6 +524,7 @@ function downloadMap(mapname) {
     anchor.click();
 }
 // Import txt file and add it to the maps
+// TODO (maybe): Ability 
 function importMap(event) {
     let files = document.getElementById("file-input").files;
     if(files[0]==null) {
@@ -544,6 +545,7 @@ function importMap(event) {
             createSuccessAlert(`Map ${tempmap.name} successfully imported!`);
         } else {
             console.log("Map name in use!");
+            createDangerAlert("Map name is already in use!");
         }
     }
 

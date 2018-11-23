@@ -84,6 +84,12 @@
     z-index: 1000;
 }
 
+#danger-alert {
+    position: absolute;
+    width: 100%;
+    z-index: 10000000;
+}
+
 html, body {
     height: 100%;
     /*margin: 0;
