@@ -13,8 +13,17 @@ function getCurrentWeather(latitude, longitude) {
         let weatherDiv = document.getElementById("current-weather");
         if (weatherDiv !== null)
             weatherDiv.innerHTML = `${weather}; Temperature: ${temperature}&deg;C; Wind speed: ${wind}m/s`;
-        document.getElementById("weatherButton").innerHTML = `<img width=32 height=32 src="
-        http://openweathermap.org/img/w/${icon}.png"></img> ${Math.round(temperature)}°C`
+    });
+}
+
+function initWeatherButton(latitude, longitude, button) {
+    let url = `${g_OPENWEATHERMAP_URL}weather?lat=${latitude}&lon=${longitude}&APPID=${g_OPENWEATHERMAP_API_KEY}`;
+    $.get(url, function(response) {
+        let currentweather = response;
+        let temperature = parseFloat(currentweather.main.temp-273.15).toFixed(1);
+        let icon = currentweather.weather[0].icon;
+        let weatherDiv = document.getElementById("current-weather");
+        button.innerHTML = `<img width=32 height=32 src="https://openweathermap.org/img/w/${icon}.png"></img> ${Math.round(temperature)}°C`;
     });
 }
 

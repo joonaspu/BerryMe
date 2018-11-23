@@ -126,8 +126,9 @@ function initPosition(position) {
     g_myPosition = newCoords;
 
     // Add weather button
-    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(weatherButton());
-    getCurrentWeather(newCoords.lat, newCoords.lng);
+    let weatherButtonDiv = weatherButton()
+    initWeatherButton(newCoords.lat, newCoords.lng, weatherButtonDiv.querySelector("button"));
+    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(weatherButtonDiv);
     console.log("Added weather button");
 
     // Don't change map center if user has moved the map already
