@@ -27,8 +27,23 @@ function getAchievements() {
 function unlockAchievement(id) {
     if(g_achievementsEnabled) {
         let ach = getAchievements();
+        console.log(ach);       
+        // Check if achievement is already unlocked
+        if(ach.includes(id)) {
+            return;
+        }
+        // Find achievement name for the message
+        let achname = "";
+        for(let i = 0; i<achievements.length;i++) {
+            let tempAch = achievements[i];
+            if(tempAch.id === id) {
+                achname = tempAch.name;
+                break;
+            }
+        }
         ach.push(id);
         window.localStorage.setItem("unlockedAchievements", JSON.stringify(ach));
+        createSuccessAlert(`You unlocked the achievement: ${achname}!`);
     }
 }
 // Not the best solution out there, make more modular
