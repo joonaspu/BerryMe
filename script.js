@@ -50,7 +50,6 @@ function initMap() {
     buttonsDiv.classList.add("mapButtonContainer")
 
     g_map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(buttonsDiv);
-    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(weatherButton());
 
     // Position circle
     g_myPositionCircle = new google.maps.Circle({
@@ -219,15 +218,6 @@ function myLocationButton() {
     });
 
     return myLocationDiv;
-}
-
-function weatherButton() {
-    // Create a new div and add the template content to it
-    let t_weatherDiv = document.querySelector("#weatherButtonTemplate");
-    let weatherDiv = document.createElement('div');
-    weatherDiv.appendChild(document.importNode(t_weatherDiv.content, true));
-
-    return weatherDiv;
 }
 
 // Returns a marker with the given ID (or null if it doesn't exist)
