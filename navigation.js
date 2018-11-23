@@ -155,7 +155,7 @@ function createSuccessAlert(message) {
     let t_alert = document.querySelector("#alert-template");
     let alert = document.importNode(t_alert.content,true);
     document.getElementById("app").append(alert);
-    $("#success-alert").html(message);
+    $("#success-alert-content").html(message);
     $("#success-alert").delay(2000).fadeOut(2000, function() {
         $(this).remove();
     });
