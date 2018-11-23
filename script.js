@@ -26,6 +26,8 @@ let g_achievementsEnabled = true;
 let g_myPositionCircle;
 let g_myPositionMarker;
 
+let g_firstPositionFound = false;
+
 function initMap() {
     // Create Map
     g_map = new google.maps.Map(document.getElementById('map'), {
@@ -99,14 +101,9 @@ function handleGeolocation() {
     if(geolocation == null) {
         return;
     }
-    // Get initial position
-    geolocation.getCurrentPosition(position=>{
-        initPosition(position)
-    });
+
     // Update position if it changes
-    geolocation.watchPosition(position => {
-            updatePosition(position);
-        }, 
+    geolocation.watchPosition(updatePosition, 
         // Error handler
         function(error) {
             console.log(error);
@@ -118,30 +115,6 @@ function handleGeolocation() {
     );
 }
 
-function initPosition(position) {
-    let newCoords = {lat: 0, lng: 0};
-    newCoords.lat = position["coords"].latitude;
-    newCoords.lng = position["coords"].longitude;
-
-    g_myPosition = newCoords;
-
-    // Add weather button
-    let weatherButtonDiv = weatherButton()
-    initWeatherButton(newCoords.lat, newCoords.lng, weatherButtonDiv.querySelector("button"));
-    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(weatherButtonDiv);
-    console.log("Added weather button");
-
-    // Don't change map center if user has moved the map already
-    if (g_mapMoved === false) {
-        g_map.setCenter(newCoords);
-        g_map.setZoom(13);
-    }
-    if(g_enableNearbyUsers) {
-        updateNearbyUsers(newCoords.lat,newCoords.lng);
-    }
-    console.log(position);
-}
-// TODO: Make my position markers global?
 function updatePosition(position) {
     let newCoords = {lat: 0, lng: 0};
     newCoords.lat = position["coords"].latitude;
@@ -149,6 +122,26 @@ function updatePosition(position) {
 
     g_myPosition = newCoords;
 
+    // Code that only runs on the first location update
+    if (g_firstPositionFound === false) {
+        // Add weather button
+        let weatherButtonDiv = weatherButton()
+        initWeatherButton(newCoords.lat, newCoords.lng, weatherButtonDiv.querySelector("button"));
+        g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(weatherButtonDiv);
+
+        // Don't change map center if user has moved the map already
+        if (g_mapMoved === false) {
+            g_map.setCenter(newCoords);
+            g_map.setZoom(13);
+        }
+        if(g_enableNearbyUsers) {
+            updateNearbyUsers(newCoords.lat,newCoords.lng);
+        }
+
+        g_firstPositionFound = true;
+    }
+
+    // Update user position marker/circle
     g_myPositionCircle.setVisible(true);
     g_myPositionCircle.setCenter(newCoords);
     g_myPositionCircle.setRadius(position.coords.accuracy);
