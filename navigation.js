@@ -142,14 +142,15 @@ $(document).on("show.bs.modal","#weather",function(event) {
     
     let el = `<li class="list-group-item">
                 Now: <span id="current-weather"></span>
-            </li>
-            <li class="list-group-item">
-                <span id="forecast-weather-1"></span>
-            </li>
-            <li class="list-group-item">
-                <span id="forecast-weather-2"></span>
-            </li>`;
+            </li>`
     html += el;
+    for(let i = 1;i<=g_FORECAST_COUNT;i++) {
+        el =    `<li class="list-group-item">
+                    <span id="forecast-weather-${i}"></span>
+                </li>`;
+            html += el;
+    }
+
     document.getElementById("weatherList").innerHTML = html; 
     getCurrentWeather(g_myPosition.lat,g_myPosition.lng);
     getForecastWeather(g_myPosition.lat,g_myPosition.lng);   
