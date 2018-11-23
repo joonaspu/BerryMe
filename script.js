@@ -511,6 +511,8 @@ function changeMap(mapname) {
 
     // Remove TSP path from map
     resetTSP();
+    //close map window
+    $("#myMaps").modal("hide");
 }
 // Download map as txt-file
 function downloadMap(mapname) {
