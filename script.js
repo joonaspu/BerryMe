@@ -145,6 +145,10 @@ function updatePosition(position) {
     g_myPositionCircle.setVisible(true);
     g_myPositionCircle.setCenter(newCoords);
     g_myPositionCircle.setRadius(position.coords.accuracy);
+    if (position.coords.accuracy < 150)
+        g_myPositionCircle.setOptions({fillOpacity: 0.2});
+    else
+        g_myPositionCircle.setOptions({fillOpacity: 0.05});
 
     g_myPositionMarker.setVisible(true);
     g_myPositionMarker.setPosition(newCoords);
