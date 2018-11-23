@@ -50,7 +50,6 @@ function initMap() {
     buttonsDiv.classList.add("mapButtonContainer")
 
     g_map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(buttonsDiv);
-    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(weatherButton());
 
     // Position circle
     g_myPositionCircle = new google.maps.Circle({
@@ -125,6 +124,11 @@ function initPosition(position) {
     newCoords.lng = position["coords"].longitude;
 
     g_myPosition = newCoords;
+
+    // Add weather button
+    g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(weatherButton());
+    getCurrentWeather(newCoords.lat, newCoords.lng);
+    console.log("Added weather button");
 
     // Don't change map center if user has moved the map already
     if (g_mapMoved === false) {

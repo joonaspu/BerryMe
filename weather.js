@@ -10,7 +10,9 @@ function getCurrentWeather(latitude, longitude) {
         let temperature = parseFloat(currentweather.main.temp-273.15).toFixed(1);
         let wind = parseFloat(currentweather.wind.speed).toFixed(1);
         let icon = currentweather.weather[0].icon;
-        document.getElementById("current-weather").innerHTML = `${weather}; Temperature: ${temperature}&deg;C; Wind speed: ${wind}m/s`;
+        let weatherDiv = document.getElementById("current-weather");
+        if (weatherDiv !== null)
+            weatherDiv.innerHTML = `${weather}; Temperature: ${temperature}&deg;C; Wind speed: ${wind}m/s`;
         document.getElementById("weatherButton").innerHTML = `<img width=32 height=32 src="
         http://openweathermap.org/img/w/${icon}.png"></img> ${Math.round(temperature)}°C`
     });
