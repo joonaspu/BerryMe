@@ -33,6 +33,7 @@ function newMapButtonClick() {
     createNewMap(name);
     document.getElementById('new-map-input').value = "";
     $("#myMaps").modal("hide");
+    createSuccessAlert(`New map ${name} created!`);
 }
 
 
@@ -53,14 +54,7 @@ function openRemoveWindow(mapname) {
         console.log("Removed map: "+mapname);
         $("#genericWindow").modal("hide");
         $("#myMaps").modal("hide");
-
-        let t_alert = document.querySelector("#alert-template");
-        let alert = document.importNode(t_alert.content,true);
-        document.getElementById("app").append(alert);
-        $("#success-alert").delay(2000).fadeOut(2000, function() {
-            $(this).remove();
-        });
-
+        createSuccessAlert(`Map ${mapname} successfully removed!`);
     });
     document.getElementById("genericWindowContent").querySelector(".noButton").addEventListener("click", function() {
         $("#genericWindow").modal("hide");
@@ -89,6 +83,7 @@ function openRenameWindow(mapname) {
         renameMap(mapname,name);
         $("#genericWindow").modal("hide");
         $("#myMaps").modal("hide");
+        createSuccessAlert(`${mapname} renamed to ${name}!`);
     });
     $("#genericWindow").modal("show");  
 }
@@ -155,3 +150,13 @@ $(document).on("show.bs.modal","#weather",function(event) {
     getCurrentWeather(g_myPosition.lat,g_myPosition.lng);
     getForecastWeather(g_myPosition.lat,g_myPosition.lng);   
 });
+
+function createSuccessAlert(message) {
+    let t_alert = document.querySelector("#alert-template");
+    let alert = document.importNode(t_alert.content,true);
+    document.getElementById("app").append(alert);
+    $("#success-alert").html(message);
+    $("#success-alert").delay(2000).fadeOut(2000, function() {
+        $(this).remove();
+    });
+}
