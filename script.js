@@ -88,7 +88,7 @@ function initMap() {
     // Get last used mapname
     let lm = loadLastMapName();
     if(lm==null) {
-        lm = "Map1";
+        lm = "EmptyMap";
         saveLastMapName(lm);
     }
     // Load berry locations from localstorage and add them to the map
@@ -484,7 +484,10 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
 function loadBerryLocations(mapname) {
     let mapnames = loadMapNames();
     if(mapnames===null) {
-        generateBerryMap();
+        //generateBerryMap();
+        let tempmap = {"name":mapname,"locations":[]};
+        window.localStorage.setItem(mapname,JSON.stringify(tempmap));
+        window.localStorage.setItem("maps",JSON.stringify([mapname]));
         mapnames = loadMapNames();
     }
     if(mapnames.includes(mapname)) {
