@@ -2,13 +2,13 @@
 
 // Format in localstorage -> e.g. [id,id,...]
 achievements = [
-    {"id": 0,"name":"Beginner", "description":"Add 1 berry", "url":"res/achievements/radu.png"},
-    {"id": 1,"name":"Novice", "description":"Add 25 berries", "url":"res/achievements/radu.png"},
-    {"id": 2,"name":"Professional", "description":"Add 50 berries", "url":"res/achievements/radu.png"},
-    {"id": 3,"name":"Veteran", "description":"Add 100 berries", "url":"res/achievements/radu.png"},
+    {"id": 0,"name":"Beginner", "description":"Add 1 berry", "url":"res/achievements/beginner.png"},
+    {"id": 1,"name":"Novice", "description":"Add 25 berries", "url":"res/achievements/novice.png"},
+    {"id": 2,"name":"Professional", "description":"Add 50 berries", "url":"res/achievements/professional.png"},
+    {"id": 3,"name":"Veteran", "description":"Add 100 berries", "url":"res/achievements/veteran.png"},
     {"id": 4,"name":"What are you doing here?", "description":"Visit Tuusniemi", "url":"res/achievements/radu.png"},
-    {"id": 5,"name":"Joe's mouth", "description":"Visit Joensuu", "url":"res/achievements/radu.png"},
-    {"id": 6,"name":"Pasanen", "description":"Visit Kuopio", "url":"res/achievements/radu.png"},
+    {"id": 5,"name":"Joe's mouth", "description":"Visit Joensuu", "url":"res/achievements/joesmouth.png"},
+    {"id": 6,"name":"Pasanen", "description":"Visit Kuopio", "url":"res/achievements/pasanen.png"},
 ];
 
 // Load unlocked achievements from the localStorage
