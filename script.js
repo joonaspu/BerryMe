@@ -561,6 +561,10 @@ function removeMap(mapname) {
     let index = mapnames.indexOf(mapname);
     mapnames.splice(index,1);
     saveMapNames(mapnames);
+    if(mapnames.length <= 0) {
+        createNewMap("EmptyMap");
+        return;
+    }
     if(mapname === g_currentMapName) {
         g_currentMapName = null;      
         changeMap(loadMapNames()[0]);
