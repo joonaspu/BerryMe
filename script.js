@@ -645,10 +645,10 @@ function updateNearbyUsers(lat, lng) {
             let otherPositionMarker = new google.maps.Marker({
                 icon: {
                     //path: "google.maps.SymbolPath.CIRCLE",
-                    url: "res/radu_marker.png", // Change this
+                    url: "res/user-solid.svg",
                     scale: 1,
-                    size:new google.maps.Size(40,40),
-                    scaledSize:new google.maps.Size(40,40),
+                    size:new google.maps.Size(20,20),
+                    scaledSize:new google.maps.Size(20,20),
                 },
                 map: g_map,
                 visible: false,

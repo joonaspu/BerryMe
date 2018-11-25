@@ -26,7 +26,7 @@ $(document).on("show.bs.modal","#myMaps",function(event) {
     // Check if new map name is valid every time user writes something
     // Colors?
     $("#new-map-input").on("keyup",event=>{
-        console.log("EVENTT");
+        
         let name = document.getElementById('new-map-input').value;
 
         let mapnames = loadMapNames();
