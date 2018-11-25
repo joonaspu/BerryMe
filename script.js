@@ -28,6 +28,9 @@ let g_myPositionMarker;
 
 let g_firstPositionFound = false;
 
+// How often the weather gets updated
+let WEATHER_INTERVAL = 1000*60*10;
+
 function initMap() {
     // Create Map
     g_map = new google.maps.Map(document.getElementById('map'), {
@@ -126,8 +129,11 @@ function updatePosition(position) {
     if (g_firstPositionFound === false) {
         // Add weather button
         let weatherButtonDiv = weatherButton()
-        initWeatherButton(newCoords.lat, newCoords.lng, weatherButtonDiv.querySelector("button"));
+        updateWeatherButton(weatherButtonDiv.querySelector("button"));
         g_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(weatherButtonDiv);
+
+        // Set timer for updating weather button
+        setInterval(updateWeatherButton, WEATHER_INTERVAL, weatherButtonDiv.querySelector("button"));
 
         // Don't change map center if user has moved the map already
         if (g_mapMoved === false) {
