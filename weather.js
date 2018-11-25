@@ -24,13 +24,12 @@ function getCurrentWeather(latitude, longitude) {
     });
 }
 
-function initWeatherButton(latitude, longitude, button) {
-    let url = `${g_OPENWEATHERMAP_URL}weather?lat=${latitude}&lon=${longitude}&APPID=${g_OPENWEATHERMAP_API_KEY}`;
+function updateWeatherButton(button) {
+    let url = `${g_OPENWEATHERMAP_URL}weather?lat=${g_myPosition.lat}&lon=${g_myPosition.lng}&APPID=${g_OPENWEATHERMAP_API_KEY}`;
     $.get(url, function(response) {
         let currentweather = response;
         let temperature = parseFloat(currentweather.main.temp-273.15).toFixed(1);
         let icon = currentweather.weather[0].icon;
-        let weatherDiv = document.getElementById("current-weather");
         button.innerHTML = `<img width=32 height=32 src="https://openweathermap.org/img/w/${icon}.png"></img> ${Math.round(temperature)}°C`;
     });
 }
