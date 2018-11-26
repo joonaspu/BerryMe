@@ -81,7 +81,6 @@ function openRemoveWindow(mapname) {
   
 }
 
-//TODO: make window
 function openRenameWindow(mapname) {
     let el = `  <h2 class="text-light">Rename the map: ${mapname}</h2>
                 <div class="input-group">
@@ -92,9 +91,27 @@ function openRenameWindow(mapname) {
                 </div>`;
     document.getElementById("genericWindowContent").innerHTML = el;
 
+    // Check if new map name is valid every time user writes something
+    // Colors?
+    $("#rename-map-input").on("keyup",event=>{
+        
+        let name = document.getElementById('rename-map-input').value;
+
+        let mapnames = loadMapNames();
+        if(mapnames.includes(name)) {
+            $("#rename-map-input").addClass("bg-danger");
+            return;
+        }
+        $("#rename-map-input").removeClass("bg-danger");
+    });
+
     document.getElementById("genericWindowContent").querySelector(".renameButton").addEventListener("click", function() {
         let name = document.getElementById("genericWindowContent").querySelector("#rename-map-input").value;
         if(!name.length > 0) {
+            return;
+        }
+        let mapnames = loadMapNames();
+        if(mapnames.includes(name)) {
             return;
         }
         renameMap(mapname,name);
