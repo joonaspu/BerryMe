@@ -162,16 +162,16 @@ $(document).on("show.bs.modal","#myAchievements",function(event) {
     } 
     document.getElementById("achievementsList").innerHTML = html;
 });
-//TODO: style?
-// When document is ready, create content for the weather
+
+// When document is ready and weather window opens, create content for the weather
 $(document).on("show.bs.modal","#weather",function(event) {
     let html = "";
-    
+    /*
     let el = `<li class="list-group-item">
                 <span id="current-weather"></span>
             </li>`
-    html += el;
-    for(let i = 1;i<=g_FORECAST_COUNT;i++) {
+    html += el;*/
+    for(let i = 0;i<=g_FORECAST_COUNT;i++) {
         el =    `<li class="list-group-item">
                     <span id="forecast-weather-${i}"></span>
                 </li>`;
@@ -179,7 +179,7 @@ $(document).on("show.bs.modal","#weather",function(event) {
     }
 
     document.getElementById("weatherList").innerHTML = html; 
-    getCurrentWeather(g_myPosition.lat,g_myPosition.lng);
+    //getCurrentWeather(g_myPosition.lat,g_myPosition.lng);
     getForecastWeather(g_myPosition.lat,g_myPosition.lng);   
 });
 
