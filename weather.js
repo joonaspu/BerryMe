@@ -50,7 +50,6 @@ function getForecastWeather(latitude, longitude) {
             let time = forecastweather.dt_txt.split(" ")[1].split(":");
             // Turn data into html
             let timehtml = `<span class="badge badge-info"><i class="far fa-clock"></i> ${time[0]}:${time[1]}</span> `;
-            if(i===0) timehtml = `<span class="badge badge-info"><i class="far fa-clock"></i> Now</span> `;
             let weatherhtml = `<img width=32 height=32 src="${iconurl}"></img><span class="text-capitalize">${weather}</span> `;
             let temperaturehtml = `<i class="fas fa-temperature-low"></i> ${temperature}&deg;C `;
             let windhtml = `<i class="fas fa-wind"></i> ${wind}m/s `;
