@@ -31,10 +31,10 @@ $(document).on("show.bs.modal","#myMaps",function(event) {
 
         let mapnames = loadMapNames();
         if(mapnames.includes(name)) {
-            $("#new-map-input").addClass("bg-danger");
+            $("#new-map-input").addClass("bg-danger text-light");
             return;
         }
-        $("#new-map-input").removeClass("bg-danger");
+        $("#new-map-input").removeClass("bg-danger text-light");
     });
 });
 
@@ -93,16 +93,14 @@ function openRenameWindow(mapname) {
 
     // Check if new map name is valid every time user writes something
     // Colors?
-    $("#rename-map-input").on("keyup",event=>{
-        
+    $("#rename-map-input").on("keyup",event=>{       
         let name = document.getElementById('rename-map-input').value;
-
         let mapnames = loadMapNames();
         if(mapnames.includes(name)) {
-            $("#rename-map-input").addClass("bg-danger");
+            $("#rename-map-input").addClass("bg-danger text-light");
             return;
         }
-        $("#rename-map-input").removeClass("bg-danger");
+        $("#rename-map-input").removeClass("bg-danger text-light");
     });
 
     document.getElementById("genericWindowContent").querySelector(".renameButton").addEventListener("click", function() {
