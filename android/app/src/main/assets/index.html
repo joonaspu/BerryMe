@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <!-- 3rd party libraries-->
+        <!-- Bootstrap -->
+        <!-- Use JQuery min-version -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <!-- 3rd party libraries -->
+
+        <!--Scripts and style -->
+        <script src="berries.js"></script>
+        <script src="achievements.js"></script>
+        <script src="Location.js"></script>
+        <script src="datahandler.js"></script>
+        <script src="test.js"></script>
+        <script src="script.js"></script>
+        <script src="navigation.js"></script>
+        <script src="routes.js"></script> 
+        <script src="weather.js"></script>   
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="res/logo.png">
+
+        <title>BerryMe</title>
+    </head>
+    <body>
+        <div id="app">
+
+            <!-- Bootstrap navbar -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="#"><img width=32 height=32 src="res/logo.png"> BerryMe</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+            
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <div class="btn-group mr-2 mb-1">
+                                <button type="button" class="btn btn-success text-light" disabled>
+                                    <i class="fas fa-map"></i>
+                                </button>
+                                <button type="button" class="btn btn-success" id="navbar-mapname" data-toggle="modal" data-target="#myMaps">
+                                    
+                                </button>
+                            </div>
+                        </li> 
+                        <li class="nav-item">
+                            <div class="btn-group mr-2 mb-1">
+                                <button type="button" class="btn btn-success text-light" disabled>
+                                    <i class="fas fa-trophy"></i>
+                                </button>
+                                <button class="btn btn-success" data-toggle="modal" data-target="#myAchievements">Achievements</button>
+                            </div>
+                        </li>                        
+                        <li class="nav-item">
+                            <div class="btn-group mr-2 mb-1">
+                                <button type="button" class="btn btn-success text-light" id="navbar-nearbyusers-label" disabled>
+                                    <i class="fas fa-users"></i> 
+                                </button>
+                                <button class="btn btn-success" onClick="toggleNearbyUsers()" id="navbar-nearbyusers">Show Nearby Users</button>
+                            </div>                          
+                        </li>
+                        <li class="nav-item">
+                            <div class="btn-group mr-2 mb-1">
+                                <button type="button" class="btn btn-success text-light" disabled>
+                                    <i class="fas fa-route"></i>
+                                </button>
+                                <button class="btn btn-success" onClick="toggleOptimalPath()">Optimal route</button>
+                            </div>
+                        </li>
+                    </ul>
+                    <!--form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form-->
+                </div>
+            </nav>
+
+            <!-- Maps window -->
+            <div class="modal fade" tabindex="-1" role="dialog" id="myMaps">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header border-secondary">
+                            <h4 class="modal-title text-light">My maps</h4>
+                            <button type="button" class="modal-title close" data-dismiss="modal" aria-label="Close">
+                                <span style="color:white;">
+                                    <i class="fas fa-times-circle"></i>
+                                </span>
+                                
+                            </button>                           
+                        </div>
+                        <div class="modal-body border-secondary px-2">
+                            <div id="mapsDiv">
+                                <ul class="list-group" id="mapList"></ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-block border-secondary">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Map name" id="new-map-input">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="button" onClick="newMapButtonClick()"><i class="fas fa-plus"></i> Create map</button>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group ml-0">
+                                <div class="custom-file">                           
+                                    <input class="custom-file-input" type="file" id="file-input">
+                                    <label class="custom-file-label" for="customFile" id="file-input-label">Choose file</label>                                   
+                                </div>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-success" onClick="importMap()"><i class="fas fa-plus"></i> Import map</button> 
+                                </div>
+                            </div>                                                                   
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weather window -->
+            <div class="modal fade" tabindex="-1" role="dialog" id="weather">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header border-secondary">
+                            <h4 class="modal-title text-light">Weather</h4>
+                            <button type="button" class="modal-title close" data-dismiss="modal" aria-label="Close">
+                                <span style="color:white;">
+                                    <i class="fas fa-times-circle"></i>
+                                </span>                               
+                            </button>                           
+                        </div>
+                        <div class="modal-body border-secondary">
+                            <div id="weatherDiv">
+                                <ul class="list-group" id="weatherList"></ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-block border-secondary">                                                                   
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Achievements window -->
+            <div class="modal fade" tabindex="-1" role="dialog" id="myAchievements">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header border-secondary">
+                            <h4 class="modal-title text-light">My achievements</h4>
+                            <button type="button" class="modal-title close" data-dismiss="modal" aria-label="Close">
+                                <span style="color:white;">
+                                    <i class="fas fa-times-circle"></i>
+                                </span>
+                                
+                            </button>                           
+                        </div>
+                        <div class="modal-body border-secondary">
+                            <div id="achievementsDiv">
+                                <ul class="list-group" id="achievementsList"></ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-block border-secondary">                                                                   
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Google Maps -->
+            <div id="map"></div>
+            <!-- To do: get rid of Radu's key. Not high priority. -->
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2YXHpksnAc5JXUEF1M0yFxy9xqWr-XYw&callback=initMap" async defer></script>
+        </div>
+
+
+        <!-- HTML templates for the berry infoWindow contents -->
+        <template id="infoWindowTemplate">
+            <div class="infoWindow">
+                <div class="infoWindowTitle">Edit location</div>
+
+                <div class="infoWindowSubtitle">Type of berry</div>
+                <div class="berryList">
+                    <div class="list-group">
+                        <!--List of berries goes here-->
+                    </div>
+                </div>
+
+                <div class="infoWindowSubtitle">Rating</div>
+                <div><div class="stars"></div><input type="number" min=1 max=5 value=3 hidden></div>
+
+                <div class="date">Modified: </div>
+
+                <button class="saveButton btn btn-success btn-sm"><i class="fas fa-save"></i> Save</button>
+                <button class="directionsButton btn btn-primary btn-sm"><i class="fas fa-directions"></i></button>
+                <button class="removeButton btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                <input type="hidden" id="markerId" name="markerId" value="-1">
+            </div>
+        </template>
+        
+        <template id="infoWindowBerryTemplate">
+            <button type="button" class="berryButton list-group-item list-group-item-action p-2"></button>
+        </template>
+
+        <!-- HTML template for the route directions infoWindow -->
+        <template id="infoWindowDirectionsTemplate">
+            <h4>Directions</h4>
+            <div class="routeFrom"><b>From:</b> </div>
+            <div class="routeTo"><b>To:</b> </div>
+            <div class="routeDist"><b>Distance:</b> </div>
+            <br>
+            <button type="button" class="removeDirButton btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Remove</button>
+        </template>
+
+        <!-- HTML template for the "Add Berry" button -->
+        <template id="addBerryTemplate">
+            <div class="mapButton" title="Click to add a berry">
+                <button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Add Berry</button>
+            </div>
+        </template>
+
+        <!-- HTML template for the user location button -->
+        <template id="myLocationTemplate">
+            <div class="mapButton" title="Show my location">
+                <button type="button" class="btn btn-primary"><i class="far fa-dot-circle"></i></button>
+            </div>
+        </template>
+
+        <!-- HTML template for the weather button -->
+        <template id="weatherButtonTemplate">
+            <div class="weatherButton">
+                <button id="weatherButton" data-toggle="modal" data-target="#weather" type="button" class="btn btn-sm btn-light py-0 pl-1"><i class="fas fa-cloud-sun-rain"></i></button>
+            </div>
+        </template>
+
+        <!--Generic modal window-->
+        <div class="modal fade" tabindex="-2" role="alertdialog" id="genericWindow">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-secondary">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-light">ALERT!</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span style="color:white;">
+                                <i class="fas fa-window-close"></i>   
+                            </span>                              
+                        </button>                           
+                    </div>
+                    <div class="modal-body">
+                        <div id="genericWindowContent"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <div id="genericWindowFooter"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert (success) template-->
+        <template id="alert-template">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+                <div id="success-alert-content">#SUCCESS ALERT!</div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+        </template>
+
+    <!-- Alert danger template-->
+        <template id="alert-danger-template">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="danger-alert">
+                <div id="danger-alert-content">#DANGER ALERT!</div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+        </template>       
+
+    </body>
+</html>

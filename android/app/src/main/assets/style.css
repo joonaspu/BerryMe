@@ -1,0 +1,98 @@
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#map {
+    flex-grow: 1; /* Make the map fill the rest of the window */
+}
+
+.mapButtonContainer {
+    margin-right: 11px;
+}
+
+.mapButton {
+    margin-bottom: 11px;
+    margin-left: 11px;
+}
+
+.weatherButton {
+    margin-top: 11px;
+    margin-right: 11px;
+}
+
+.infoWindow {
+    margin: 10px;
+}
+
+.infoWindowTitle {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.infoWindowSubtitle {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.berryList {
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    border-radius: 4px;
+    height: 100px; /* min-height: 515px */
+    width: 180px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 8px;
+}
+
+@media screen and (min-height: 565px) {
+    .berryList {
+        height: 150px;
+    }
+}
+
+@media screen and (min-height: 615px) {
+    .berryList {
+        height: 200px;
+    }
+}
+
+.date {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.removeButton {
+    float: right;
+}
+
+#mapList{
+    max-height: 50vh;
+    overflow: auto;
+}
+
+.map-item-button-name {
+    font-size: 14px;
+}
+
+#success-alert {
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+
+#danger-alert {
+    position: absolute;
+    width: 100%;
+    z-index: 10000000;
+}
+
+html, body {
+    height: 100%;
+    /*margin: 0;
+    padding: 0;*/
+    overscroll-behavior: none; /* Disable pull to refresh on Chrome */
+}
