@@ -47,7 +47,7 @@
                                 <button type="button" class="btn btn-success text-light" disabled>
                                     <i class="fas fa-map"></i>
                                 </button>
-                                <button type="button" class="btn btn-success" id="navbar-mapname" data-toggle="modal" data-target="#myMaps">
+                                <button type="button" class="btn btn-success closeNavbarButton" id="navbar-mapname" data-toggle="modal" data-target="#myMaps">
                                     
                                 </button>
                             </div>
@@ -57,7 +57,7 @@
                                 <button type="button" class="btn btn-success text-light" disabled>
                                     <i class="fas fa-trophy"></i>
                                 </button>
-                                <button class="btn btn-success" data-toggle="modal" data-target="#myAchievements">Achievements</button>
+                                <button class="btn btn-success closeNavbarButton" data-toggle="modal" data-target="#myAchievements">Achievements</button>
                             </div>
                         </li>                        
                         <li class="nav-item">
@@ -77,12 +77,15 @@
                             </div>
                         </li>
                     </ul>
-                    <!--form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form-->
                 </div>
             </nav>
+
+            <!-- Close navbar when a button is clicked -->
+            <script>
+            $('.closeNavbarButton').on('click', function(){
+                $('.navbar-collapse').collapse('hide');
+            });
+            </script>
 
             <!-- Maps window -->
             <div class="modal fade" tabindex="-1" role="dialog" id="myMaps">
