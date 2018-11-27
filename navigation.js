@@ -184,21 +184,37 @@ $(document).on("show.bs.modal","#weather",function(event) {
 });
 
 function createSuccessAlert(message) {
+    //console.log(g_map.controls[google.maps.ControlPosition.TOP_CENTER]);
+    // Empty controls from alert windows
+    let controls = g_map.controls[google.maps.ControlPosition.TOP_CENTER];
+    if(controls.j) {
+        if(controls.j.length > 0) {
+            $("#success-alert").remove();
+            controls.j.length = 0;
+        }
+    }
     let t_alert = document.querySelector("#alert-template");
     let alert = document.importNode(t_alert.content,true);
-    document.getElementById("app").append(alert);
+    let alertdiv = document.createElement('div');
+    alertdiv.setAttribute("id","success-alert");
+    alertdiv.appendChild(alert);
+    g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv);
     $("#success-alert-content").html(message);
-    $("#success-alert").delay(2000).fadeOut(2000, function() {
+    $("#success-alert").delay(2000).fadeOut(1000, function() {
         $(this).remove();
+
     });
 }
 
 function createDangerAlert(message) {
     let t_alert = document.querySelector("#alert-danger-template");
     let alert = document.importNode(t_alert.content,true);
-    document.getElementById("app").append(alert);
+    let alertdiv = document.createElement('div');
+    alertdiv.setAttribute("id","danger-alert");
+    alertdiv.appendChild(alert);   
+    g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv); 
     $("#danger-alert-content").html(message);
-    $("#danger-alert").delay(2000).fadeOut(2000, function() {
+    $("#danger-alert").delay(2000).fadeOut(1000, function() {
         $(this).remove();
     });
 }
