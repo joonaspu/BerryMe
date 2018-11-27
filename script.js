@@ -554,6 +554,8 @@ function importMap(event) {
             createSuccessAlert(`Map ${tempmap.name} successfully imported!`);
         } else {
             console.log("Map name in use!");
+            document.getElementById("file-input-label").innerHTML = "Choose File";
+            $("#myMaps").modal("hide");
             createDangerAlert("Map name is already in use!");
         }
     }
