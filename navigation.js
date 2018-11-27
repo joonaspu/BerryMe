@@ -207,14 +207,23 @@ function createSuccessAlert(message) {
 }
 
 function createDangerAlert(message) {
+    // Empty controls from alert windows
+    let controls = g_map.controls[google.maps.ControlPosition.TOP_CENTER];
+    if(controls.j) {
+        if(controls.j.length > 0) {
+            $("#danger-alert").remove();
+            controls.j.length = 0;
+        }
+    }
     let t_alert = document.querySelector("#alert-danger-template");
     let alert = document.importNode(t_alert.content,true);
     let alertdiv = document.createElement('div');
     alertdiv.setAttribute("id","danger-alert");
-    alertdiv.appendChild(alert);   
-    g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv); 
+    alertdiv.appendChild(alert);
+    g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv);
     $("#danger-alert-content").html(message);
     $("#danger-alert").delay(2000).fadeOut(1000, function() {
         $(this).remove();
+
     });
 }
