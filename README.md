@@ -6,6 +6,8 @@ Project work for LAMAD-course
 The website can be run locally just by opening `index.html`, but geolocation and some other features work better if the page is hosted on a HTTPS server.
 "Nearby users" feature uses a server hosted on Heroku by default, but it can be run locally from the `server` directory (remember to change `g_LOCATION_SHARE_URL` variable in `script.js`).
 **NOTE:** The "Optimal route" feature uses the Mopsi TSP API, which only works if the page is hosted on `cs.uef.fi` and uses HTTPS.
+ * https://cs.uef.fi/~joopu/lamad/
+ * https://cs.uef.fi/~anttine/berryme/
 
 ## Features
 * Show user location on map
@@ -18,7 +20,4 @@ The website can be run locally just by opening `index.html`, but geolocation and
 * Calculate optimal route for visiting all berry locations
 * Show current weather and forecast
 
-## Todo
-
-* Marjat (kuvat ja niiden tiedot)
     
