@@ -1,7 +1,8 @@
-//datahandler.js
+// datahandler.js
 // localStorage operations
 
-// Warning! All saved data will be lost!
+// Clear storage
+// Warning! All (saved) data will be lost!
 function clearStorage() {
     window.localStorage.clear();
 }
@@ -30,9 +31,11 @@ function saveMap(map) {
     }
 }
 
+// Save the name of the last used map to localstorage
 function saveLastMapName(mapname) {
     window.localStorage.setItem("lastmap",mapname);
 }
+// Load the name of the last used map from localstorage
 function loadLastMapName() {
     return window.localStorage.getItem("lastmap");
 }

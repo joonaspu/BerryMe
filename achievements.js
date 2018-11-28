@@ -46,6 +46,7 @@ function unlockAchievement(id) {
         createSuccessAlert(`You unlocked the achievement: ${achname}!`);
     }
 }
+// Check location-based achievements
 // Not the best solution out there, make more modular
 function checkLocationAchievements(position) {
     g_geocoder.geocode({"location":position}, function(results, status) {
@@ -67,7 +68,8 @@ function checkLocationAchievements(position) {
         }
     });
 }
-
+// Check berry count related achievements
+// Again same thing as previous
 function checkBerryCountAchievements() {
     let berrycount_str = window.localStorage.getItem("totalBerryCount");
     if(berrycount_str != null) {
@@ -88,7 +90,9 @@ function checkBerryCountAchievements() {
         }
     }
 }
+
 // Add one to the total count (lifetime)
+// Used to track added berries
 function incrementTotalBerryCount() {
     let berrycount_str = window.localStorage.getItem("totalBerryCount");
     if(berrycount_str == null) {
@@ -99,6 +103,7 @@ function incrementTotalBerryCount() {
     }
 }
 // Remove one from the total count (lifetime)
+// Used to track added berries
 function decrementTotalBerryCount() {
     let berrycount_str = window.localStorage.getItem("totalBerryCount");
     if(berrycount_str == null) {
@@ -109,6 +114,7 @@ function decrementTotalBerryCount() {
     }
 }
 
+// Remove all achievements
 function clearAchievements() {
     window.localStorage.setItem("unlockedAchievements", JSON.stringify([]));
     window.localStorage.setItem("totalBerryCount", "0");

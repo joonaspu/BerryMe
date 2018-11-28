@@ -1,5 +1,6 @@
 "use strict";
 
+// Class for the location
 class Location {
     constructor(lat, lng, berry, rating, date) {
         this.latitude = lat;

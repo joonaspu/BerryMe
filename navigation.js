@@ -1,3 +1,7 @@
+// navigation.js
+// Handle most of the gui/navigation related events
+
+// Maps window
 // When document is ready, create content for the maps modal
 $(document).on("show.bs.modal","#myMaps",function(event) {
     let mapnames = JSON.parse(window.localStorage.getItem("maps"));
@@ -81,6 +85,7 @@ function openRemoveWindow(mapname) {
   
 }
 
+// Confirm rename action
 function openRenameWindow(mapname) {
     let el = `  <h2 class="text-light">Rename the map: ${mapname}</h2>
                 <div class="input-group">
@@ -119,7 +124,8 @@ function openRenameWindow(mapname) {
     });
     $("#genericWindow").modal("show");  
 }
-// Success or danger
+
+// Toggle nearby users on/off
 function toggleNearbyUsers() {
     if($("#navbar-nearbyusers").hasClass("btn-success")) {
         $("#navbar-nearbyusers").removeClass("btn-success");
@@ -137,7 +143,7 @@ function toggleNearbyUsers() {
         g_enableNearbyUsers = true;
     }
 }
-
+// Achievements window
 // When document is ready, create content for the achievements
 $(document).on("show.bs.modal","#myAchievements",function(event) {
     console.log(achievements);
@@ -163,6 +169,7 @@ $(document).on("show.bs.modal","#myAchievements",function(event) {
     document.getElementById("achievementsList").innerHTML = html;
 });
 
+// Weather window
 // When document is ready and weather window opens, create content for the weather
 $(document).on("show.bs.modal","#weather",function(event) {
     let html = "";
@@ -183,9 +190,9 @@ $(document).on("show.bs.modal","#weather",function(event) {
     getForecastWeather(g_myPosition.lat,g_myPosition.lng);   
 });
 
+// Create green (alert) box
+// Use when something was successful
 function createSuccessAlert(message) {
-    //console.log(g_map.controls[google.maps.ControlPosition.TOP_CENTER]);
-    // Empty controls from alert windows
     let controls = g_map.controls[google.maps.ControlPosition.TOP_CENTER];
     if(controls.j) {
         if(controls.j.length > 0) {
@@ -193,6 +200,7 @@ function createSuccessAlert(message) {
             controls.j.length = 0;
         }
     }
+    // Get the alert template, copy it and put the message in it.
     let t_alert = document.querySelector("#alert-success-template");
     let alert = document.importNode(t_alert.content,true);
     let alertdiv = document.createElement('div');
@@ -200,14 +208,12 @@ function createSuccessAlert(message) {
     alertdiv.appendChild(alert);
     g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv);
     $(alertdiv).find("#success-alert-content").html(message);
-    $(alertdiv).delay(2000).fadeOut(1000, function() {
-        $(this).remove();
-
-    });
+    // Add animation
+    $(alertdiv).delay(2000).fadeOut(1000);
 }
-
+// Create red (alert) box
+// Use when something failed
 function createDangerAlert(message) {
-    // Empty controls from alert windows
     let controls = g_map.controls[google.maps.ControlPosition.TOP_CENTER];
     if(controls.j) {
         if(controls.j.length > 0) {
@@ -222,8 +228,5 @@ function createDangerAlert(message) {
     alertdiv.appendChild(alert);
     g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv);
     $(alertdiv).find("#danger-alert-content").html(message);
-    $(alertdiv).delay(2000).fadeOut(1000, function() {
-        $(this).remove();
-
-    });
+    $(alertdiv).delay(2000).fadeOut(1000);
 }
