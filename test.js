@@ -26,7 +26,7 @@ function generateStressMap(n) {
     for(let i = 0;i<amount;i++) {
         let temploc = new Location(62.6+(Math.random()*2-1),29.76+(Math.random()*2-1),
                                     keys[Math.floor(Math.random()*keys.length)],3,Date.now());
-        console.log(temploc);
+        //console.log(temploc);
         tempmap.locations.push(temploc);
     }
     window.localStorage.setItem("StressMap",JSON.stringify(tempmap));
@@ -35,5 +35,5 @@ function generateStressMap(n) {
     mapnames.push("StressMap");
     window.localStorage.setItem("maps", JSON.stringify(mapnames));
 
-    console.log(window.localStorage.getItem("maps"));
+    //console.log(window.localStorage.getItem("maps"));
 }

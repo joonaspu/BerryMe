@@ -5,7 +5,7 @@
 // When document is ready, create content for the maps modal
 $(document).on("show.bs.modal","#myMaps",function(event) {
     let mapnames = JSON.parse(window.localStorage.getItem("maps"));
-    console.log(mapnames[0]);
+    //console.log(mapnames[0]);
 
     //Create list of maps
     let html = "";
@@ -23,7 +23,7 @@ $(document).on("show.bs.modal","#myMaps",function(event) {
     document.getElementById("file-input-label").innerHTML = "Choose file";
     // Import
     $("input[type=file]").on("change", function() {
-        console.log(this.files[0].name);
+        //console.log(this.files[0].name);
         document.getElementById("file-input-label").innerHTML = this.files[0].name;      
     });
 
@@ -72,7 +72,7 @@ function openRemoveWindow(mapname) {
 
     document.getElementById("genericWindowContent").querySelector(".yesButton").addEventListener("click", function() {
         removeMap(mapname);
-        console.log("Removed map: "+mapname);
+        //console.log("Removed map: "+mapname);
         $("#genericWindow").modal("hide");
         $("#myMaps").modal("hide");
         createSuccessAlert(`Map ${mapname} successfully removed!`);
@@ -146,7 +146,7 @@ function toggleNearbyUsers() {
 // Achievements window
 // When document is ready, create content for the achievements
 $(document).on("show.bs.modal","#myAchievements",function(event) {
-    console.log(achievements);
+    //console.log(achievements);
     let unlocked = getAchievements();
     //Create list of maps
     let html = "";

@@ -86,7 +86,7 @@ function initMap() {
     
     // Load berry types
     generateBerries();
-    console.log(g_berries);
+    //console.log(g_berries);
 
     // Get last used mapname
     let lm = loadLastMapName();
@@ -109,7 +109,7 @@ function handleGeolocation() {
     geolocation.watchPosition(updatePosition, 
         // Error handler
         function(error) {
-            console.log(error);
+            //console.log(error);
         },
         // Geolocation options 
         {
@@ -159,7 +159,7 @@ function updatePosition(position) {
     g_myPositionMarker.setVisible(true);
     g_myPositionMarker.setPosition(newCoords);
 
-    console.log(position);
+    //console.log(position);
     
     if(g_enableNearbyUsers) {
         updateNearbyUsers(newCoords.lat,newCoords.lng);
@@ -258,7 +258,7 @@ function saveBerryListener(event) {
     let marker = findMarkerByID(id);
 
     if (selectedBerry !== null) {
-        console.log("Saved " + selectedBerry);  
+        //console.log("Saved " + selectedBerry);  
 
         // Update icon of the marker
         marker.setIcon({
@@ -435,8 +435,7 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         berryLocation: berryLocation,
         id: g_nextid++
     });
-
-    console.log(g_markers.push(newMarker));
+    g_markers.push(newMarker)
 
     // Disable dragging when infoWindow is closed
     // and restore marker position
@@ -456,7 +455,6 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
         }
         
         checkBerryCountAchievements(); // Achievements
-        console.log("WINDOW CLOSED");
     };
 
     // Build info window HTML for new berries
@@ -527,7 +525,7 @@ function changeMap(mapname) {
 // Download map as txt-file
 function downloadMap(mapname) {
     let data = new Blob([JSON.stringify(loadMap(mapname))],{type: "text/plain"});
-    console.log("Trying to download");
+    //console.log("Trying to download");
     let anchor = document.createElement("a");
     anchor.download = mapname+".txt";
     anchor.href = window.URL.createObjectURL(data)
@@ -539,7 +537,7 @@ function importMap(event) {
     if(files[0]==null) {
         return;
     }
-    console.log(files[0]);
+    //console.log(files[0]);
     reader = new FileReader();
 
     reader.onload = function(file) {
@@ -553,7 +551,7 @@ function importMap(event) {
             $("#myMaps").modal("hide");
             createSuccessAlert(`Map ${tempmap.name} successfully imported!`);
         } else {
-            console.log("Map name in use!");
+            //console.log("Map name in use!");
             document.getElementById("file-input-label").innerHTML = "Choose File";
             $("#myMaps").modal("hide");
             createDangerAlert("Map name is already in use!");
@@ -589,7 +587,7 @@ function createNewMap(newMapName) {
     saveMapNames(maps);
     saveMap(tempmap);
     changeMap(newMapName);
-    console.log("Created and loaded new map: "+newMapName);
+    //console.log("Created and loaded new map: "+newMapName);
 }
 
 // Rename map
@@ -614,7 +612,7 @@ function saveCurrentMap(mapname) {
         map.locations.push(g_markers[i].berryLocation);
     }
     saveMap(map)
-    console.log(mapname + " saved");
+    //console.log(mapname + " saved");
 }
 
 // Get nearby users and add them to the g_map

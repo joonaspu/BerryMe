@@ -27,7 +27,7 @@ function getAchievements() {
 function unlockAchievement(id) {
     if(g_achievementsEnabled) {
         let ach = getAchievements();
-        console.log(ach);       
+        //console.log(ach);       
         // Check if achievement is already unlocked
         if(ach.includes(id)) {
             return;
@@ -51,9 +51,9 @@ function unlockAchievement(id) {
 function checkLocationAchievements(position) {
     g_geocoder.geocode({"location":position}, function(results, status) {
         if(status === "OK") {
-            console.log(results[0]);
+            //console.log(results[0]);
             let filtered = results[0].address_components.filter(e => e.types.includes("locality") || e.types.includes("administrative_area_level_3"));
-            console.log(filtered);
+            //console.log(filtered);
             // Check if we can use this
             if(!filtered || filtered.length !== 1) {
                 return;
