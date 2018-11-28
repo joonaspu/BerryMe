@@ -50,7 +50,9 @@ function unlockAchievement(id) {
 function checkLocationAchievements(position) {
     g_geocoder.geocode({"location":position}, function(results, status) {
         if(status === "OK") {
-            let city = results[0].address_components[2].long_name;
+            let filtered = results[0].address_components.filter(e => e.types.includes("locality"));
+            let city = filtered[0].long_name;
+
             switch(city) {
                 case "Tuusniemi":
                     unlockAchievement(4);
