@@ -1,3 +1,5 @@
+// Do not touch this file if you do not know what these functions do
+
 // Generate map for testing purposes, named "map1"
 function generateBerryMap() {
     let tempmap = {"name":"Map1",

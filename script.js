@@ -16,13 +16,13 @@ let g_LOCATION_SHARE_URL = "https://berryme.herokuapp.com";
 let g_enableNearbyUsers = true;
 // Other nearby users
 let g_otherUsers = [];
-
+// User's location
 let g_myPosition = {lat: 0, lng: 0};
 
 let g_mapMoved = false;
-
+// Are achievements enabled
 let g_achievementsEnabled = true;
-
+// User's location marker and accuracy circle
 let g_myPositionCircle;
 let g_myPositionMarker;
 
@@ -486,9 +486,10 @@ function addBerryToMap(berryLocation, imageurl, isnewberry=false) {
 
     return newMarker;
 }
-
+// Load berry locations from localstorage and them to the current map
 function loadBerryLocations(mapname) {
     let mapnames = loadMapNames();
+    // If map does not exist, create new using given name
     if(mapnames===null) {
         //generateBerryMap();
         let tempmap = {"name":mapname,"locations":[]};
@@ -532,8 +533,7 @@ function downloadMap(mapname) {
     anchor.href = window.URL.createObjectURL(data)
     anchor.click();
 }
-// Import txt file and add it to the maps
-// TODO (maybe): Ability 
+// Import txt file and add it to the maps 
 function importMap(event) {
     let files = document.getElementById("file-input").files;
     if(files[0]==null) {
@@ -565,7 +565,6 @@ function importMap(event) {
 }
 
 // Remove map from localStorage
-// TODO: What if no maps left
 function removeMap(mapname) {
     localStorage.removeItem(mapname);
     let mapnames = loadMapNames();
@@ -618,7 +617,9 @@ function saveCurrentMap(mapname) {
     console.log(mapname + " saved");
 }
 
+// Get nearby users and add them to the g_map
 function updateNearbyUsers(lat, lng) {
+    // Every user has temporary unique id 
     let uniqueid = window.localStorage.getItem("uniqueid");
     $.ajax({
         type: 'POST',
@@ -631,14 +632,14 @@ function updateNearbyUsers(lat, lng) {
     });
 
     function updateOthers(data) {    
-        console.log("POST REQUEST REC");console.log(data);
+        //console.log("POST REQUEST REC");console.log(data);
         if(!uniqueid) {
             window.localStorage.setItem("uniqueid",data.id);
             let uniqueidnew = window.localStorage.getItem("uniqueid");              
-            console.log("ID after ajax: "+uniqueidnew);
+            //console.log("ID after ajax: "+uniqueidnew);
             return;
         }
-        // Stupid! Fix this!
+        // Stupid/Lazy! Fix this!
         // Remove other user locations
         for(let i = 0;i<g_otherUsers.length;i++) {
             let mark = g_otherUsers[i];

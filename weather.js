@@ -1,7 +1,8 @@
 g_OPENWEATHERMAP_URL = "https://api.openweathermap.org/data/2.5/";
 g_OPENWEATHERMAP_API_KEY = "f2ac8602071637a20d9af0897d6c8055";
-g_FORECAST_COUNT = 3;
+g_FORECAST_COUNT = 3; // How many forecast we should print
 
+// Not in use currently
 function getCurrentWeather(latitude, longitude) {
     let url = `${g_OPENWEATHERMAP_URL}weather?lat=${latitude}&lon=${longitude}&APPID=${g_OPENWEATHERMAP_API_KEY}`;
     $.get(url, function(response) {
@@ -23,7 +24,7 @@ function getCurrentWeather(latitude, longitude) {
             weatherDiv.innerHTML = timehtml + weatherhtml + temperaturehtml + windhtml;
     });
 }
-
+// Update weather button's current weather
 function updateWeatherButton(button) {
     let url = `${g_OPENWEATHERMAP_URL}weather?lat=${g_myPosition.lat}&lon=${g_myPosition.lng}&APPID=${g_OPENWEATHERMAP_API_KEY}`;
     $.get(url, function(response) {
@@ -35,6 +36,7 @@ function updateWeatherButton(button) {
 }
 
 // Get 5day/3hour forecast from OpenWeatherMap
+// This is used to save API calls
 function getForecastWeather(latitude, longitude) {
     let url = `${g_OPENWEATHERMAP_URL}forecast?lat=${latitude}&lon=${longitude}&APPID=${g_OPENWEATHERMAP_API_KEY}`;
     $.get(url, function(response) {
