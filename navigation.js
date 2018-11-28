@@ -200,7 +200,7 @@ function createSuccessAlert(message) {
     alertdiv.appendChild(alert);
     g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv);
     $(alertdiv).find("#success-alert-content").html(message);
-    $(alertdiv).find("#success-alert").delay(2000).fadeOut(1000, function() {
+    $(alertdiv).delay(2000).fadeOut(1000, function() {
         $(this).remove();
 
     });
@@ -222,7 +222,7 @@ function createDangerAlert(message) {
     alertdiv.appendChild(alert);
     g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv);
     $(alertdiv).find("#danger-alert-content").html(message);
-    $(alertdiv).find("#danger-alert").delay(2000).fadeOut(1000, function() {
+    $(alertdiv).delay(2000).fadeOut(1000, function() {
         $(this).remove();
 
     });
