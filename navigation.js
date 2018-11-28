@@ -199,8 +199,8 @@ function createSuccessAlert(message) {
     alertdiv.setAttribute("id","success-alert");
     alertdiv.appendChild(alert);
     g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv);
-    $("#success-alert-content").html(message);
-    $("#success-alert").delay(2000).fadeOut(1000, function() {
+    $(alertdiv).find("#success-alert-content").html(message);
+    $(alertdiv).find("#success-alert").delay(2000).fadeOut(1000, function() {
         $(this).remove();
 
     });
@@ -221,8 +221,8 @@ function createDangerAlert(message) {
     alertdiv.setAttribute("id","danger-alert");
     alertdiv.appendChild(alert);
     g_map.controls[google.maps.ControlPosition.TOP_CENTER].push(alertdiv);
-    $("#danger-alert-content").html(message);
-    $("#danger-alert").delay(2000).fadeOut(1000, function() {
+    $(alertdiv).find("#danger-alert-content").html(message);
+    $(alertdiv).find("#danger-alert").delay(2000).fadeOut(1000, function() {
         $(this).remove();
 
     });
