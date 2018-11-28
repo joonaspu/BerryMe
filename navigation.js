@@ -193,7 +193,7 @@ function createSuccessAlert(message) {
             controls.j.length = 0;
         }
     }
-    let t_alert = document.querySelector("#alert-template");
+    let t_alert = document.querySelector("#alert-success-template");
     let alert = document.importNode(t_alert.content,true);
     let alertdiv = document.createElement('div');
     alertdiv.setAttribute("id","success-alert");
